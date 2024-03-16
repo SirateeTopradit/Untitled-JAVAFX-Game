@@ -5,7 +5,7 @@ import java.security.Key;
 public class GamePanal extends JPanel implements Runnable{
 
     final int originalTileSize = 16;//16*16
-    final int scale = 3; //16*3
+    final int scale = 3;
 
     final int tileSize = originalTileSize * scale;//48*48
     final int MaxScreenCol = 16;
