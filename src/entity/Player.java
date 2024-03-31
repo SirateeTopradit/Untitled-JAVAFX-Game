@@ -1,35 +1,36 @@
 package entity;
 
-import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import main.GamePanel;
 import main.KeyHandler;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.io.InputStream;
 
 public class Player extends Entity{
     GamePanel gp;
     KeyHandler keyH;
     int direction;
-
-    private int x, y;
     private int speed;
     private static final int NUM_FRAMES = 15;
     private static final int NUM_DIRECTIONS = 4; // number of directions
-    private BufferedImage[][] frames;
-    private long startTime;
+    private final Image[][] frames;
+    private final long startTime;
+    private final int screenX;
+    private final int screenY;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
         setDefaultValues();
+        this.screenX = ((gp.getScreenWidth()/2)-60-40);
+        this.screenY = ((gp.getScreenHeight()/2)-110-30);
 
-        frames = new BufferedImage[NUM_DIRECTIONS][NUM_FRAMES];
+        frames = new Image[NUM_DIRECTIONS][NUM_FRAMES];
         startTime = System.currentTimeMillis();
+
 
         try {
             for (int j = 0; j < NUM_DIRECTIONS; j++) {
@@ -37,79 +38,78 @@ public class Player extends Entity{
                 for (int i = 0; i < NUM_FRAMES; i++) {
                     InputStream resource = getClass().getClassLoader().getResourceAsStream(String.format("Dekhere/Dekhere_%c/Dekhere_%c%02d.png", direction, direction, i));
                     if (resource != null) {
-                        frames[j][i] = ImageIO.read(resource);
+                        frames[j][i] = new Image(resource);
                     } else {
                         System.out.println("Resource not found: " + String.format("Dekhere/Dekhere_%c/Dekhere_%c%02d.png", direction, direction, i));
                     }
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void setDefaultValues() {
-        setX(100);
-        setY(100);
+        setWorldX((gp.getWorldScreenWidth() / 2)-60-40);
+        setWorldY((gp.getWorldScreenHeight() / 2)-110-30);
         setSpeed(4);
         direction = 0; // start facing 'a' direction
     }
 
     public void update() {
+
+
+
         if (keyH.isUpPressed()) {
-            setY(getY() - getSpeed());
+            setWorldY(getWorldY() - getSpeed());
             direction = 3; // 'w' direction
         }
         if (keyH.isDownPressed()) {
-            setY(getY() + getSpeed());
+            setWorldY(getWorldY() + getSpeed());
             direction = 2; // 's' direction
         }
         if (keyH.isLeftPressed()) {
-            setX(getX() - getSpeed());
+            setWorldX(getWorldX() - getSpeed());
             direction = 0; // 'a' direction
         }
         if (keyH.isRightPressed()) {
-            setX(getX() + getSpeed());
+            setWorldX(getWorldX() + getSpeed());
             direction = 1; // 'd' direction
         }
     }
 
     public void draw(GraphicsContext gc) {
-        Image fxImage = SwingFXUtils.toFXImage(getCurrentFrame(direction), null);
-        gc.drawImage(fxImage, getX(), getY(), gp.getTileSize()*5, gp.getTileSize()*5);
+        int playerSize = (gp.getTileSize() * gp.getTileSize())/2;
+
+//        DropShadow ds = new DropShadow();
+//        ds.setOffgetWorldY(3.0);
+//        ds.setOffsetWorldX(3.0);
+//        ds.setColor(Color.GRAY);
+//        gc.setEffect(ds);
+//        gc.setFill(Color.YELLOW);
+//        gc.fillRect(getX(), getY(), playerSize, playerSize);
+
+//        gc.setFill(Color.RED);
+//        gc.fillRect(getX(), getY(), playerSize-100, playerSize-100);
+
+        Image fxImage = getCurrentFrame(direction);
+        gc.drawImage(fxImage, getScreenX(), getScreenY(), playerSize,playerSize);
     }
+
+
 
     private char getDirectionFromIndex(int index) {
-        switch (index) {
-            case 0: return 'a';
-            case 1: return 'd';
-            case 2: return 's';
-            default: return 'w';
-        }
+        return switch (index) {
+            case 0 -> 'a';
+            case 1 -> 'd';
+            case 2 -> 's';
+            default -> 'w';
+        };
     }
 
-    public BufferedImage getCurrentFrame(int direction) {
+    public Image getCurrentFrame(int direction) {
         int index = (int) ((System.currentTimeMillis() - startTime) / 50) % NUM_FRAMES;
-//        if(!keyH.isKeyPressed()){
-//            index = 0;
-//        }
         return frames[direction][index];
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     public int getSpeed() {
@@ -118,5 +118,13 @@ public class Player extends Entity{
 
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+
+    public int getScreenX() {
+        return screenX;
+    }
+
+    public int getScreenY() {
+        return screenY;
     }
 }
