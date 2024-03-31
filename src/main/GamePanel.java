@@ -4,12 +4,16 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 import entity.Player;
+import javafx.scene.paint.Color;
 
 public class GamePanel extends Canvas implements Runnable {
 
-    final int tileSize = 48; //16*16*3
-    final int screenWidth = tileSize * 16;
-    final int screenHeight = tileSize * 12;
+    final int tileSize = 20;
+    final int aspectRatioWidth = 14;//16;;
+    final int aspectRatioHeight = 7;//9;
+    final int scale = 6;
+    final int screenWidth = tileSize * aspectRatioWidth * scale;
+    final int screenHeight = tileSize * aspectRatioHeight * scale;
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     Player player = new Player(this, keyH);
@@ -51,7 +55,7 @@ public class GamePanel extends Canvas implements Runnable {
                 player.update();
                 javafx.application.Platform.runLater(() -> {
                     GraphicsContext gc = this.getGraphicsContext2D();
-                    gc.setFill(javafx.scene.paint.Color.BLACK);
+                    gc.setFill(Color.CORAL);
                     gc.fillRect(0, 0, getWidth(), getHeight());
                     player.draw(gc);
                 });
