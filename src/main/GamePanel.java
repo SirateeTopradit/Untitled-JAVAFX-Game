@@ -5,21 +5,39 @@ import javafx.scene.canvas.GraphicsContext;
 
 import entity.Player;
 import javafx.scene.paint.Color;
+import map.MapManeger;
 
 public class GamePanel extends Canvas implements Runnable {
-
+    //Screen settings
     final int tileSize = 20;
-    final int aspectRatioWidth = 14;//16;;
-    final int aspectRatioHeight = 7;//9;
-    final int scale = 6;
+    final int aspectRatioWidth = 16;
+    final int aspectRatioHeight = 9;
+    final int scale = 5;//6
     final int screenWidth = tileSize * aspectRatioWidth * scale;
     final int screenHeight = tileSize * aspectRatioHeight * scale;
+
+    //World settings
+    final int worldScale = 6*4;//6
+    final int worldScreenWidth = tileSize * aspectRatioWidth * worldScale;
+    final int worldScreenHeight = tileSize * aspectRatioHeight * worldScale;
+
+
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     Player player = new Player(this, keyH);
+    MapManeger mapManeger = new MapManeger(this, player);
 
     final double DRAW_INTERVAL = 1000000000.0 / 60.0;
     final long ONE_SECOND = 1000000000L;
+
+    public void drawGrid(GraphicsContext gc) {
+        gc.setStroke(Color.BLACK);
+        for (int i = 0; i < screenWidth; i += tileSize) {
+            for (int j = 0; j < screenHeight; j += tileSize) {
+                gc.strokeRect(i, j, tileSize, tileSize);
+            }
+        }
+    }
 
     public GamePanel() {
         this.setWidth(screenWidth);
@@ -32,10 +50,6 @@ public class GamePanel extends Canvas implements Runnable {
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
-    }
-
-    public int getTileSize() {
-        return tileSize;
     }
 
     @Override
@@ -57,6 +71,8 @@ public class GamePanel extends Canvas implements Runnable {
                     GraphicsContext gc = this.getGraphicsContext2D();
                     gc.setFill(Color.CORAL);
                     gc.fillRect(0, 0, getWidth(), getHeight());
+                    mapManeger.drawMap(gc);
+//                    drawGrid(gc);
                     player.draw(gc);
                 });
                 delta--;
@@ -69,4 +85,36 @@ public class GamePanel extends Canvas implements Runnable {
             }
         }
     }
+    public int getAspectRatioWidth() {
+        return aspectRatioWidth;
+    }
+
+    public int getAspectRatioHeight() {
+        return aspectRatioHeight;
+    }
+
+    public int getScale() {
+        return scale;
+    }
+
+    public int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public int getScreenHeight() {
+        return screenHeight;
+    }
+
+    public int getTileSize() {
+        return tileSize;
+    }
+    public int getWorldScreenWidth() {
+        return worldScreenWidth;
+    }
+
+    public int getWorldScreenHeight() {
+        return worldScreenHeight;
+    }
+
+
 }
