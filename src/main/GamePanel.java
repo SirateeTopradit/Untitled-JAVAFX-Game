@@ -20,15 +20,14 @@ public class GamePanel extends Canvas implements Runnable {
     final int worldScale = 6*2;//6
     final int worldScreenWidth = tileSize * aspectRatioWidth * worldScale;
     final int worldScreenHeight = tileSize * aspectRatioHeight * worldScale;
-
-
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     Player player = new Player(this, keyH);
     MapManager mapManager = new MapManager(this, player);
-
+    UI ui = new UI(this);
     final double DRAW_INTERVAL = 1000000000.0 / 60.0;
     final long ONE_SECOND = 1000000000L;
+
 
     public void drawGrid(GraphicsContext gc) {
         gc.setStroke(Color.BLACK);
@@ -69,11 +68,21 @@ public class GamePanel extends Canvas implements Runnable {
                 player.update();
                 javafx.application.Platform.runLater(() -> {
                     GraphicsContext gc = this.getGraphicsContext2D();
+                    //debug
+//                    long drawStartTime = 0;
+//                    drawStartTime = System.nanoTime();
+                    //Map
                     gc.setFill(Color.BLACK);
                     gc.fillRect(0, 0, getWidth(), getHeight());
                     mapManager.drawMap(gc);
-//                    drawGrid(gc);
+                    //Player
                     player.draw(gc);
+                    //UI
+                    ui.draw(gc);
+
+//                    long drawEndTime = System.nanoTime();
+//                    long passedTime = drawEndTime - drawStartTime;
+//                    gc.fillText("Draw time:" + passedTime, 10, 10);
                 });
                 delta--;
                 drawCount++;
