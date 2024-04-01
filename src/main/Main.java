@@ -21,7 +21,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Set the title of the window
-        primaryStage.setTitle("Game");
+        primaryStage.setTitle("Untitled-JAVAFX-Game");
 
         // Override the default close request action
         primaryStage.setOnCloseRequest(event -> {
