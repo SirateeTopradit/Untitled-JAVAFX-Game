@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import main.GamePanel;
 import main.KeyHandler;
 
+import java.awt.*;
 import java.io.InputStream;
 
 public class Player extends Entity{
@@ -25,12 +26,14 @@ public class Player extends Entity{
         this.gp = gp;
         this.keyH = keyH;
         setDefaultValues();
-        this.screenX = ((gp.getScreenWidth()/2)-60-40);
-        this.screenY = ((gp.getScreenHeight()/2)-110-30);
+        this.screenX = ((gp.getScreenWidth()/2)-60);
+        this.screenY = ((gp.getScreenHeight()/2)-110);
 
         frames = new Image[NUM_DIRECTIONS][NUM_FRAMES];
         startTime = System.currentTimeMillis();
 
+        setHitBox(new Rectangle(4*20, 6*20, 2*20, 4*20-10));
+        setHitBoxWalk(new Rectangle(3*20, 6*20, 4*20, 4*20-10));
 
         try {
             for (int j = 0; j < NUM_DIRECTIONS; j++) {
@@ -52,14 +55,11 @@ public class Player extends Entity{
     public void setDefaultValues() {
         setWorldX((gp.getWorldScreenWidth() / 2)-60-40);
         setWorldY((gp.getWorldScreenHeight() / 2)-110-30);
-        setSpeed(4);
+        setSpeed(10);
         direction = 0; // start facing 'a' direction
     }
 
     public void update() {
-
-
-
         if (keyH.isUpPressed()) {
             setWorldY(getWorldY() - getSpeed());
             direction = 3; // 'w' direction
@@ -76,28 +76,23 @@ public class Player extends Entity{
             setWorldX(getWorldX() + getSpeed());
             direction = 1; // 'd' direction
         }
+        gp.getCollisionChecker().checkCollision();
     }
 
     public void draw(GraphicsContext gc) {
         int playerSize = (gp.getTileSize() * gp.getTileSize())/2;
 
-//        DropShadow ds = new DropShadow();
-//        ds.setOffgetWorldY(3.0);
-//        ds.setOffsetWorldX(3.0);
-//        ds.setColor(Color.GRAY);
-//        gc.setEffect(ds);
-//        gc.setFill(Color.YELLOW);
-//        gc.fillRect(getX(), getY(), playerSize, playerSize);
+        Rectangle hitBoxWalk = getHitBoxWalk();
+        gc.setFill(Color.BLUE);
+        gc.fillRect(getScreenX()+hitBoxWalk.x, getScreenY()+hitBoxWalk.y, hitBoxWalk.width, hitBoxWalk.height);
 
-//        gc.setFill(Color.RED);
-//        gc.fillRect(getX(), getY(), playerSize-100, playerSize-100);
+        Rectangle hitBox = getHitBox();
+        gc.setFill(Color.RED);
+        gc.fillRect(getScreenX()+hitBox.x, getScreenY()+hitBox.y, hitBox.width, hitBox.height);
 
         Image fxImage = getCurrentFrame(direction);
         gc.drawImage(fxImage, getScreenX(), getScreenY(), playerSize,playerSize);
     }
-
-
-
     private char getDirectionFromIndex(int index) {
         return switch (index) {
             case 0 -> 'a';
