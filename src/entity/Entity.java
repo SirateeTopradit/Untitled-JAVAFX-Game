@@ -1,6 +1,7 @@
 package entity;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.Buffer;
@@ -8,10 +9,25 @@ import java.nio.Buffer;
 public class Entity {
     private int worldX, worldY;
     private int speed;
+    private Rectangle hitBox;
 
-    public int getworldX() {
-        return worldX;
+    public Rectangle getHitBox() {
+        return hitBox;
     }
+
+    public void setHitBox(Rectangle hitBox) {
+        this.hitBox = hitBox;
+    }
+
+    public Rectangle getHitBoxWalk() {
+        return hitBoxWalk;
+    }
+
+    public void setHitBoxWalk(Rectangle hitBoxWalk) {
+        this.hitBoxWalk = hitBoxWalk;
+    }
+
+    private Rectangle hitBoxWalk;
 
     public void setWorldX(int x) {
         this.worldX = x;
