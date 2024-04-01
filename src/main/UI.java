@@ -1,5 +1,6 @@
 package main;
 
+import entity.Player;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -14,7 +15,7 @@ public class UI {
     public void draw(GraphicsContext gc) {
         gc.setFont(Courier_New_40);
         gc.setFill(Color.WHITE);
-        gc.fillText("Score:", 10 , 40);
+        gc.fillText("Score:"+gp.player.getWorldY(), 10 , 40);
     }
 
 }
