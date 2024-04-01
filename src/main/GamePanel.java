@@ -5,7 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 
 import entity.Player;
 import javafx.scene.paint.Color;
-import map.MapManeger;
+import map.MapManager;
 
 public class GamePanel extends Canvas implements Runnable {
     //Screen settings
@@ -17,7 +17,7 @@ public class GamePanel extends Canvas implements Runnable {
     final int screenHeight = tileSize * aspectRatioHeight * scale;
 
     //World settings
-    final int worldScale = 6*4;//6
+    final int worldScale = 6*2;//6
     final int worldScreenWidth = tileSize * aspectRatioWidth * worldScale;
     final int worldScreenHeight = tileSize * aspectRatioHeight * worldScale;
 
@@ -25,7 +25,7 @@ public class GamePanel extends Canvas implements Runnable {
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     Player player = new Player(this, keyH);
-    MapManeger mapManeger = new MapManeger(this, player);
+    MapManager mapManager = new MapManager(this, player);
 
     final double DRAW_INTERVAL = 1000000000.0 / 60.0;
     final long ONE_SECOND = 1000000000L;
@@ -69,9 +69,9 @@ public class GamePanel extends Canvas implements Runnable {
                 player.update();
                 javafx.application.Platform.runLater(() -> {
                     GraphicsContext gc = this.getGraphicsContext2D();
-                    gc.setFill(Color.CORAL);
+                    gc.setFill(Color.BLACK);
                     gc.fillRect(0, 0, getWidth(), getHeight());
-                    mapManeger.drawMap(gc);
+                    mapManager.drawMap(gc);
 //                    drawGrid(gc);
                     player.draw(gc);
                 });
