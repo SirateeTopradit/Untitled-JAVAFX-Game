@@ -27,7 +27,11 @@ public class GamePanel extends Canvas implements Runnable {
     UI ui = new UI(this);
     final double DRAW_INTERVAL = 1000000000.0 / 60.0;
     final long ONE_SECOND = 1000000000L;
+    CollisionChecker collisionChecker = new CollisionChecker(this);
 
+    public CollisionChecker getCollisionChecker() {
+        return collisionChecker;
+    }
 
     public void drawGrid(GraphicsContext gc) {
         gc.setStroke(Color.BLACK);
@@ -75,6 +79,7 @@ public class GamePanel extends Canvas implements Runnable {
                     gc.setFill(Color.BLACK);
                     gc.fillRect(0, 0, getWidth(), getHeight());
                     mapManager.drawMap(gc);
+//                    drawGrid(gc);
                     //Player
                     player.draw(gc);
                     //UI
