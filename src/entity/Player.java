@@ -6,14 +6,14 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import main.GamePanel;
 import main.KeyHandler;
-
-import java.awt.*;
+import javafx.scene.shape.Rectangle;
 import java.io.InputStream;
 
 public class Player extends Entity{
     GamePanel gp;
     KeyHandler keyH;
     int direction;
+    boolean isStopped = true;
     private int speed;
     private static final int NUM_FRAMES = 15;
     private static final int NUM_DIRECTIONS = 4; // number of directions
@@ -28,12 +28,11 @@ public class Player extends Entity{
         setDefaultValues();
         this.screenX = ((gp.getScreenWidth()/2)-60);
         this.screenY = ((gp.getScreenHeight()/2)-110);
-
-        frames = new Image[NUM_DIRECTIONS][NUM_FRAMES];
+        frames = new Image[NUM_DIRECTIONS][NUM_FRAMES*2];
         startTime = System.currentTimeMillis();
 
-        setHitBox(new Rectangle(4*20, 6*20, 2*20, 4*20-10));
-        setHitBoxWalk(new Rectangle(3*20, 6*20, 4*20, 4*20-10));
+        setHitBox(new Rectangle(4*20, 5*20, 2*20, 4*20));
+        setHitBoxWalk(new Rectangle(3*20, 5*20, 4*20, 4*20));
 
         try {
             for (int j = 0; j < NUM_DIRECTIONS; j++) {
@@ -44,6 +43,17 @@ public class Player extends Entity{
                         frames[j][i] = new Image(resource);
                     } else {
                         System.out.println("Resource not found: " + String.format("Dekhere/Dekhere_%c/Dekhere_%c%02d.png", direction, direction, i));
+                    }
+                }
+            }
+            for (int j = 0; j < NUM_DIRECTIONS; j++) {
+                char direction = getDirectionFromIndex(j);
+                for (int i = 0; i < NUM_FRAMES; i++) {
+                    InputStream resource = getClass().getClassLoader().getResourceAsStream(String.format("Dekhere/Dekhere_%c_stand/Dekhere_%c_stand%02d.png", direction, direction, i));
+                    if (resource != null) {
+                        frames[j][i+NUM_FRAMES-1] = new Image(resource);
+                    } else {
+                        System.out.println("Resource not found: " + String.format("Dekhere/Dekhere_%c_stand/Dekhere_%c_stand%02d.png", direction, direction, i));
                     }
                 }
             }
@@ -63,32 +73,37 @@ public class Player extends Entity{
         if (keyH.isUpPressed()) {
             setWorldY(getWorldY() - getSpeed());
             direction = 3; // 'w' direction
+            isStopped = false;
         }
         if (keyH.isDownPressed()) {
             setWorldY(getWorldY() + getSpeed());
             direction = 2; // 's' direction
+            isStopped = false;
         }
         if (keyH.isLeftPressed()) {
             setWorldX(getWorldX() - getSpeed());
             direction = 0; // 'a' direction
+            isStopped = false;
         }
         if (keyH.isRightPressed()) {
             setWorldX(getWorldX() + getSpeed());
             direction = 1; // 'd' direction
+            isStopped = false;
+        }
+        if (!keyH.isDownPressed()&&!keyH.isUpPressed()&&!keyH.isLeftPressed()&&!keyH.isRightPressed()) {
+            isStopped = true;
         }
         gp.getCollisionChecker().checkCollision();
     }
 
     public void draw(GraphicsContext gc) {
         int playerSize = (gp.getTileSize() * gp.getTileSize())/2;
+//        gc.setFill(Color.BLUE);
+//        gc.fillRect(getScreenX()+getHitBoxWalk().getX(), getScreenY()+getHitBoxWalk().getY(), getHitBoxWalk().getWidth(), getHitBoxWalk().getHeight());
+//
+//        gc.setFill(Color.RED);
+//        gc.fillRect(getScreenX()+getHitBox().getX(), getScreenY()+getHitBox().getY(), getHitBox().getWidth(), getHitBox().getHeight());
 
-        Rectangle hitBoxWalk = getHitBoxWalk();
-        gc.setFill(Color.BLUE);
-        gc.fillRect(getScreenX()+hitBoxWalk.x, getScreenY()+hitBoxWalk.y, hitBoxWalk.width, hitBoxWalk.height);
-
-        Rectangle hitBox = getHitBox();
-        gc.setFill(Color.RED);
-        gc.fillRect(getScreenX()+hitBox.x, getScreenY()+hitBox.y, hitBox.width, hitBox.height);
 
         Image fxImage = getCurrentFrame(direction);
         gc.drawImage(fxImage, getScreenX(), getScreenY(), playerSize,playerSize);
@@ -104,7 +119,7 @@ public class Player extends Entity{
 
     public Image getCurrentFrame(int direction) {
         int index = (int) ((System.currentTimeMillis() - startTime) / 50) % NUM_FRAMES;
-        return frames[direction][index];
+        return isStopped ? frames[direction][index+NUM_FRAMES-1]:frames[direction][index];
     }
 
     public int getSpeed() {

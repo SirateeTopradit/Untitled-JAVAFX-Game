@@ -8,19 +8,19 @@ public class CollisionChecker {
     public void checkCollision() {
         int playerX = gp.player.getWorldX();
         int playerY = gp.player.getWorldY();
-        int playerWidth = gp.player.getHitBoxWalk().width;
-        int playerHeight = gp.player.getHitBoxWalk().height;
+        double playerWidth = gp.player.getHitBoxWalk().getWidth();
+        double playerHeight = gp.player.getHitBoxWalk().getHeight();
         if(playerX < 0) {
             gp.player.setWorldX(0);
         }
         if(playerX + playerWidth > gp.worldScreenWidth) {
-            gp.player.setWorldX(gp.worldScreenWidth - playerWidth);
+            gp.player.setWorldX((int) (gp.worldScreenWidth - playerWidth));
         }
-        if(playerY < -10) {
-            gp.player.setWorldY(-10);
+        if(playerY < 10) {
+            gp.player.setWorldY(10);
         }
-        if(playerY + playerHeight > gp.worldScreenHeight-10) {
-            gp.player.setWorldY(gp.worldScreenHeight - playerHeight - 10);
+        if(playerY + playerHeight > gp.worldScreenHeight+10) {
+            gp.player.setWorldY((int) (gp.worldScreenHeight - playerHeight)+10);
         }
 //        for (int i = 0; i < gp.map.length; i++) {
 //            for (int j = 0; j < gp.map[i].length; j++) {

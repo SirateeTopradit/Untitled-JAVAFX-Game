@@ -31,6 +31,7 @@ public class Main extends Application {
 
         // Create a new game panel
         GamePanel gamePanel = new GamePanel();
+        gamePanel.setUpGame();
 
         // Create a new root pane and add the game panel to it
         Pane root = new Pane();

@@ -1,15 +1,12 @@
 package entity;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.nio.Buffer;
+import javafx.scene.shape.Rectangle;
 
 public class Entity {
     private int worldX, worldY;
     private int speed;
     private Rectangle hitBox;
+    private Rectangle hitBoxWalk;
 
     public Rectangle getHitBox() {
         return hitBox;
@@ -27,11 +24,10 @@ public class Entity {
         this.hitBoxWalk = hitBoxWalk;
     }
 
-    private Rectangle hitBoxWalk;
-
     public void setWorldX(int x) {
         this.worldX = x;
     }
+
     public void setWorldY(int y) {
         this.worldY = y;
     }
@@ -43,8 +39,6 @@ public class Entity {
     public int getWorldY() {
         return worldY;
     }
-
-
 
     public int getSpeed() {
         return speed;

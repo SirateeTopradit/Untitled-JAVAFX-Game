@@ -25,6 +25,8 @@ public class GamePanel extends Canvas implements Runnable {
     Player player = new Player(this, keyH);
     MapManager mapManager = new MapManager(this, player);
     UI ui = new UI(this);
+    BackgroundSound backgroundSound = new BackgroundSound();
+    Thread soundThread;
     final double DRAW_INTERVAL = 1000000000.0 / 60.0;
     final long ONE_SECOND = 1000000000L;
     CollisionChecker collisionChecker = new CollisionChecker(this);
@@ -48,6 +50,9 @@ public class GamePanel extends Canvas implements Runnable {
         this.setFocusTraversable(true);
         this.setOnKeyPressed(e -> keyH.keyPressed(e));
         this.setOnKeyReleased(e -> keyH.keyReleased(e));
+    }
+    public void setUpGame() {
+        playMusic(0);
     }
 
     public void startGameThread() {
@@ -99,6 +104,15 @@ public class GamePanel extends Canvas implements Runnable {
             }
         }
     }
+    public void playMusic(int MusicIndex) {
+        backgroundSound.setFile(MusicIndex);
+        backgroundSound.play();
+        backgroundSound.loop();
+    }
+    public void stopMusic() {
+        backgroundSound.stop();
+    }
+
     public int getAspectRatioWidth() {
         return aspectRatioWidth;
     }
