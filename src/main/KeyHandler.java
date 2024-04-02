@@ -8,6 +8,15 @@ public class KeyHandler {
     private boolean downPressed;
     private boolean leftPressed;
     private boolean rightPressed;
+    private boolean enterPressed;
+
+    public boolean isEnterPressed() {
+        return enterPressed;
+    }
+
+    public void setEnterPressed(boolean enterPressed) {
+        this.enterPressed = enterPressed;
+    }
 
     public void keyPressed(KeyEvent e) {
         KeyCode code = e.getCode();
@@ -22,6 +31,9 @@ public class KeyHandler {
         }
         if (code == KeyCode.D || code == KeyCode.RIGHT) {
             setRightPressed(true);
+        }
+        if (code == KeyCode.ENTER) {
+            setEnterPressed(true);
         }
     }
 
@@ -38,6 +50,9 @@ public class KeyHandler {
         }
         if (code == KeyCode.D || code == KeyCode.RIGHT) {
             setRightPressed(false);
+        }
+        if (code == KeyCode.ENTER) {
+            setEnterPressed(false);
         }
     }
 
