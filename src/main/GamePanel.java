@@ -75,6 +75,7 @@ public class GamePanel extends Canvas implements Runnable {
             lastTime = currentTime;
             if(delta >= 1){
                 player.update();
+
                 javafx.application.Platform.runLater(() -> {
                     GraphicsContext gc = this.getGraphicsContext2D();
                     //debug
@@ -89,6 +90,7 @@ public class GamePanel extends Canvas implements Runnable {
                     player.draw(gc);
                     //UI
                     ui.draw(gc);
+                    ui.drawFPS(gc, drawCount);
 
 //                    long drawEndTime = System.nanoTime();
 //                    long passedTime = drawEndTime - drawStartTime;
