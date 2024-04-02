@@ -98,11 +98,11 @@ public class Player extends Entity{
 
     public void draw(GraphicsContext gc) {
         int playerSize = (gp.getTileSize() * gp.getTileSize())/2;
-//        gc.setFill(Color.BLUE);
-//        gc.fillRect(getScreenX()+getHitBoxWalk().getX(), getScreenY()+getHitBoxWalk().getY(), getHitBoxWalk().getWidth(), getHitBoxWalk().getHeight());
-//
-//        gc.setFill(Color.RED);
-//        gc.fillRect(getScreenX()+getHitBox().getX(), getScreenY()+getHitBox().getY(), getHitBox().getWidth(), getHitBox().getHeight());
+        gc.setFill(Color.BLUE);
+        gc.fillRect(getScreenX()+getHitBoxWalk().getX(), getScreenY()+getHitBoxWalk().getY(), getHitBoxWalk().getWidth(), getHitBoxWalk().getHeight());
+
+        gc.setFill(Color.RED);
+        gc.fillRect(getScreenX()+getHitBox().getX(), getScreenY()+getHitBox().getY(), getHitBox().getWidth(), getHitBox().getHeight());
 
 
         Image fxImage = getCurrentFrame(direction);
