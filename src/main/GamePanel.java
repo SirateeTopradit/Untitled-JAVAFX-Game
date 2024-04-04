@@ -20,6 +20,7 @@ public class GamePanel extends Canvas implements Runnable {
     final int worldScale = 6*2;//6
     final int worldScreenWidth = tileSize * aspectRatioWidth * worldScale;
     final int worldScreenHeight = tileSize * aspectRatioHeight * worldScale;
+    private Boolean debugMode = false;
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     Player player = new Player(this, keyH);
@@ -72,6 +73,7 @@ public class GamePanel extends Canvas implements Runnable {
         long timer = 0;
         int drawCount = 0;
         int drawCountForDisplay = 0;
+        boolean wasCtrlOPressed = false;
 
         while(true){
             currentTime = System.nanoTime();
@@ -94,6 +96,7 @@ public class GamePanel extends Canvas implements Runnable {
                     }
                     if (gameState == playState) {
                         player.update();
+
                         //debug
 //                    long drawStartTime = 0;
 //                    drawStartTime = System.nanoTime();
@@ -106,7 +109,9 @@ public class GamePanel extends Canvas implements Runnable {
                         player.draw(gc);
                         //UI
 //                    ui.draw(gc);
-                        ui.drawFPS(gc, finalDrawCountForDisplay);
+                        if (debugMode) {
+                            ui.drawDebugMode(gc, finalDrawCountForDisplay);
+                        }
 
 //                    long drawEndTime = System.nanoTime();
 //                    long passedTime = drawEndTime - drawStartTime;
@@ -123,6 +128,12 @@ public class GamePanel extends Canvas implements Runnable {
 //                System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
+            }
+            if (keyH.isCtrlOPressed()) {
+                wasCtrlOPressed = true;
+            } else if (!keyH.isCtrlOPressed() && wasCtrlOPressed) {
+                debugMode = !debugMode; // Toggle debugMode
+                wasCtrlOPressed = false;
             }
         }
     }
@@ -165,6 +176,8 @@ public class GamePanel extends Canvas implements Runnable {
     public int getWorldScreenHeight() {
         return worldScreenHeight;
     }
-
+    public Boolean getDebugMode() {
+        return debugMode;
+    }
 
 }
