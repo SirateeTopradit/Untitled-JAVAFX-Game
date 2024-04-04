@@ -17,9 +17,12 @@ public class UI {
         gc.setFill(Color.WHITE);
         gc.fillText("Score:"+gp.player.getWorldY(), 10 , 40);
     }
-    public void drawFPS(GraphicsContext gc, int fps) {
+    public void drawDebugMode(GraphicsContext gc, int fps) {
         gc.setFill(Color.WHITE);
         gc.fillText("FPS: " + fps, 10, 20);
+        gc.fillText("WorldX: " + gp.player.getWorldX(), 10, 40);
+        gc.fillText("WorldY: " + gp.player.getWorldY(), 10, 60);
+
     }
 
 }
