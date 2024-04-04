@@ -16,11 +16,11 @@ public class CollisionChecker {
         if(playerX + playerWidth > gp.worldScreenWidth) {
             gp.player.setWorldX((int) (gp.worldScreenWidth - playerWidth));
         }
-        if(playerY < 10) {
-            gp.player.setWorldY(10);
+        if(playerY < 0) {
+            gp.player.setWorldY(0);
         }
-        if(playerY + playerHeight > gp.worldScreenHeight+10) {
-            gp.player.setWorldY((int) (gp.worldScreenHeight - playerHeight)+10);
+        if(playerY + playerHeight > gp.worldScreenHeight) {
+            gp.player.setWorldY((int) (gp.worldScreenHeight - playerHeight));
         }
 //        for (int i = 0; i < gp.map.length; i++) {
 //            for (int j = 0; j < gp.map[i].length; j++) {
