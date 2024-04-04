@@ -64,7 +64,7 @@ public class Player extends Entity{
 
     public void setDefaultValues() {
         setWorldX((gp.getWorldScreenWidth() / 2)-60-40);
-        setWorldY((gp.getWorldScreenHeight() / 2)-110-30);
+        setWorldY((gp.getWorldScreenHeight() / 2)-100-40);
         setSpeed(10);
         direction = 0; // start facing 'a' direction
     }
@@ -98,12 +98,13 @@ public class Player extends Entity{
 
     public void draw(GraphicsContext gc) {
         int playerSize = (gp.getTileSize() * gp.getTileSize())/2;
-        gc.setFill(Color.BLUE);
-        gc.fillRect(getScreenX()+getHitBoxWalk().getX(), getScreenY()+getHitBoxWalk().getY(), getHitBoxWalk().getWidth(), getHitBoxWalk().getHeight());
+        if(gp.getDebugMode()) {
+            gc.setFill(Color.BLUE);
+            gc.fillRect(getScreenX() + getHitBoxWalk().getX(), getScreenY() + getHitBoxWalk().getY(), getHitBoxWalk().getWidth(), getHitBoxWalk().getHeight());
 
-        gc.setFill(Color.RED);
-        gc.fillRect(getScreenX()+getHitBox().getX(), getScreenY()+getHitBox().getY(), getHitBox().getWidth(), getHitBox().getHeight());
-
+            gc.setFill(Color.RED);
+            gc.fillRect(getScreenX() + getHitBox().getX(), getScreenY() + getHitBox().getY(), getHitBox().getWidth(), getHitBox().getHeight());
+        }
 
         Image fxImage = getCurrentFrame(direction);
         gc.drawImage(fxImage, getScreenX(), getScreenY(), playerSize,playerSize);
