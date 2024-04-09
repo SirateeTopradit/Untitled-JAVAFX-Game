@@ -28,9 +28,8 @@ public class MapManager {
     }
 
     public void drawMap(GraphicsContext g2d) {
-        double translateX = (double) gp.getScreenWidth() / 2 - player.getWorldX();
-//        System.out.println(player.getWorldX());
-        double translateY = (double) gp.getScreenHeight() / 2 - player.getWorldY();
+        double translateX = (double) gp.getScreenWidth() / 2 - player.getWorldX()-40;
+        double translateY = (double) gp.getScreenHeight() / 2 - player.getWorldY()-10-40;
         g2d.drawImage(image, translateX, translateY, gp.getWorldScreenWidth(), gp.getWorldScreenHeight());
     }
 }
