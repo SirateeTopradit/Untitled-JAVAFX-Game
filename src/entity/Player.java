@@ -10,24 +10,22 @@ import javafx.scene.shape.Rectangle;
 import java.io.InputStream;
 
 public class Player extends Entity{
-    GamePanel gp;
     KeyHandler keyH;
-    int direction;
     boolean isStopped = true;
     private int speed;
-    private static final int NUM_FRAMES = 15;
-    private static final int NUM_DIRECTIONS = 4; // number of directions
+    private final int NUM_FRAMES = 15;
+    private final int NUM_DIRECTIONS = 4;
     private final Image[][] frames;
     private final long startTime;
     private final int screenX;
     private final int screenY;
 
     public Player(GamePanel gp, KeyHandler keyH) {
-        this.gp = gp;
+        super(gp);
         this.keyH = keyH;
         setDefaultValues();
-        this.screenX = ((gp.getScreenWidth()/2)-60);
-        this.screenY = ((gp.getScreenHeight()/2)-110);
+        this.screenX = ((gp.getScreenWidth()/2)-60-40);
+        this.screenY = ((gp.getScreenHeight()/2)-110-40);
         frames = new Image[NUM_DIRECTIONS][NUM_FRAMES*2];
         startTime = System.currentTimeMillis();
 
@@ -68,7 +66,7 @@ public class Player extends Entity{
         setSpeed(10);
         direction = 0; // start facing 'a' direction
     }
-
+    @Override
     public void update() {
         if (keyH.isUpPressed()) {
             setWorldY(getWorldY() - getSpeed());
@@ -95,10 +93,13 @@ public class Player extends Entity{
         }
         gp.getCollisionChecker().checkCollision();
     }
-
+    @Override
     public void draw(GraphicsContext gc) {
         int playerSize = (gp.getTileSize() * gp.getTileSize())/2;
         if(gp.getDebugMode()) {
+            gc.setFill(Color.WHITE);
+            gc.fillRect(getScreenX(), getScreenY(), playerSize, playerSize);
+
             gc.setFill(Color.BLUE);
             gc.fillRect(getScreenX() + getHitBoxWalk().getX(), getScreenY() + getHitBoxWalk().getY(), getHitBoxWalk().getWidth(), getHitBoxWalk().getHeight());
 
@@ -108,14 +109,6 @@ public class Player extends Entity{
 
         Image fxImage = getCurrentFrame(direction);
         gc.drawImage(fxImage, getScreenX(), getScreenY(), playerSize,playerSize);
-    }
-    private char getDirectionFromIndex(int index) {
-        return switch (index) {
-            case 0 -> 'a';
-            case 1 -> 'd';
-            case 2 -> 's';
-            default -> 'w';
-        };
     }
 
     public Image getCurrentFrame(int direction) {
@@ -138,4 +131,13 @@ public class Player extends Entity{
     public int getScreenY() {
         return screenY;
     }
+
+    public Image[][] getFrames() {
+        return frames;
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
 }
