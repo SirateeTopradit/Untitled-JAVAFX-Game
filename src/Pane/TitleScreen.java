@@ -1,25 +1,33 @@
-package main;
+package Pane;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.FontWeight;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import main.BackgroundSound;
+import main.GamePanel;
+import utils.Goto;
 
-public class TitleScreen extends Pane {
-    private GamePanel gp;
-    private Font Courier_New_40 = new Font("Courier New", 40);
-    private Font Courier_New_96_Bold = Font.font("Courier New", FontWeight.BOLD, 96);
+public class TitleScreen extends VBox {
+    private GamePanel gp = GamePanel.getInstance();
+    BackgroundSound backgroundSound = new BackgroundSound();
+    private final Font Courier_New_40 = new Font("Courier New", 40);
+    private final Font Courier_New_96_Bold = Font.font("Courier New", FontWeight.BOLD, 96);
 
-    public TitleScreen(GamePanel gp) {
-        this.gp = gp;
-    }
+    public TitleScreen() {
+        this.setWidth(GamePanel.getInstance().getScreenWidth());
+        this.setHeight(GamePanel.getInstance().getScreenHeight());
+        this.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 
-    public void draw() {
-        this.getChildren().clear();
-        Text title = new Text("Untitled-JAVAFX-Game");
+        playMusic(0);
+
+        Text title = new Text("Dekhere");
         title.setFont(Courier_New_96_Bold);
         title.setFill(Color.WHITE);
         DropShadow ds = new DropShadow();
@@ -28,18 +36,24 @@ public class TitleScreen extends Pane {
         ds.setColor(Color.GRAY);
         title.setEffect(ds);
         this.getChildren().add(title);
-        title.setLayoutX((double) gp.getScreenWidth() / 2 - title.getLayoutBounds().getWidth() / 2);
-        title.setLayoutY(500);
 
         Button startButton = new Button("Start Game");
-        startButton.setLayoutX((double) gp.getScreenWidth() / 2 - 50);
-        startButton.setLayoutY(600);
         startButton.setOnAction(e -> {
-            gp.stopMusic();
-            gp.playMusic(0);
-            gp.setGameState(gp.getPlayState());
+            stopMusic();
             System.out.println("Game Started");
+            Goto.gamePanel();
         });
         this.getChildren().add(startButton);
+        this.setAlignment(Pos.CENTER);
+    }
+
+    public void playMusic(int MusicIndex) {
+        backgroundSound.setFile(MusicIndex);
+        backgroundSound.play();
+        backgroundSound.loop();
+    }
+
+    public void stopMusic() {
+        backgroundSound.stop();
     }
 }
