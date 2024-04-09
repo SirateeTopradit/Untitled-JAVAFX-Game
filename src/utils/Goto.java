@@ -1,6 +1,10 @@
 package utils;
+
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import main.GamePanel;
+import Pane.TitleScreen;
+import pane.RootPane;
 
 public class Goto {
     private static RootPane rootPane;
@@ -9,17 +13,22 @@ public class Goto {
         Goto.rootPane = pane;
     }
 
-    public static void MainMenuPage(){
+    public static void titleScreen(){
         clear();
-        rootPane.getChildren().add(new MainMenu());
+        TitleScreen titleScreen = new TitleScreen();
+        rootPane.getChildren().add(titleScreen);
     }
 
-    public static void test(){
+    public static void gamePanel(){
         clear();
-        rootPane.getChildren().add(new GameMap());
+        GamePanel gamePanel = new GamePanel();
+        gamePanel.setUpGame();
+        rootPane.getChildren().add(gamePanel);
+        gamePanel.startGameThread();
     }
 
     public static void clear(){
         rootPane.getChildren().clear();
     }
+
 }
