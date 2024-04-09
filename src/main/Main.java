@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import pane.RootPane;
 
 /**
  * Main class for the game application.
@@ -30,16 +31,16 @@ public class Main extends Application {
         });
 
         // Create a new game panel
-        GamePanel gamePanel = new GamePanel();
-        gamePanel.setUpGame();
+//        GamePanel gamePanel = new GamePanel();
+//        gamePanel.setUpGame();
 
         // Create a new root pane and add the game panel to it
-        Pane root = new Pane();
-        root.getChildren().add(gamePanel);
+        Pane root = new RootPane();
+//        root.getChildren().add(gamePanel);
 
         // Create a new scene with the root pane and set it on the stage
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
+//        Scene scene = new Scene(root);
+//        primaryStage.setScene(scene);
 
         // Prevent the window from being resized
         primaryStage.setResizable(false);
@@ -48,10 +49,14 @@ public class Main extends Application {
         primaryStage.centerOnScreen();
 
         // Show the window
-        primaryStage.show();
+//        primaryStage.show();
 
         // Start the game thread
-        gamePanel.startGameThread();
+//        gamePanel.startGameThread();
+
+        Scene scene = new Scene(root,GamePanel.getInstance().getScreenWidth(),GamePanel.getInstance().getScreenHeight());
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     /**
