@@ -1,5 +1,7 @@
 package main;
 
+import entity.Entity;
+import entity.Zomby;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -9,6 +11,7 @@ import map.MapManager;
 
 public class GamePanel extends Canvas implements Runnable {
     //Screen settings
+    private static GamePanel instance;
     final int tileSize = 20;
     final int aspectRatioWidth = 16;
     final int aspectRatioHeight = 9;
@@ -27,13 +30,27 @@ public class GamePanel extends Canvas implements Runnable {
     MapManager mapManager = new MapManager(this, player);
     UI ui = new UI(this);
     BackgroundSound backgroundSound = new BackgroundSound();
-    TitleScreen titleScreen = new TitleScreen(this);
-    public int gameState;
-    public final int titleState = 0;
-    public final int playState = 1;
     final double DRAW_INTERVAL = 1000000000.0 / 60.0;
     final long ONE_SECOND = 1000000000L;
     CollisionChecker collisionChecker = new CollisionChecker(this);
+    AssetSetter assetSetter = new AssetSetter(this);
+
+    private Entity[] monster = new Entity[100];
+    private Entity[] entity;
+    public void combineArrays() {
+        entity = new Entity[monster.length + 1];
+        System.arraycopy(monster, 0, entity, 0, monster.length);
+        entity[entity.length - 1] = player;
+    }
+
+
+
+    public static GamePanel getInstance() {
+        if (instance == null) {
+            instance = new GamePanel();
+        }
+        return instance;
+    }
 
     public CollisionChecker getCollisionChecker() {
         return collisionChecker;
@@ -49,6 +66,7 @@ public class GamePanel extends Canvas implements Runnable {
     }
 
     public GamePanel() {
+        System.out.println("GamePanel created");
         this.setWidth(screenWidth);
         this.setHeight(screenHeight);
         this.setFocusTraversable(true);
@@ -56,8 +74,9 @@ public class GamePanel extends Canvas implements Runnable {
         this.setOnKeyReleased(e -> keyH.keyReleased(e));
     }
     public void setUpGame() {
+        assetSetter.setMonster();
+        combineArrays();
         playMusic(1);
-        gameState = titleState;
     }
 
     public void startGameThread() {
@@ -84,39 +103,24 @@ public class GamePanel extends Canvas implements Runnable {
                 int finalDrawCountForDisplay = drawCountForDisplay;
                 javafx.application.Platform.runLater(() -> {
                     GraphicsContext gc = this.getGraphicsContext2D();
-                    titleScreen.setGraphicsContext(gc);
-                    if (gameState == titleState) {
-                        mapManager.drawMap(gc);
-                        titleScreen.draw();
-                        if (keyH.isEnterPressed()) {
-                            stopMusic();
-                            playMusic(0);
-                            gameState = playState;
-                        }
-                    }
-                    if (gameState == playState) {
                         player.update();
-
-                        //debug
-//                    long drawStartTime = 0;
-//                    drawStartTime = System.nanoTime();
                         //Map
                         gc.setFill(Color.BLACK);
                         gc.fillRect(0, 0, getWidth(), getHeight());
                         mapManager.drawMap(gc);
-//                    drawGrid(gc);
                         //Player
                         player.draw(gc);
+                        //Monster
+                        for (int i = 0; i < monster.length; i++) {
+                            if (monster[i] != null) {
+                                monster[i].update();
+                                monster[i].draw(gc);
+                            }
+                        }
                         //UI
-//                    ui.draw(gc);
                         if (debugMode) {
                             ui.drawDebugMode(gc, finalDrawCountForDisplay);
                         }
-
-//                    long drawEndTime = System.nanoTime();
-//                    long passedTime = drawEndTime - drawStartTime;
-//                    gc.fillText("Draw time:" + passedTime, 10, 10);
-                    }
                 });
                 delta--;
                 drawCount++;
@@ -125,7 +129,6 @@ public class GamePanel extends Canvas implements Runnable {
             }
             if(timer >= ONE_SECOND){
                 drawCountForDisplay = drawCount;
-//                System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
@@ -179,5 +182,18 @@ public class GamePanel extends Canvas implements Runnable {
     public Boolean getDebugMode() {
         return debugMode;
     }
+    public Entity[] getMonster() {
+        return monster;
+    }
 
+    public void setMonster(Entity[] monster) {
+        this.monster = monster;
+    }
+    public Player getPlayer() {
+        return player;
+    }
+
+    public Entity[] getEntity() {
+        return entity;
+    }
 }
