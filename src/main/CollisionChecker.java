@@ -70,13 +70,14 @@ public class CollisionChecker {
                 Rectangle otherHitBox = new Rectangle(me.getWorldX() + me.getHitBoxWalk().getX(), me.getWorldY() + me.getHitBoxWalk().getY(), me.getHitBoxWalk().getWidth(), me.getHitBoxWalk().getHeight());
                 if (entityHitBox.getBoundsInParent().intersects(otherHitBox.getBoundsInParent())){
                     gp.getPlayer().setHp(gp.getPlayer().getHp() - me.getAtk());
+                    System.out.println(me.getAtk());
                     gp.getPlayer().setAttacked(true);
                     double dx = entity.getWorldX() - me.getWorldX();
                     double dy = entity.getWorldY() - me.getWorldY();
                     double magnitude = Math.sqrt(dx * dx + dy * dy);
                     dx /= magnitude;
                     dy /= magnitude;
-                    int knockBackDistance = 80;
+                    int knockBackDistance = 40;
                     entity.setWorldX(entity.getWorldX() + (int)(Math.random() * 200) + (int)(Math.random() * -200) + (int)(dx * knockBackDistance));
                     entity.setWorldY(entity.getWorldY() + (int)(Math.random() * 200) + (int)(Math.random() * -200) + (int)(dy * knockBackDistance));
                     entity.setColliding(true);
