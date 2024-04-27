@@ -22,7 +22,7 @@ public class Zomby extends Entity{
             for (int j = 0; j < 1; j++) {
                 int direction = j;
                 for (int i = 0; i < getNUM_FRAMES(); i++) {
-                    InputStream resource = getClass().getClassLoader().getResourceAsStream(String.format("Zomby/Zomby_walking%d_/Zomby_walking%d_%02d.png", direction, direction, i));
+                    InputStream resource = getClass().getClassLoader().getResourceAsStream(String.format("Zomby/Zomby_walking%d_/Zomby_walking%d_%02d.png", direction, direction, i*2));
                     if (resource != null) {
                         getFrames()[j][i] = new Image(resource);
                     }
