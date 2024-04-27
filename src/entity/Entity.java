@@ -5,6 +5,11 @@ import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import main.GamePanel;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
 public class Entity {
     private int worldX, worldY;
     GamePanel gp;
@@ -12,11 +17,13 @@ public class Entity {
     private int speed;
     private Rectangle hitBox;
     private Rectangle hitBoxWalk;
-    private final int NUM_FRAMES = 20;
+    private final int NUM_FRAMES = 10;
     private final int NUM_DIRECTIONS = 4; // number of directions
     private Image[][] frames;
     private final long startTime;
     private int directionY;
+    private boolean isAttacked;
+    private int counterIsAttacked = 0;
 
     public Entity(GamePanel gp) {
         this.gp = gp;
@@ -64,9 +71,10 @@ public class Entity {
         this.speed = speed;
     }
     private Boolean isColliding = false;
+    private int hp;
 
     public void draw(GraphicsContext gc) {
-        int chunkSize = 200;
+        int chunkSize = 400;
         int screenX = worldX - gp.getPlayer().getWorldX() + gp.getPlayer().getScreenX();
         int screenY = worldY - gp.getPlayer().getWorldY() + gp.getPlayer().getScreenY();
 
@@ -84,6 +92,13 @@ public class Entity {
                 gc.fillRect(screenX + getHitBox().getX(), screenY + getHitBox().getY(), getHitBox().getWidth(), getHitBox().getHeight());
             }
             Image fxImage = getCurrentFrame(0);
+            if(isAttacked()) {
+                setCounterIsAttacked(getCounterIsAttacked() + 1);
+                if(getCounterIsAttacked() >= 10) {
+                    setAttacked(false);
+                    setCounterIsAttacked(0);
+                }
+            }
             if (direction == 0) {
                 gc.save(); // save the current state of the GraphicsContext
                 gc.scale(-1, 1); // flip the image
@@ -99,13 +114,13 @@ public class Entity {
         int dy = gp.getPlayer().getWorldY() - getWorldY();
         int nextX = getWorldX();
         int nextY = getWorldY();
-        if (dx >= 0){
+        if (dx >= 5){
             direction = 0;
         }
         else {
             direction = 2;
         }
-        if (dy >= 0){
+        if (dy >= 5){
             directionY = 1;
         }
         else {
@@ -113,25 +128,50 @@ public class Entity {
         }
         gp.getCollisionChecker().checkEntity(this, gp.getEntity());
         if (!isColliding) {
-            // Pathfinding
-            if (Math.abs(dx) > Math.abs(dy)) {
-                // Move in x direction
-                if (dx > 0) {
+            if (Math.abs(dx) >= Math.abs(dy)) {
+                if (dx >= 0) {
                     nextX += getSpeed();
-                } else if (dx < 0) {
+                } else {
                     nextX -= getSpeed();
                 }
+                if (dy >= 0) {
+                    nextY += getSpeed() / 2;
+                } else {
+                    nextY -= getSpeed() / 2;
+                }
             } else {
-                // Move in y direction
-                if (dy > 0) {
+                if (dy >= 0) {
                     nextY += getSpeed();
-                } else if (dy < 0) {
+                } else {
                     nextY -= getSpeed();
+                }
+                if (dx >= 0) {
+                    nextX += getSpeed() / 2;
+                } else {
+                    nextX -= getSpeed() / 2;
                 }
             }
             setWorldX(nextX);
             setWorldY(nextY);
         }
+        else {
+//            gp.getPlayer().setHp(gp.getPlayer().getHp() - 50);
+            gp.getPlayer().setAttacked(true);
+            this.setHp(this.getHp() - 200);
+            this.setAttacked(true);
+            this.setAttacked(true);
+
+            if (this.getHp() <= 0) {
+                Entity[] monsters = gp.getMonster();
+                List<Entity> monsterList = new ArrayList<>(Arrays.asList(monsters));
+                monsterList.remove(this);
+                monsters = monsterList.toArray(new Entity[0]);
+                gp.setMonster(monsters);
+            }
+//            System.out.println("Player HP: " + gp.getPlayer().getHp());
+            System.out.println("Monster HP: " + this.getHp());
+        }
+
         isColliding = false;
     }
     public char getDirectionFromIndex(int index) {
@@ -190,5 +230,29 @@ public class Entity {
 
     public void setDirectionY(int directionY) {
         this.directionY = directionY;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public boolean isAttacked() {
+        return isAttacked;
+    }
+
+    public void setAttacked(boolean attacked) {
+        isAttacked = attacked;
+    }
+
+    public int getCounterIsAttacked() {
+        return counterIsAttacked;
+    }
+
+    public void setCounterIsAttacked(int counterIsAttacked) {
+        this.counterIsAttacked = counterIsAttacked;
     }
 }
