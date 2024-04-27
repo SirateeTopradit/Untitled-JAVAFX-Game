@@ -2,6 +2,7 @@ package main;
 
 import entity.Entity;
 import entity.Player;
+import entity.Zomby;
 import javafx.scene.shape.Rectangle;
 import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
@@ -69,7 +70,7 @@ public class CollisionChecker {
             if (me != entity && me instanceof Player) {
                 Rectangle otherHitBox = new Rectangle(me.getWorldX() + me.getHitBoxWalk().getX(), me.getWorldY() + me.getHitBoxWalk().getY(), me.getHitBoxWalk().getWidth(), me.getHitBoxWalk().getHeight());
                 if (entityHitBox.getBoundsInParent().intersects(otherHitBox.getBoundsInParent())){
-                    gp.getPlayer().setHp(gp.getPlayer().getHp() - me.getAtk());
+                    gp.getPlayer().setHp(gp.getPlayer().getHp() - entity.getAtk());
                     gp.getPlayer().setAttacked(true);
                     double dx = entity.getWorldX() - me.getWorldX();
                     double dy = entity.getWorldY() - me.getWorldY();
@@ -77,8 +78,8 @@ public class CollisionChecker {
                     dx /= magnitude;
                     dy /= magnitude;
                     int knockBackDistance = 80;
-                    entity.setWorldX(entity.getWorldX() + (int)(Math.random() * 200) + (int)(Math.random() * -200) + (int)(dx * knockBackDistance));
-                    entity.setWorldY(entity.getWorldY() + (int)(Math.random() * 200) + (int)(Math.random() * -200) + (int)(dy * knockBackDistance));
+                    entity.setWorldX(entity.getWorldX() + (int)(Math.random() * 100) + (int)(Math.random() * -200) + (int)(dx * knockBackDistance));
+                    entity.setWorldY(entity.getWorldY() + (int)(Math.random() * 100) + (int)(Math.random() * -200) + (int)(dy * knockBackDistance));
                     entity.setColliding(true);
                 }
 //                switch (entity.getDirection()) {

@@ -13,9 +13,10 @@ import static java.lang.Math.round;
 public class Zomby extends Entity{
     public Zomby(GamePanel gp) {
         super(gp);
-        setSpeed(5);
+        setSpeed(2);
+        setAtk(20);
         setHp(600);
-        setPoints(getHp());
+        setPoints(3);
         setHitBox(new Rectangle(4*20, 5*20, 2*20, 4*20));
         setHitBoxWalk(new Rectangle(3*20, 5*20, 4*20, 4*20));
         try {
