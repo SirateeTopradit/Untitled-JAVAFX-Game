@@ -25,6 +25,8 @@ public class Entity {
     private boolean isAttacked;
     private int counterIsAttacked = 0;
 
+    private int atk;
+
     public Entity(GamePanel gp) {
         this.gp = gp;
         frames = new Image[NUM_DIRECTIONS][NUM_FRAMES*2];
@@ -264,5 +266,13 @@ public class Entity {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public int getAtk() {
+        return this.atk;
+    }
+
+    public void setAtk(int atk) {
+        this.atk = atk;
     }
 }
