@@ -19,9 +19,9 @@ public class UI {
     }
     public void drawDebugMode(GraphicsContext gc, int fps) {
         gc.setFill(Color.WHITE);
-        gc.fillText("FPS: " + fps, 10, 20);
-        gc.fillText("WorldX: " + gp.player.getWorldX(), 10, 40);
-        gc.fillText("WorldY: " + gp.player.getWorldY(), 10, 60);
+        gc.fillText("FPS: " + fps, 10, 80);
+        gc.fillText("WorldX: " + gp.player.getWorldX(), 10, 120);
+        gc.fillText("WorldY: " + gp.player.getWorldY(), 10, 160);
 
     }
 
