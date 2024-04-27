@@ -17,7 +17,11 @@ public class Weapon {
     }
     public void draw(GraphicsContext gc) {
         gc.setFill(javafx.scene.paint.Color.BLUE);
-        gc.fillRect(screenX + getHitBox().getX(), screenY + getHitBox().getY(), getHitBox().getWidth(), getHitBox().getHeight());
+        gc.fillRect(screenX+getHitBox().getX(), screenY+getHitBox().getY(), getHitBox().getWidth(), getHitBox().getHeight());
+    }
+    public void update() {
+        setWorldX(gp.getPlayer().getWorldX());
+        setWorldY(gp.getPlayer().getWorldY());
     }
 
     public GamePanel getGp() {
@@ -67,4 +71,6 @@ public class Weapon {
     public void setWorldY(int worldY) {
         this.worldY = worldY;
     }
+
+
 }

@@ -120,6 +120,14 @@ public class GamePanel extends Canvas implements Runnable {
                         gc.setFill(Color.BLACK);
                         gc.fillRect(0, 0, getWidth(), getHeight());
                         mapManager.drawMap(gc);
+                        //Weapon
+                        for (int i = 0; i < weapons.length; i++) {
+                            Weapon value = weapons[i];
+                            if (value != null) {
+                                value.update();
+                                value.draw(gc);
+                            }
+                        }
                         //Player
                         player.draw(gc);
                         //Monster
@@ -133,14 +141,7 @@ public class GamePanel extends Canvas implements Runnable {
                                 assetSetter.addMonster(i, getNowStatus());
                             }
                         }
-                        //Weapon
-                        for (int i = 0; i < weapons.length; i++) {
-                            Weapon value = weapons[i];
-                            if (value != null) {
-//                                value.update();
-                                value.draw(gc);
-                            }
-                        }
+
                         //UI
                         ui.draw(gc);
                         if (debugMode) {

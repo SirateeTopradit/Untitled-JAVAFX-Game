@@ -16,6 +16,7 @@ public class UI {
         gc.setFont(Courier_New_40);
         gc.setFill(Color.WHITE);
         gc.fillText("Score:"+gp.getScore() , 10 , 40);
+        gc.fillText("HP:"+gp.getPlayer().getHp() , 10 , 80);
     }
     public void drawDebugMode(GraphicsContext gc, int fps) {
         gc.setFill(Color.WHITE);

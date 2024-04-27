@@ -5,6 +5,7 @@ import entity.Player;
 import javafx.scene.shape.Rectangle;
 import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
+import weapon.Weapon;
 
 import java.util.Arrays;
 
@@ -46,10 +47,30 @@ public class CollisionChecker {
     }
     public void checkEntity(Entity entity, Entity[] target) {
         for (Entity me : target) {
+            Rectangle entityHitBox = new Rectangle(entity.getWorldX() + entity.getHitBoxWalk().getX(), entity.getWorldY() + entity.getHitBoxWalk().getY(), entity.getHitBoxWalk().getWidth(), entity.getHitBoxWalk().getHeight());
+            for (Weapon W: gp.getWeapons()){
+                if (!(me instanceof Player)) {
+                    if (W == null) continue;
+                    Rectangle weaponHitBox = new Rectangle(W.getWorldX() + W.getHitBox().getX(), W.getWorldY() + W.getHitBox().getY(), W.getHitBox().getWidth(), W.getHitBox().getHeight());
+//                    System.out.println("Weapon hitbox: " + weaponHitBox.getBoundsInParent());
+                    if (entityHitBox.getBoundsInParent().intersects(weaponHitBox.getBoundsInParent())) {
+                        double dx = entity.getWorldX() - me.getWorldX();
+                        double dy = entity.getWorldY() - me.getWorldY();
+                        double magnitude = Math.sqrt(dx * dx + dy * dy);
+                        dx /= magnitude;
+                        dy /= magnitude;
+                        int knockBackDistance = 200;
+                        entity.setWorldX(entity.getWorldX() + (int) (dx * knockBackDistance));
+                        entity.setWorldY(entity.getWorldY() + (int) (dy * knockBackDistance));
+                        entity.setColliding(true);
+                    }
+                }
+            }
             if (me != entity && me instanceof Player) {
-                Rectangle entityHitBox = new Rectangle(entity.getWorldX() + entity.getHitBoxWalk().getX(), entity.getWorldY() + entity.getHitBoxWalk().getY(), entity.getHitBoxWalk().getWidth(), entity.getHitBoxWalk().getHeight());
                 Rectangle otherHitBox = new Rectangle(me.getWorldX() + me.getHitBoxWalk().getX(), me.getWorldY() + me.getHitBoxWalk().getY(), me.getHitBoxWalk().getWidth(), me.getHitBoxWalk().getHeight());
                 if (entityHitBox.getBoundsInParent().intersects(otherHitBox.getBoundsInParent())){
+                    gp.getPlayer().setHp(gp.getPlayer().getHp() - 50);
+                    gp.getPlayer().setAttacked(true);
                     double dx = entity.getWorldX() - me.getWorldX();
                     double dy = entity.getWorldY() - me.getWorldY();
                     double magnitude = Math.sqrt(dx * dx + dy * dy);

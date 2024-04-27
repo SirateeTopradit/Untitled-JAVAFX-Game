@@ -100,6 +100,10 @@ public class Entity {
                     setCounterIsAttacked(0);
                 }
             }
+            if (isAttacked()){
+                gc.setFill(javafx.scene.paint.Color.RED);
+                gc.fillRect(screenX, screenY, EntitySize, EntitySize);
+            }
             if (direction == 0) {
                 gc.save(); // save the current state of the GraphicsContext
                 gc.scale(-1, 1); // flip the image
@@ -156,12 +160,8 @@ public class Entity {
             setWorldY(nextY);
         }
         else {
-//            gp.getPlayer().setHp(gp.getPlayer().getHp() - 50);
-            gp.getPlayer().setAttacked(true);
             this.setHp(this.getHp() - 200);
             this.setAttacked(true);
-            this.setAttacked(true);
-
             if (this.getHp() <= 0) {
                 Entity[] monsters = gp.getMonster();
                 for (int i = 0; i < monsters.length; i++) {
@@ -173,11 +173,7 @@ public class Entity {
                 gp.setMonster(monsters);
                 gp.setScore(gp.getScore() + this.getPoints());
             }
-//            gp.setScore(gp.getScore() + 1);
-//            System.out.println("Player HP: " + gp.getPlayer().getHp());
-//            System.out.println("Monster HP: " + this.getHp());
         }
-
         isColliding = false;
     }
     public char getDirectionFromIndex(int index) {
