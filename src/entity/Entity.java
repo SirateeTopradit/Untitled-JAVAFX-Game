@@ -72,6 +72,7 @@ public class Entity {
     }
     private Boolean isColliding = false;
     private int hp;
+    private int points;
 
     public void draw(GraphicsContext gc) {
         int chunkSize = 400;
@@ -167,7 +168,9 @@ public class Entity {
                 monsterList.remove(this);
                 monsters = monsterList.toArray(new Entity[0]);
                 gp.setMonster(monsters);
+                gp.setScore(gp.getScore() + this.getPoints());
             }
+//            gp.setScore(gp.getScore() + 1);
 //            System.out.println("Player HP: " + gp.getPlayer().getHp());
             System.out.println("Monster HP: " + this.getHp());
         }
@@ -254,5 +257,13 @@ public class Entity {
 
     public void setCounterIsAttacked(int counterIsAttacked) {
         this.counterIsAttacked = counterIsAttacked;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 }
