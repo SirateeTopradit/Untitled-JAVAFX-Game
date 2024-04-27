@@ -36,7 +36,7 @@ public class GamePanel extends Canvas implements Runnable {
     AssetSetter assetSetter = new AssetSetter(this);
     private long  score = 0;
 
-    private Entity[] monster = new Entity[100];
+    private Entity[] monster = new Entity[8];
     private Entity[] entity;
     public void combineArrays() {
         entity = new Entity[monster.length + 1];
@@ -119,9 +119,12 @@ public class GamePanel extends Canvas implements Runnable {
                         player.draw(gc);
                         //Monster
                         for (int i = 0; i < monster.length; i++) {
-                            if (monster[i] != null) {
-                                monster[i].update();
-                                if (monster[i] != null) monster[i].draw(gc);
+                            Entity value = monster[i];
+                            if (value != null) {
+                                value.update();
+                                value.draw(gc);
+                            } else {
+                                assetSetter.addMonster(i);
                             }
                         }
                         //UI
