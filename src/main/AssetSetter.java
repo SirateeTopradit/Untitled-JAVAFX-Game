@@ -2,6 +2,8 @@ package main;
 
 import entity.Entity;
 import entity.Zomby;
+import weapon.Sword;
+import weapon.Weapon;
 
 public class AssetSetter {
     GamePanel gp;
@@ -27,6 +29,11 @@ public class AssetSetter {
         monster[i].setWorldX(randomX);
         monster[i].setWorldY(randomY);
         gp.setMonster(monster);
+    }
+    public void setWeapon() {
+        Weapon[] weapons = gp.getWeapons();
+        weapons[0] = new Sword(gp);
+        gp.setWeapons(weapons);
     }
 
 }
