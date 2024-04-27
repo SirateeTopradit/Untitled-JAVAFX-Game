@@ -164,15 +164,18 @@ public class Entity {
 
             if (this.getHp() <= 0) {
                 Entity[] monsters = gp.getMonster();
-                List<Entity> monsterList = new ArrayList<>(Arrays.asList(monsters));
-                monsterList.remove(this);
-                monsters = monsterList.toArray(new Entity[0]);
+                for (int i = 0; i < monsters.length; i++) {
+                    if (monsters[i] == this) {
+                        monsters[i] = null;
+                        break;
+                    }
+                }
                 gp.setMonster(monsters);
                 gp.setScore(gp.getScore() + this.getPoints());
             }
 //            gp.setScore(gp.getScore() + 1);
 //            System.out.println("Player HP: " + gp.getPlayer().getHp());
-            System.out.println("Monster HP: " + this.getHp());
+//            System.out.println("Monster HP: " + this.getHp());
         }
 
         isColliding = false;
