@@ -82,7 +82,7 @@ public class GamePanel extends Canvas implements Runnable {
         assetSetter.setMonster();
         assetSetter.setWeapon();
         combineArrays();
-        playMusic(1);
+        playMusic(0);
     }
 
     public void startGameThread() {
