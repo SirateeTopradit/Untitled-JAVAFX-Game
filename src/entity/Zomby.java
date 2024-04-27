@@ -35,9 +35,9 @@ public class Zomby extends Entity{
 
     public Zomby(GamePanel gp, float hp, float spd/*, float atk*/) {
         super(gp);
-        setSpeed(round(spd * 2));
+        setSpeed(round(spd * 6));
         //setAtk(round(atk * 20));
-        setHp(round(hp * 60));
+        setHp(round(hp * 600));
         setPoints(getHp());
         setHitBox(new Rectangle(4*20, 5*20, 2*20, 4*20));
         setHitBoxWalk(new Rectangle(3*20, 5*20, 4*20, 4*20));

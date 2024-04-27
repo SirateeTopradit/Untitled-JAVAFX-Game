@@ -1,9 +1,14 @@
 package weapon;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import main.GamePanel;
+
+import java.io.InputStream;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Weapon {
     GamePanel gp;
@@ -12,16 +17,32 @@ public class Weapon {
     private int screenY;
     private int worldX;
     private int worldY;
+    private boolean isAvailable;
+    private Timer timer;
+    private int NUM_FRAMES = 10;
+
+
     public Weapon(GamePanel gp) {
         this.gp = gp;
     }
     public void draw(GraphicsContext gc) {
-        gc.setFill(javafx.scene.paint.Color.BLUE);
-        gc.fillRect(screenX+getHitBox().getX(), screenY+getHitBox().getY(), getHitBox().getWidth(), getHitBox().getHeight());
+        if (isAvailable()) {
+            gc.setFill(javafx.scene.paint.Color.BLUE);
+            gc.fillRect(screenX + getHitBox().getX(), screenY + getHitBox().getY(), getHitBox().getWidth(), getHitBox().getHeight());
+        }
     }
     public void update() {
-        setWorldX(gp.getPlayer().getWorldX());
-        setWorldY(gp.getPlayer().getWorldY());
+    }
+    public void startTimer() {
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                System.out.println("Timer task started");
+                isAvailable = !isAvailable;
+            }
+        }, 0, 2000);
     }
 
     public GamePanel getGp() {
@@ -70,6 +91,24 @@ public class Weapon {
 
     public void setWorldY(int worldY) {
         this.worldY = worldY;
+    }
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public void setTimer(Timer timer) {
+        this.timer = timer;
+    }
+    public int getNUM_FRAMES() {
+        return NUM_FRAMES;
     }
 
 

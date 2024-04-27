@@ -100,10 +100,6 @@ public class Entity {
                     setCounterIsAttacked(0);
                 }
             }
-            if (isAttacked()){
-                gc.setFill(javafx.scene.paint.Color.RED);
-                gc.fillRect(screenX, screenY, EntitySize, EntitySize);
-            }
             if (direction == 0) {
                 gc.save(); // save the current state of the GraphicsContext
                 gc.scale(-1, 1); // flip the image
