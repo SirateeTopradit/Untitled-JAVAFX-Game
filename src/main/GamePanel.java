@@ -8,6 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 import entity.Player;
 import javafx.scene.paint.Color;
 import map.MapManager;
+import weapon.Weapon;
 
 public class GamePanel extends Canvas implements Runnable {
     //Screen settings
@@ -34,10 +35,12 @@ public class GamePanel extends Canvas implements Runnable {
     final long ONE_SECOND = 1000000000L;
     CollisionChecker collisionChecker = new CollisionChecker(this);
     AssetSetter assetSetter = new AssetSetter(this);
+    Weapon weapon = new Weapon(this);
     private long  score = 0;
 
     private Entity[] monster = new Entity[8];
     private Entity[] entity;
+    private Weapon[] weapons = new Weapon[3];
     public void combineArrays() {
         entity = new Entity[monster.length + 1];
         System.arraycopy(monster, 0, entity, 0, monster.length);
@@ -76,6 +79,7 @@ public class GamePanel extends Canvas implements Runnable {
     }
     public void setUpGame() {
         assetSetter.setMonster();
+        assetSetter.setWeapon();
         combineArrays();
         playMusic(1);
     }
@@ -125,6 +129,14 @@ public class GamePanel extends Canvas implements Runnable {
                                 value.draw(gc);
                             } else {
                                 assetSetter.addMonster(i);
+                            }
+                        }
+                        //Weapon
+                        for (int i = 0; i < weapons.length; i++) {
+                            Weapon value = weapons[i];
+                            if (value != null) {
+//                                value.update();
+                                value.draw(gc);
                             }
                         }
                         //UI
@@ -215,5 +227,13 @@ public class GamePanel extends Canvas implements Runnable {
 
     public void setScore(long score) {
         this.score = score;
+    }
+
+    public Weapon[] getWeapons() {
+        return weapons;
+    }
+
+    public void setWeapons(Weapon[] weapons) {
+        this.weapons = weapons;
     }
 }
