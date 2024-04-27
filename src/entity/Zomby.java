@@ -13,6 +13,7 @@ public class Zomby extends Entity{
         super(gp);
         setSpeed(5);
         setHp(600);
+        setPoints(getHp());
         setHitBox(new Rectangle(4*20, 5*20, 2*20, 4*20));
         setHitBoxWalk(new Rectangle(3*20, 5*20, 4*20, 4*20));
         try {
