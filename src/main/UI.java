@@ -15,7 +15,7 @@ public class UI {
     public void draw(GraphicsContext gc) {
         gc.setFont(Courier_New_40);
         gc.setFill(Color.WHITE);
-        gc.fillText("Score:"+gp.player.getWorldY(), 10 , 40);
+        gc.fillText("Score:"+gp.getScore() , 10 , 40);
     }
     public void drawDebugMode(GraphicsContext gc, int fps) {
         gc.setFill(Color.WHITE);
