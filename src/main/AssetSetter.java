@@ -12,11 +12,21 @@ public class AssetSetter {
         Entity[] monster = gp.getMonster();
         for (int i = 0; i < 8; i++) {
             monster[i] = new Zomby(gp);
-            int randomX = (int) (Math.random() * gp.worldScreenWidth-1080);
-            int randomY = (int) (Math.random() * gp.worldScreenHeight-1920);
-            monster[i].setWorldX(randomX+1080);
-            monster[i].setWorldY(randomY+1920);
+            int randomX = (int) (Math.random() * gp.worldScreenWidth);
+            int randomY = (int) (Math.random() * gp.worldScreenHeight);
+            monster[i].setWorldX(randomX);
+            monster[i].setWorldY(randomY);
         }
         gp.setMonster(monster);
     }
+    public void addMonster(int i) {
+        Entity[] monster = gp.getMonster();
+        monster[i] = new Zomby(gp);
+        int randomX = (int) (Math.random() * gp.worldScreenWidth);
+        int randomY = (int) (Math.random() * gp.worldScreenHeight);
+        monster[i].setWorldX(randomX);
+        monster[i].setWorldY(randomY);
+        gp.setMonster(monster);
+    }
+
 }
