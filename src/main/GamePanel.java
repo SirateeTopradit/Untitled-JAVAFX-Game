@@ -34,6 +34,7 @@ public class GamePanel extends Canvas implements Runnable {
     final long ONE_SECOND = 1000000000L;
     CollisionChecker collisionChecker = new CollisionChecker(this);
     AssetSetter assetSetter = new AssetSetter(this);
+    private long  score = 0;
 
     private Entity[] monster = new Entity[100];
     private Entity[] entity;
@@ -124,6 +125,7 @@ public class GamePanel extends Canvas implements Runnable {
                             }
                         }
                         //UI
+                        ui.draw(gc);
                         if (debugMode) {
                             ui.drawDebugMode(gc, finalDrawCountForDisplay);
                         }
@@ -202,5 +204,13 @@ public class GamePanel extends Canvas implements Runnable {
 
     public Entity[] getEntity() {
         return entity;
+    }
+
+    public long getScore() {
+        return score;
+    }
+
+    public void setScore(long score) {
+        this.score = score;
     }
 }
