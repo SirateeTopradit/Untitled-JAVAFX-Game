@@ -77,7 +77,7 @@ public class CollisionChecker {
                     double magnitude = Math.sqrt(dx * dx + dy * dy);
                     dx /= magnitude;
                     dy /= magnitude;
-                    int knockBackDistance = 80;
+                    int knockBackDistance = 40;
                     entity.setWorldX(entity.getWorldX() + (int)(Math.random() * 100) + (int)(Math.random() * -200) + (int)(dx * knockBackDistance));
                     entity.setWorldY(entity.getWorldY() + (int)(Math.random() * 100) + (int)(Math.random() * -200) + (int)(dy * knockBackDistance));
                     entity.setColliding(true);

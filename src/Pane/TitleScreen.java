@@ -25,7 +25,7 @@ public class TitleScreen extends VBox {
         this.setHeight(GamePanel.getInstance().getScreenHeight());
         this.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 
-        playMusic(0);
+        playMusic(1);
 
         Text title = new Text("Dekhere");
         title.setFont(Courier_New_96_Bold);
