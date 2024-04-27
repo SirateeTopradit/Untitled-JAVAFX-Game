@@ -17,7 +17,7 @@ public class Entity {
     private int speed;
     private Rectangle hitBox;
     private Rectangle hitBoxWalk;
-    private final int NUM_FRAMES = 10;
+    private final int NUM_FRAMES = 5;
     private final int NUM_DIRECTIONS = 4; // number of directions
     private Image[][] frames;
     private final long startTime;
