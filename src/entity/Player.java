@@ -64,6 +64,7 @@ public class Player extends Entity{
         setWorldX((gp.getWorldScreenWidth() / 2)-60-40);
         setWorldY((gp.getWorldScreenHeight() / 2)-100-40);
         setSpeed(10);
+        setHp(1000);
         direction = 0; // start facing 'a' direction
     }
     @Override
@@ -106,7 +107,13 @@ public class Player extends Entity{
             gc.setFill(Color.RED);
             gc.fillRect(getScreenX() + getHitBox().getX(), getScreenY() + getHitBox().getY(), getHitBox().getWidth(), getHitBox().getHeight());
         }
-
+        if(isAttacked()) {
+            setCounterIsAttacked(getCounterIsAttacked() + 1);
+            if(getCounterIsAttacked() >= 10) {
+                setAttacked(false);
+                setCounterIsAttacked(0);
+            }
+        }
         Image fxImage = getCurrentFrame(direction);
         gc.drawImage(fxImage, getScreenX(), getScreenY(), playerSize,playerSize);
     }
