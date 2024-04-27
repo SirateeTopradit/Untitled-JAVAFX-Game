@@ -35,7 +35,7 @@ public class AssetSetter {
     }
     public void addMonster(int i, int status) {
         Entity[] monster = gp.getMonster();
-        monster[i] = new Zomby(gp, getHpStatus(status), getSpdStatus(status));
+        monster[i] = new Zomby(gp, getHpStatus(status), getSpdStatus(status), getAtkStatus(status));
         int randomX = (int) (Math.random() * gp.worldScreenWidth);
         int randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[i].setWorldX(randomX);

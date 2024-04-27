@@ -69,7 +69,7 @@ public class CollisionChecker {
             if (me != entity && me instanceof Player) {
                 Rectangle otherHitBox = new Rectangle(me.getWorldX() + me.getHitBoxWalk().getX(), me.getWorldY() + me.getHitBoxWalk().getY(), me.getHitBoxWalk().getWidth(), me.getHitBoxWalk().getHeight());
                 if (entityHitBox.getBoundsInParent().intersects(otherHitBox.getBoundsInParent())){
-                    gp.getPlayer().setHp(gp.getPlayer().getHp() - 50);
+                    gp.getPlayer().setHp(gp.getPlayer().getHp() - me.getAtk());
                     gp.getPlayer().setAttacked(true);
                     double dx = entity.getWorldX() - me.getWorldX();
                     double dy = entity.getWorldY() - me.getWorldY();
