@@ -103,6 +103,12 @@ public class GamePanel extends Canvas implements Runnable {
                 int finalDrawCountForDisplay = drawCountForDisplay;
                 javafx.application.Platform.runLater(() -> {
                     GraphicsContext gc = this.getGraphicsContext2D();
+                    if(player.getHp() <= 0) {
+                        gc.setFill(Color.BLACK);
+                        gc.fillRect(0, 0, getWidth(), getHeight());
+                        gc.setFill(Color.WHITE);
+                        gc.fillText("Game Over", getWidth() / 2, getHeight() / 2);
+                    }else{
                         player.update();
                         //Map
                         gc.setFill(Color.BLACK);
@@ -114,12 +120,13 @@ public class GamePanel extends Canvas implements Runnable {
                         for (int i = 0; i < monster.length; i++) {
                             if (monster[i] != null) {
                                 monster[i].update();
-                                monster[i].draw(gc);
+                                if (monster[i] != null) monster[i].draw(gc);
                             }
                         }
                         //UI
                         if (debugMode) {
                             ui.drawDebugMode(gc, finalDrawCountForDisplay);
+                        }
                         }
                 });
                 delta--;
