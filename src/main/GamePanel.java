@@ -37,6 +37,7 @@ public class GamePanel extends Canvas implements Runnable {
     AssetSetter assetSetter = new AssetSetter(this);
     Weapon weapon = new Weapon(this);
     private long  score = 0;
+    int nowStatus = 0;
 
     private Entity[] monster = new Entity[8];
     private Entity[] entity;
@@ -128,7 +129,8 @@ public class GamePanel extends Canvas implements Runnable {
                                 value.update();
                                 value.draw(gc);
                             } else {
-                                assetSetter.addMonster(i);
+                                plusNowStatus();
+                                assetSetter.addMonster(i, getNowStatus());
                             }
                         }
                         //Weapon
@@ -235,5 +237,17 @@ public class GamePanel extends Canvas implements Runnable {
 
     public void setWeapons(Weapon[] weapons) {
         this.weapons = weapons;
+    }
+
+    public int getNowStatus() {
+        return nowStatus;
+    }
+
+    public void setNowStatus(int status) {
+        this.nowStatus = (status);
+    }
+
+    public void plusNowStatus() {
+        setNowStatus(getNowStatus() + 1);
     }
 }
