@@ -1,7 +1,12 @@
 package main;
 
 import entity.Entity;
+import entity.Player;
 import javafx.scene.shape.Rectangle;
+import javafx.animation.TranslateTransition;
+import javafx.util.Duration;
+
+import java.util.Arrays;
 
 public class CollisionChecker {
     GamePanel gp;
@@ -39,45 +44,50 @@ public class CollisionChecker {
 //            }
 //        }
     }
-    public void checkEntity(Entity entity,Entity[] target) {
-        for (Entity zombie : target) {
-            if (zombie != null && zombie != entity) {
+    public void checkEntity(Entity entity, Entity[] target) {
+        for (Entity me : target) {
+            if (me != entity && me instanceof Player) {
                 Rectangle entityHitBox = new Rectangle(entity.getWorldX() + entity.getHitBoxWalk().getX(), entity.getWorldY() + entity.getHitBoxWalk().getY(), entity.getHitBoxWalk().getWidth(), entity.getHitBoxWalk().getHeight());
-                Rectangle otherHitBox = new Rectangle(zombie.getWorldX() + zombie.getHitBoxWalk().getX(), zombie.getWorldY() + zombie.getHitBoxWalk().getY(), zombie.getHitBoxWalk().getWidth(), zombie.getHitBoxWalk().getHeight());
-//                if (entityHitBox.getBoundsInParent().intersects(otherHitBox.getBoundsInParent())) {
-//                    int randomX = (int) (Math.random() * gp.worldScreenWidth);
-//                    int randomY = (int) (Math.random() * gp.worldScreenHeight);
-//                    entity.setWorldX(randomX);
-//                    entity.setWorldY(randomY);
+                Rectangle otherHitBox = new Rectangle(me.getWorldX() + me.getHitBoxWalk().getX(), me.getWorldY() + me.getHitBoxWalk().getY(), me.getHitBoxWalk().getWidth(), me.getHitBoxWalk().getHeight());
+                if (entityHitBox.getBoundsInParent().intersects(otherHitBox.getBoundsInParent())){
+                    double dx = entity.getWorldX() - me.getWorldX();
+                    double dy = entity.getWorldY() - me.getWorldY();
+                    double magnitude = Math.sqrt(dx * dx + dy * dy);
+                    dx /= magnitude;
+                    dy /= magnitude;
+                    int knockBackDistance = 200;
+                    entity.setWorldX(entity.getWorldX() + (int)(Math.random() * 200) + (int)(Math.random() * -200) + (int)(dx * knockBackDistance));
+                    entity.setWorldY(entity.getWorldY() + (int)(Math.random() * 200) + (int)(Math.random() * -200) + (int)(dy * knockBackDistance));
+                    entity.setColliding(true);
+                }
+//                switch (entity.getDirection()) {
+//                    case 0:
+//                        entityHitBox.setX(entityHitBox.getX() + entity.getSpeed());
+//                        if (entityHitBox.getBoundsInParent().intersects(otherHitBox.getBoundsInParent())) {
+//                            entity.setColliding(true);
+//                        }
+//                        break;
+//                    case 2:
+//                        entityHitBox.setX(entityHitBox.getX() - entity.getSpeed());
+//                        if (entityHitBox.getBoundsInParent().intersects(otherHitBox.getBoundsInParent())) {
+//                            entity.setColliding(true);
+//                        }
+//                        break;
 //                }
-                switch (entity.getDirection()){
-                    case 0:
-                        entityHitBox.setX(entityHitBox.getX() + entity.getSpeed());
-                        if (entityHitBox.getBoundsInParent().intersects(otherHitBox.getBoundsInParent())) {
-                            entity.setColliding(true);
-                        }
-                        break;
-                    case 2:
-                        entityHitBox.setX(entityHitBox.getX() - entity.getSpeed());
-                        if (entityHitBox.getBoundsInParent().intersects(otherHitBox.getBoundsInParent())) {
-                            entity.setColliding(true);
-                        }
-                        break;
-                }
-                switch (entity.getDirectionY()){
-                    case 1:
-                        entityHitBox.setY(entityHitBox.getY() + entity.getSpeed());
-                        if (entityHitBox.getBoundsInParent().intersects(otherHitBox.getBoundsInParent())) {
-                            entity.setColliding(true);
-                        }
-                        break;
-                    case 3:
-                        entityHitBox.setY(entityHitBox.getY() - entity.getSpeed());
-                        if (entityHitBox.getBoundsInParent().intersects(otherHitBox.getBoundsInParent())) {
-                            entity.setColliding(true);
-                        }
-                        break;
-                }
+//                switch (entity.getDirectionY()) {
+//                    case 1:
+//                        entityHitBox.setY(entityHitBox.getY() + entity.getSpeed());
+//                        if (entityHitBox.getBoundsInParent().intersects(otherHitBox.getBoundsInParent())) {
+//                            entity.setColliding(true);
+//                        }
+//                        break;
+//                    case 3:
+//                        entityHitBox.setY(entityHitBox.getY() - entity.getSpeed());
+//                        if (entityHitBox.getBoundsInParent().intersects(otherHitBox.getBoundsInParent())) {
+//                            entity.setColliding(true);
+//                        }
+//                        break;
+//                }
             }
         }
     }
