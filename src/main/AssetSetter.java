@@ -57,6 +57,6 @@ public class AssetSetter {
     }
 
     public float getSpdStatus(int i) {
-        return (float) round((pow(i + 1, 1.1) - pow(i, 1.1)) * 100) / 100;
+        return (float) (round((pow(i + 1, 1.1) - pow(i, 1.1)) * 100) / 100);
     }
 }
