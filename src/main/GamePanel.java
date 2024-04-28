@@ -38,6 +38,7 @@ public class GamePanel extends Canvas implements Runnable {
     Weapon weapon = new Weapon(this);
     private long  score = 0;
     int nowStatus = 0;
+    final int monster_type = 6;
 
     private Entity[] monster = new Entity[8];
     private Entity[] entity;
@@ -138,7 +139,7 @@ public class GamePanel extends Canvas implements Runnable {
                                 value.draw(gc);
                             } else {
                                 plusNowStatus();
-                                assetSetter.addMonster(i, getNowStatus());
+                                assetSetter.addMonster(i, randomMonsterType(), getNowStatus());
                             }
                         }
 
@@ -250,5 +251,11 @@ public class GamePanel extends Canvas implements Runnable {
 
     public void plusNowStatus() {
         setNowStatus(getNowStatus() + 1);
+    }
+    public int getMonsterType() {
+        return this.monster_type;
+    }
+    public int randomMonsterType() {
+        return (int) (Math.random() * getMonsterType());
     }
 }
