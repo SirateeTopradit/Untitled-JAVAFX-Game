@@ -12,8 +12,8 @@ public class Bone extends Entity {
     public Bone(GamePanel gp, float hp, float spd, float atk) {
         super(gp);
         setSpeed(round(spd * 4));
-        setAtk(round(atk * 20));
-        setHp(round(hp * 600));
+        setAtk(round(atk * 40));
+        setHp(round(hp * 200));
         setPoints(round(hp + spd + atk));
         setHitBox(new Rectangle(4*20, 5*20, 2*20, 4*20));
         setHitBoxWalk(new Rectangle(3*20, 5*20, 4*20, 4*20));
