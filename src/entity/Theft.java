@@ -11,8 +11,8 @@ import static java.lang.Math.round;
 public class Theft extends Entity {
     public Theft(GamePanel gp, float hp, float spd, float atk) {
         super(gp);
-        setSpeed(round(spd * 3));
-        setAtk(round(atk * 30));
+        setSpeed(round(spd * 6));
+        setAtk(round(atk * 15));
         setHp(round(hp * 400));
         setPoints(round(hp + spd + atk));
         try {

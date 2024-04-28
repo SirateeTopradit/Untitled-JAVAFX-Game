@@ -11,8 +11,8 @@ import static java.lang.Math.round;
 public class Bone extends Entity {
     public Bone(GamePanel gp, float hp, float spd, float atk) {
         super(gp);
-        setSpeed(round(spd * 4));
-        setAtk(round(atk * 40));
+        setSpeed(round(spd * 8));
+        setAtk(round(atk * 20));
         setHp(round(hp * 200));
         setPoints(round(hp + spd + atk));
         try {
