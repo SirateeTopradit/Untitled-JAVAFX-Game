@@ -31,6 +31,8 @@ public class Entity {
         this.gp = gp;
         frames = new Image[NUM_DIRECTIONS][NUM_FRAMES*2];
         startTime = System.currentTimeMillis();
+        setHitBox(new Rectangle(3*20, 4*20, 2*40, 4*30));
+        setHitBoxWalk(new Rectangle(2*20, 4*20, 4*40, 4*30));
     }
 
     public Rectangle getHitBox() {
@@ -80,6 +82,7 @@ public class Entity {
         int chunkSize = 400;
         int screenX = worldX - gp.getPlayer().getWorldX() + gp.getPlayer().getScreenX();
         int screenY = worldY - gp.getPlayer().getWorldY() + gp.getPlayer().getScreenY();
+
 
         if(     worldX + gp.getTileSize() + chunkSize > gp.getPlayer().getWorldX() - gp.getPlayer().getScreenX() &&
                 worldX - gp.getTileSize() - chunkSize < gp.getPlayer().getWorldX() + gp.getPlayer().getScreenX() &&
@@ -158,7 +161,7 @@ public class Entity {
             setWorldY(nextY);
         }
         else {
-            this.setHp(this.getHp() - 200);
+            this.setHp(this.getHp() - 1000);
             this.setAttacked(true);
             if (this.getHp() <= 0) {
                 Entity[] monsters = gp.getMonster();
