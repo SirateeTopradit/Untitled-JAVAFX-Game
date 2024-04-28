@@ -11,8 +11,8 @@ import static java.lang.Math.round;
 public class Stone extends Entity {
     public Stone(GamePanel gp, float hp, float spd, float atk) {
         super(gp);
-        setSpeed(round(spd * 4));
-        setAtk(round(atk * 30));
+        setSpeed(round(spd * 8));
+        setAtk(round(atk * 15));
         setHp(round(hp * 300));
         setPoints(round(hp + spd + atk));
         try {

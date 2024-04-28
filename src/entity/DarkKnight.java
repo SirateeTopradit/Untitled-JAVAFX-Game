@@ -11,8 +11,8 @@ import static java.lang.Math.round;
 public class DarkKnight extends Entity {
     public DarkKnight(GamePanel gp, float hp, float spd, float atk) {
         super(gp);
-        setSpeed(round(spd * 2));
-        setAtk(round(atk * 50));
+        setSpeed(round(spd * 4));
+        setAtk(round(atk * 25));
         setHp(round(hp * 300));
         setPoints(round(hp + spd + atk));
         try {

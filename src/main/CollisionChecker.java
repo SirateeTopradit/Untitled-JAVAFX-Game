@@ -62,9 +62,9 @@ public class CollisionChecker {
                         double magnitude = Math.sqrt(dx * dx + dy * dy);
                         dx /= magnitude;
                         dy /= magnitude;
-                        int knockBackDistance = 20;
-                        entity.setWorldX(entity.getWorldX() + (int) (dx * knockBackDistance));
-                        entity.setWorldY(entity.getWorldY() + (int) (dy * knockBackDistance));
+//                        int knockBackDistance = 20;
+//                        entity.setWorldX(entity.getWorldX() + (int) (dx * knockBackDistance));
+//                        entity.setWorldY(entity.getWorldY() + (int) (dy * knockBackDistance));
                         entity.setColliding(true);
                     }
                 }
@@ -79,9 +79,9 @@ public class CollisionChecker {
                     double magnitude = Math.sqrt(dx * dx + dy * dy);
                     dx /= magnitude;
                     dy /= magnitude;
-                    int knockBackDistance = 40;
-                    entity.setWorldX(entity.getWorldX() + (int)(dx * knockBackDistance));
-                    entity.setWorldY(entity.getWorldY() + (int)(dy * knockBackDistance));
+//                    int knockBackDistance = 40;
+//                    entity.setWorldX(entity.getWorldX() + (int)(dx * knockBackDistance));
+//                    entity.setWorldY(entity.getWorldY() + (int)(dy * knockBackDistance));
                     entity.setColliding(true);
                 }
 //                switch (entity.getDirection()) {
