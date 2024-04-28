@@ -119,9 +119,9 @@ public class Player extends Entity{
         double healthBarX = getScreenX() + 50;
         double healthBarY = getScreenY() + 60;
         double currentHealthBarWidth = (getHp() / 1000.0) * healthBarWidth;
-        gc.setFill(Color.RED);
+        gc.setFill(Color.GRAY);
         gc.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
-        gc.setFill(Color.GREEN);
+        gc.setFill(Color.DARKGREEN);
         gc.fillRect(healthBarX, healthBarY, currentHealthBarWidth, healthBarHeight);
         Image fxImage = getCurrentFrame(direction);
         gc.drawImage(fxImage, getScreenX(), getScreenY(), playerSize,playerSize);
