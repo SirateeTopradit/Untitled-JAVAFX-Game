@@ -14,42 +14,42 @@ public class AssetSetter {
     }
     public void setMonster() {
         Entity[] monster = gp.getMonster();
-        monster[0] = new Zomby(gp);
+        monster[0] = getNewMonster(gp.randomMonsterType(), 0);
         int randomX = (int) (Math.random() * gp.worldScreenWidth);
         int randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[0].setWorldX(randomX);
         monster[0].setWorldY(randomY);
-        monster[1] = new Theft(gp, 1, 1, 1);
+        monster[1] = getNewMonster(gp.randomMonsterType(), 0);
         randomX = (int) (Math.random() * gp.worldScreenWidth);
         randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[1].setWorldX(randomX);
         monster[1].setWorldY(randomY);
-        monster[2] = new Stone(gp, 1, 1, 1);
+        monster[2] = getNewMonster(gp.randomMonsterType(), 0);
         randomX = (int) (Math.random() * gp.worldScreenWidth);
         randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[2].setWorldX(randomX);
         monster[2].setWorldY(randomY);
-        monster[3] = new NoobGhost(gp, 1, 1, 1);
+        monster[3] = getNewMonster(gp.randomMonsterType(), 0);
         randomX = (int) (Math.random() * gp.worldScreenWidth);
         randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[3].setWorldX(randomX);
         monster[3].setWorldY(randomY);
-        monster[4] = new DarkKnight(gp, 1, 1, 1);
+        monster[4] = getNewMonster(gp.randomMonsterType(), 0);
         randomX = (int) (Math.random() * gp.worldScreenWidth);
         randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[4].setWorldX(randomX);
         monster[4].setWorldY(randomY);
-        monster[5] = new Bone(gp, 1, 1, 1);
+        monster[5] = getNewMonster(gp.randomMonsterType(), 0);
         randomX = (int) (Math.random() * gp.worldScreenWidth);
         randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[5].setWorldX(randomX);
         monster[5].setWorldY(randomY);
-        monster[6] = new Zomby(gp, 1, 1, 1);
+        monster[6] = getNewMonster(gp.randomMonsterType(), 0);
         randomX = (int) (Math.random() * gp.worldScreenWidth);
         randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[6].setWorldX(randomX);
         monster[6].setWorldY(randomY);
-        monster[7] = new Zomby(gp, 1, 1, 1);
+        monster[7] = getNewMonster(gp.randomMonsterType(), 0);
         randomX = (int) (Math.random() * gp.worldScreenWidth);
         randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[7].setWorldX(randomX);
@@ -91,15 +91,15 @@ public class AssetSetter {
     }
 
     public float getHpStatus(int i) {
-        return (float) round((pow(i + 1, 1.5) - pow(i, 1.5)) * 100) / 100;
+        return i < 1 ? 1 : (float) round((pow(i + 1, 1.5) - pow(i, 1.5)) * 100) / 100;
     }
 
     public float getAtkStatus(int i) {
-        return (float) round((pow(i + 1, 1.3) - pow(i, 1.3)) * 100) / 100;
+        return i < 1 ? 1 : (float) round((pow(i + 1, 1.3) - pow(i, 1.3)) * 100) / 100;
     }
 
     public float getSpdStatus(int i) {
-        return (float) (round((pow(i + 1, 1.1) - pow(i, 1.1)) * 100) / 100);
+        return i < 1 ? 1 : (float) (round((pow(i + 1, 1.1) - pow(i, 1.1)) * 100) / 100);
     }
 
     public Entity getNewMonster(int i, int status) {

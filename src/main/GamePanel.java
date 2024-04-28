@@ -256,8 +256,6 @@ public class GamePanel extends Canvas implements Runnable {
         return this.monster_type;
     }
     public int randomMonsterType() {
-        int test = (int) (Math.random() * getMonsterType());
-        System.out.println(test);
-        return test;
+        return (int) (Math.random() * getMonsterType());
     }
 }
