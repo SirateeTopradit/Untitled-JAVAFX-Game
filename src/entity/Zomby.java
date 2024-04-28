@@ -40,8 +40,6 @@ public class Zomby extends Entity{
         setAtk(round(atk * 20));
         setHp(round(hp * 600));
         setPoints(round(hp + spd + atk));
-        setHitBox(new Rectangle(4*20, 5*20, 2*20, 4*20));
-        setHitBoxWalk(new Rectangle(3*20, 5*20, 4*20, 4*20));
         try {
             for (int j = 0; j < 1; j++) {
                 int direction = j;
