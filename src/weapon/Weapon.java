@@ -1,12 +1,9 @@
 package weapon;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import main.GamePanel;
 
-import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -20,29 +17,21 @@ public class Weapon {
     private boolean isAvailable;
     private Timer timer;
     private int NUM_FRAMES = 10;
-
+    private long startTime;
 
     public Weapon(GamePanel gp) {
         this.gp = gp;
     }
     public void draw(GraphicsContext gc) {
-        if (isAvailable()) {
-            gc.setFill(javafx.scene.paint.Color.BLUE);
-            gc.fillRect(screenX + getHitBox().getX(), screenY + getHitBox().getY(), getHitBox().getWidth(), getHitBox().getHeight());
-        }
+//        if (isAvailable()) {
+//            gc.setFill(javafx.scene.paint.Color.BLUE);
+//            gc.fillRect(screenX + getHitBox().getX(), screenY + getHitBox().getY(), getHitBox().getWidth(), getHitBox().getHeight());
+//        }
     }
     public void update() {
     }
     public void startTimer() {
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
 
-            @Override
-            public void run() {
-                System.out.println("Timer task started");
-                isAvailable = !isAvailable;
-            }
-        }, 0, 2000);
     }
 
     public GamePanel getGp() {
@@ -111,5 +100,11 @@ public class Weapon {
         return NUM_FRAMES;
     }
 
-
+    public long getStartTime() {
+        return startTime;
+    }
+    public void setStartTime(long l) {
+        startTime = l;
+    }
 }
+
