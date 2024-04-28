@@ -1,6 +1,7 @@
 package main;
 
 import entity.*;
+import weapon.Laser;
 import weapon.Sword;
 import weapon.Weapon;
 
@@ -20,37 +21,37 @@ public class AssetSetter {
             int randomY = (int) (Math.random() * gp.worldScreenHeight);
             monster[0].setWorldX(randomX);
             monster[0].setWorldY(randomY);
-        monster[1] = new Theft(gp, 100, 1, 1);
+        monster[1] = new Theft(gp, 1, 1, 1);
         randomX = (int) (Math.random() * gp.worldScreenWidth);
         randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[1].setWorldX(randomX);
         monster[1].setWorldY(randomY);
-        monster[2] = new Stone(gp, 100, 1, 1);
+        monster[2] = new Stone(gp, 1, 1, 1);
         randomX = (int) (Math.random() * gp.worldScreenWidth);
         randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[2].setWorldX(randomX);
         monster[2].setWorldY(randomY);
-        monster[3] = new NoobGhost(gp, 100, 1, 1);
+        monster[3] = new NoobGhost(gp, 1, 1, 1);
         randomX = (int) (Math.random() * gp.worldScreenWidth);
         randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[3].setWorldX(randomX);
         monster[3].setWorldY(randomY);
-        monster[4] = new DarkKnight(gp, 100, 1, 1);
+        monster[4] = new DarkKnight(gp, 1, 1, 1);
         randomX = (int) (Math.random() * gp.worldScreenWidth);
         randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[4].setWorldX(randomX);
         monster[4].setWorldY(randomY);
-        monster[5] = new Bone(gp, 100, 1, 1);
+        monster[5] = new Bone(gp, 1, 1, 1);
         randomX = (int) (Math.random() * gp.worldScreenWidth);
         randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[5].setWorldX(randomX);
         monster[5].setWorldY(randomY);
-        monster[6] = new Zomby(gp, 100, 1, 1);
+        monster[6] = new Zomby(gp, 1, 1, 1);
         randomX = (int) (Math.random() * gp.worldScreenWidth);
         randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[6].setWorldX(randomX);
         monster[6].setWorldY(randomY);
-        monster[7] = new Zomby(gp, 100, 1, 1);
+        monster[7] = new Zomby(gp, 1, 1, 1);
         randomX = (int) (Math.random() * gp.worldScreenWidth);
         randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[7].setWorldX(randomX);
@@ -79,6 +80,7 @@ public class AssetSetter {
     public void setWeapon() {
         Weapon[] weapons = gp.getWeapons();
         weapons[0] = new Sword(gp);
+        weapons[1] = new Laser(gp);
         gp.setWeapons(weapons);
     }
 
