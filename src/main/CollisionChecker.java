@@ -6,6 +6,7 @@ import entity.Zomby;
 import javafx.scene.shape.Rectangle;
 import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
+import weapon.Laser;
 import weapon.Weapon;
 
 import java.util.Arrays;
@@ -52,15 +53,16 @@ public class CollisionChecker {
             for (Weapon W: gp.getWeapons()){
                 if (!(me instanceof Player)) {
                     if (W == null) continue;
+                    if (W instanceof Laser ) continue;
                     Rectangle weaponHitBox = new Rectangle(W.getWorldX() + W.getHitBox().getX(), W.getWorldY() + W.getHitBox().getY(), W.getHitBox().getWidth(), W.getHitBox().getHeight());
-//                    System.out.println("Weapon hitbox: " + weaponHitBox.getBoundsInParent());
                     if (entityHitBox.getBoundsInParent().intersects(weaponHitBox.getBoundsInParent())) {
+                        if(W instanceof Laser) System.out.println("laserrrrrr");
                         double dx = entity.getWorldX() - me.getWorldX();
                         double dy = entity.getWorldY() - me.getWorldY();
                         double magnitude = Math.sqrt(dx * dx + dy * dy);
                         dx /= magnitude;
                         dy /= magnitude;
-                        int knockBackDistance = 40;
+                        int knockBackDistance = 20;
                         entity.setWorldX(entity.getWorldX() + (int) (dx * knockBackDistance));
                         entity.setWorldY(entity.getWorldY() + (int) (dy * knockBackDistance));
                         entity.setColliding(true);
