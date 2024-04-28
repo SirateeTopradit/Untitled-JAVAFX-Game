@@ -2,11 +2,10 @@ package Pane;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.scene.text.FontWeight;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -14,7 +13,10 @@ import main.BackgroundSound;
 import main.GamePanel;
 import utils.Goto;
 
-public class TitleScreen extends VBox {
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+public class TitleScreen extends StackPane {
     private GamePanel gp = GamePanel.getInstance();
     BackgroundSound backgroundSound = new BackgroundSound();
     private final Font Courier_New_40 = new Font("Courier New", 40);
@@ -27,15 +29,11 @@ public class TitleScreen extends VBox {
 
         playMusic(1);
 
-        Text title = new Text("Dekhere");
-        title.setFont(Courier_New_96_Bold);
-        title.setFill(Color.WHITE);
-        DropShadow ds = new DropShadow();
-        ds.setOffsetY(3.0);
-        ds.setOffsetX(3.0);
-        ds.setColor(Color.GRAY);
-        title.setEffect(ds);
-        this.getChildren().add(title);
+        Image backgroundImage = new Image("/Image/Artboard_1title.png");
+        ImageView backgroundImageView = new ImageView(backgroundImage);
+        backgroundImageView.setFitWidth(GamePanel.getInstance().getScreenWidth());
+        backgroundImageView.setFitHeight(GamePanel.getInstance().getScreenHeight());
+        this.getChildren().add(backgroundImageView);
 
         Button startButton = new Button("Start Game");
         startButton.setOnAction(e -> {
@@ -43,8 +41,9 @@ public class TitleScreen extends VBox {
             System.out.println("Game Started");
             Goto.gamePanel();
         });
+        StackPane.setAlignment(startButton, Pos.CENTER);
+        startButton.setTranslateY(100);
         this.getChildren().add(startButton);
-        this.setAlignment(Pos.CENTER);
     }
 
     public void playMusic(int MusicIndex) {
