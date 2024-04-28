@@ -1,7 +1,6 @@
 package main;
 
-import entity.Entity;
-import entity.Zomby;
+import entity.*;
 import weapon.Sword;
 import weapon.Weapon;
 
@@ -15,13 +14,48 @@ public class AssetSetter {
     }
     public void setMonster() {
         Entity[] monster = gp.getMonster();
-        for (int i = 0; i < 8; i++) {
-            monster[i] = new Zomby(gp);
+//        for (int i = 0; i < 8; i++) {
+            monster[0] = new Zomby(gp);
             int randomX = (int) (Math.random() * gp.worldScreenWidth);
             int randomY = (int) (Math.random() * gp.worldScreenHeight);
-            monster[i].setWorldX(randomX);
-            monster[i].setWorldY(randomY);
-        }
+            monster[0].setWorldX(randomX);
+            monster[0].setWorldY(randomY);
+        monster[1] = new Theft(gp, 100, 1, 1);
+        randomX = (int) (Math.random() * gp.worldScreenWidth);
+        randomY = (int) (Math.random() * gp.worldScreenHeight);
+        monster[1].setWorldX(randomX);
+        monster[1].setWorldY(randomY);
+        monster[2] = new Stone(gp, 100, 1, 1);
+        randomX = (int) (Math.random() * gp.worldScreenWidth);
+        randomY = (int) (Math.random() * gp.worldScreenHeight);
+        monster[2].setWorldX(randomX);
+        monster[2].setWorldY(randomY);
+        monster[3] = new NoobGhost(gp, 100, 1, 1);
+        randomX = (int) (Math.random() * gp.worldScreenWidth);
+        randomY = (int) (Math.random() * gp.worldScreenHeight);
+        monster[3].setWorldX(randomX);
+        monster[3].setWorldY(randomY);
+        monster[4] = new DarkKnight(gp, 100, 1, 1);
+        randomX = (int) (Math.random() * gp.worldScreenWidth);
+        randomY = (int) (Math.random() * gp.worldScreenHeight);
+        monster[4].setWorldX(randomX);
+        monster[4].setWorldY(randomY);
+        monster[5] = new Bone(gp, 100, 1, 1);
+        randomX = (int) (Math.random() * gp.worldScreenWidth);
+        randomY = (int) (Math.random() * gp.worldScreenHeight);
+        monster[5].setWorldX(randomX);
+        monster[5].setWorldY(randomY);
+        monster[6] = new Zomby(gp, 100, 1, 1);
+        randomX = (int) (Math.random() * gp.worldScreenWidth);
+        randomY = (int) (Math.random() * gp.worldScreenHeight);
+        monster[6].setWorldX(randomX);
+        monster[6].setWorldY(randomY);
+        monster[7] = new Zomby(gp, 100, 1, 1);
+        randomX = (int) (Math.random() * gp.worldScreenWidth);
+        randomY = (int) (Math.random() * gp.worldScreenHeight);
+        monster[7].setWorldX(randomX);
+        monster[7].setWorldY(randomY);
+//        }
         gp.setMonster(monster);
     }
     public void addMonster(int i) {
