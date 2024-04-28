@@ -114,6 +114,15 @@ public class Player extends Entity{
                 setCounterIsAttacked(0);
             }
         }
+        double healthBarWidth = 100.0;
+        double healthBarHeight = 10.0;
+        double healthBarX = getScreenX() + 50;
+        double healthBarY = getScreenY() + 60;
+        double currentHealthBarWidth = (getHp() / 1000.0) * healthBarWidth;
+        gc.setFill(Color.GRAY);
+        gc.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
+        gc.setFill(Color.DARKGREEN);
+        gc.fillRect(healthBarX, healthBarY, currentHealthBarWidth, healthBarHeight);
         Image fxImage = getCurrentFrame(direction);
         gc.drawImage(fxImage, getScreenX(), getScreenY(), playerSize,playerSize);
     }
