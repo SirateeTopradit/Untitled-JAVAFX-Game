@@ -14,43 +14,42 @@ public class AssetSetter {
     }
     public void setMonster() {
         Entity[] monster = gp.getMonster();
-//        for (int i = 0; i < 8; i++) {
-            monster[0] = new Zomby(gp);
-            int randomX = (int) (Math.random() * gp.worldScreenWidth);
-            int randomY = (int) (Math.random() * gp.worldScreenHeight);
-            monster[0].setWorldX(randomX);
-            monster[0].setWorldY(randomY);
-        monster[1] = new Theft(gp, 100, 1, 1);
+        monster[0] = new Zomby(gp);
+        int randomX = (int) (Math.random() * gp.worldScreenWidth);
+        int randomY = (int) (Math.random() * gp.worldScreenHeight);
+        monster[0].setWorldX(randomX);
+        monster[0].setWorldY(randomY);
+        monster[1] = new Theft(gp, 1, 1, 1);
         randomX = (int) (Math.random() * gp.worldScreenWidth);
         randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[1].setWorldX(randomX);
         monster[1].setWorldY(randomY);
-        monster[2] = new Stone(gp, 100, 1, 1);
+        monster[2] = new Stone(gp, 1, 1, 1);
         randomX = (int) (Math.random() * gp.worldScreenWidth);
         randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[2].setWorldX(randomX);
         monster[2].setWorldY(randomY);
-        monster[3] = new NoobGhost(gp, 100, 1, 1);
+        monster[3] = new NoobGhost(gp, 1, 1, 1);
         randomX = (int) (Math.random() * gp.worldScreenWidth);
         randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[3].setWorldX(randomX);
         monster[3].setWorldY(randomY);
-        monster[4] = new DarkKnight(gp, 100, 1, 1);
+        monster[4] = new DarkKnight(gp, 1, 1, 1);
         randomX = (int) (Math.random() * gp.worldScreenWidth);
         randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[4].setWorldX(randomX);
         monster[4].setWorldY(randomY);
-        monster[5] = new Bone(gp, 100, 1, 1);
+        monster[5] = new Bone(gp, 1, 1, 1);
         randomX = (int) (Math.random() * gp.worldScreenWidth);
         randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[5].setWorldX(randomX);
         monster[5].setWorldY(randomY);
-        monster[6] = new Zomby(gp, 100, 1, 1);
+        monster[6] = new Zomby(gp, 1, 1, 1);
         randomX = (int) (Math.random() * gp.worldScreenWidth);
         randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[6].setWorldX(randomX);
         monster[6].setWorldY(randomY);
-        monster[7] = new Zomby(gp, 100, 1, 1);
+        monster[7] = new Zomby(gp, 1, 1, 1);
         randomX = (int) (Math.random() * gp.worldScreenWidth);
         randomY = (int) (Math.random() * gp.worldScreenHeight);
         monster[7].setWorldX(randomX);
@@ -76,6 +75,15 @@ public class AssetSetter {
         monster[i].setWorldY(randomY);
         gp.setMonster(monster);
     }
+    public void addMonster(int i, int j, int status) {
+        Entity[] monster = gp.getMonster();
+        monster[i] = getNewMonster(j, status);
+        int randomX = (int) (Math.random() * gp.worldScreenWidth);
+        int randomY = (int) (Math.random() * gp.worldScreenHeight);
+        monster[i].setWorldX(randomX);
+        monster[i].setWorldY(randomY);
+        gp.setMonster(monster);
+    }
     public void setWeapon() {
         Weapon[] weapons = gp.getWeapons();
         weapons[0] = new Sword(gp);
@@ -92,5 +100,36 @@ public class AssetSetter {
 
     public float getSpdStatus(int i) {
         return (float) (round((pow(i + 1, 1.1) - pow(i, 1.1)) * 100) / 100);
+    }
+
+    public Entity getNewMonster(int i, int status) {
+        Entity monster = null;
+        switch (i) {
+            case 0 : {
+                monster = new Bone(gp, getHpStatus(status), getSpdStatus(status), getAtkStatus(status));
+                break;
+            }
+            case 1 : {
+                monster = new DarkKnight(gp, getHpStatus(status), getSpdStatus(status), getAtkStatus(status));
+                break;
+            }
+            case 2 : {
+                monster = new NoobGhost(gp, getHpStatus(status), getSpdStatus(status), getAtkStatus(status));
+                break;
+            }
+            case 3 : {
+                monster = new Stone(gp, getHpStatus(status), getSpdStatus(status), getAtkStatus(status));
+                break;
+            }
+            case 4 : {
+                monster = new Theft(gp, getHpStatus(status), getSpdStatus(status), getAtkStatus(status));
+                break;
+            }
+            case 5 : {
+                monster = new Zomby(gp, getHpStatus(status), getSpdStatus(status), getAtkStatus(status));
+                break;
+            }
+        }
+        return monster;
     }
 }
