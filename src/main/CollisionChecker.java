@@ -7,6 +7,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 import weapon.Laser;
+import weapon.Lightning;
 import weapon.Weapon;
 
 import java.util.Arrays;
@@ -54,9 +55,10 @@ public class CollisionChecker {
                 if (!(me instanceof Player)) {
                     if (W == null) continue;
                     if (W instanceof Laser ) continue;
+                    if (W instanceof Lightning) continue;
                     Rectangle weaponHitBox = new Rectangle(W.getWorldX() + W.getHitBox().getX(), W.getWorldY() + W.getHitBox().getY(), W.getHitBox().getWidth(), W.getHitBox().getHeight());
                     if (entityHitBox.getBoundsInParent().intersects(weaponHitBox.getBoundsInParent())) {
-                        if(W instanceof Laser) System.out.println("laserrrrrr");
+
                         double dx = entity.getWorldX() - me.getWorldX();
                         double dy = entity.getWorldY() - me.getWorldY();
                         double magnitude = Math.sqrt(dx * dx + dy * dy);

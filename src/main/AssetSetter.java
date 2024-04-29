@@ -2,6 +2,7 @@ package main;
 
 import entity.*;
 import weapon.Laser;
+import weapon.Lightning;
 import weapon.Sword;
 import weapon.Weapon;
 
@@ -97,6 +98,7 @@ public class AssetSetter {
         Weapon[] weapons = gp.getWeapons();
         weapons[0] = new Sword(gp);
         weapons[1] = new Laser(gp);
+        weapons[2] = new Lightning(gp);
         gp.setWeapons(weapons);
     }
 
