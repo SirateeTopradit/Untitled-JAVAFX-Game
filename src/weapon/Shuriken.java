@@ -9,11 +9,11 @@ import main.GamePanel;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Laser extends Weapon {
+public class Shuriken extends Weapon {
     double angle;
     double length;
 
-    public Laser(GamePanel gp) {
+    public Shuriken(GamePanel gp) {
         super(gp);
 //        setHitBox(new Rectangle(0, 0, 200, 200));
         setScreenX((gp.getScreenWidth() / 2) - 60 - 40);
