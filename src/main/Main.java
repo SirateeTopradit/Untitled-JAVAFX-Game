@@ -1,10 +1,14 @@
 package main;
 
 import javafx.application.Application;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import pane.RootPane;
+
+import java.util.Optional;
 
 /**
  * Main class for the game application.
@@ -28,6 +32,17 @@ public class Main extends Application {
         primaryStage.setOnCloseRequest(event -> {
             // Consume the event to prevent the window from closing
             event.consume();
+            // Create a confirmation dialog
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Are you sure you want to exit?");
+
+            // Show the dialog and wait for the user's response
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK){
+                // If the user confirms, close the application
+                primaryStage.close();
+            }
         });
 
         // Create a new game panel

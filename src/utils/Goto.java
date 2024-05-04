@@ -5,6 +5,7 @@ import javafx.scene.layout.StackPane;
 import main.GamePanel;
 import Pane.TitleScreen;
 import pane.RootPane;
+import Pane.GameOver;
 
 public class Goto {
     private static RootPane rootPane;
@@ -25,6 +26,11 @@ public class Goto {
         gamePanel.setUpGame();
         rootPane.getChildren().add(gamePanel);
         gamePanel.startGameThread();
+    }
+    public static void gameOver(long score, int killCount){
+        rootPane.getChildren().removeIf(child -> child instanceof GamePanel);
+        GameOver gameOver = new GameOver(score, killCount);
+        rootPane.getChildren().add(gameOver);
     }
 
     public static void clear(){

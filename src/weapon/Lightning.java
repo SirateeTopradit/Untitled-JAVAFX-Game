@@ -21,6 +21,7 @@ public class Lightning extends Weapon{
     int countFrame;
     @Override
     public void update() {
+        setAtk((100*getLevel()));
         setWorldX(gp.getPlayer().getWorldX());
         setWorldY(gp.getPlayer().getWorldY());
     }
@@ -34,13 +35,14 @@ public class Lightning extends Weapon{
     }
     public void startTimer() {
         setTimer(new Timer());
+        int interval = 1800 / getLevel();
         getTimer().schedule(new TimerTask() {
             @Override
             public void run() {
-                if(gp.getMonster()[num] != null) {
-                    gp.getMonster()[num].setHp(gp.getMonster()[num].getHp() - 100);
+                if (gp.getMonster()[num] != null) {
+                    playSFX(2);
+                    gp.getMonster()[num].setHp(gp.getMonster()[num].getHp() - getAtk());
                     gp.getMonster()[num].setAttacked(true);
-                    gp.getMonster()[num].setSpeed((int) (gp.getMonster()[num].getSpeed()*0.75));
                     if (gp.getMonster()[num].getHp() <= 0) {
                         gp.setScore(gp.getScore() + gp.getMonster()[num].getPoints());
                         Entity[] monsters = gp.getMonster();
@@ -55,10 +57,9 @@ public class Lightning extends Weapon{
                     targetMonster();
                     setAvailable(!isAvailable());
                     countFrame = 0;
-
                 }
             }
-        }, 0, 1000);
+        }, 0, interval);
     }
     int num;
     public void targetMonster() {
@@ -75,7 +76,6 @@ public class Lightning extends Weapon{
     public void getDistanceToMonsters(Entity monster) {
         dx = monster.getWorldX() - this.getWorldX();
         dy = monster.getWorldY() - this.getWorldY();
-        System.out.println("dx: "+dx+" dy: "+dy);
     }
     public double getDistanceToMonster(Entity monster) {
         dx = monster.getWorldX() - this.getWorldX();
@@ -94,5 +94,13 @@ public class Lightning extends Weapon{
                 num = i;
             }
         }
+    }
+    @Override
+    public void updateInterval() {
+        if (getTimer() != null) {
+            getTimer().cancel();
+            setTimer(null);
+        }
+        startTimer();
     }
 }

@@ -2,86 +2,73 @@ package weapon;
 
 import entity.Entity;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import main.GamePanel;
 
+import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Shuriken extends Weapon {
     double angle;
     double length;
+    private Image[] frames;
 
     public Shuriken(GamePanel gp) {
         super(gp);
-//        setHitBox(new Rectangle(0, 0, 200, 200));
         setScreenX((gp.getScreenWidth() / 2) - 60 - 40);
         setScreenY((gp.getScreenHeight() / 2) - 110);
         setAvailable(false);
         startTimer();
         setStartTime(System.currentTimeMillis());
+        frames = new Image[getNUM_FRAMES()];
+        try {
+                for (int i = 0; i < getNUM_FRAMES(); i++) {
+                    InputStream resource = getClass().getClassLoader().getResourceAsStream(String.format("Kj/KongJuk%d.png",i));
+                    if (resource != null) {
+                        getFrames()[i] = new Image(resource);
+                    }
+                }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void update() {
+        setAtk(40*gp.getStage());
         setWorldX(gp.getPlayer().getWorldX());
         setWorldY(gp.getPlayer().getWorldY());
-        if (isAvailable()) {
-            setHitBox(new Rectangle(0, 0, length, 10));
-        } else {
-            setHitBox(new Rectangle(0, 0, 0, 0));
-        }
     }
     int countBulletFrame;
     @Override
     public void draw(GraphicsContext gc) {
         if (isAvailable()) {
-            gc.setFill(Color.RED);
-            gc.fillOval(gp.getPlayer().getScreenX()+80 + (dx/12)*countBulletFrame ,gp.getPlayer().getScreenY()+100 + (dy/12)*countBulletFrame, 40, 40);
+            Image fxImage = getCurrentFrame();
+            gc.drawImage(fxImage, gp.getPlayer().getScreenX()+80 + (dx/12) * countBulletFrame, gp.getPlayer().getScreenY()+100 + (dy/12) * countBulletFrame, 80, 80);
             countBulletFrame++;
         }
-
-////        if (isAvailable()) {
-//        // Save the current state of the GraphicsContext
-//        gc.save();
-//
-//        // Translate to the center of the laser
-//        double centerX = getScreenX();
-//        double centerY = getScreenY();
-//        gc.translate(centerX, centerY);
-//
-//        // Rotate the GraphicsContext by the desired angle
-//        gc.rotate(angle);
-//
-//        // Translate back to the original position
-//        gc.translate(-centerX, -centerY);
-//
-//        // Draw the laser
-//        gc.setFill(Color.WHITE);
-//        gc.fillRect(getScreenX(), getScreenY(), getHitBox().getWidth(), getHitBox().getHeight());
-//
-//        // Restore the previous state of the GraphicsContext
-//        gc.restore();
-//
-//        }
     }
-
-
-    public void startTimer() {
-        setTimer(new Timer());
-        getTimer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if(gp.getMonster()[num] != null) {
-                    gp.getMonster()[num].setHp(gp.getMonster()[num].getHp() - 20);
-                    gp.getMonster()[num].setAttacked(true);
-                    double magnitude = Math.sqrt(dx * dx + dy * dy);
-                    dx /= magnitude;
-                    dy /= magnitude;
-                    int knockBackDistance = 40;
-                    gp.getMonster()[num].setWorldX(gp.getMonster()[num].getWorldX() + (int) (dx * knockBackDistance));
-                    gp.getMonster()[num].setWorldY(gp.getMonster()[num].getWorldY() + (int) (dy * knockBackDistance));
+@Override
+public void startTimer() {
+    setTimer(new Timer());
+    int interval = 200;
+    getTimer().schedule(new TimerTask() {
+        @Override
+        public void run() {
+            if (gp.getMonster()[num] != null) {
+                if (gp.getMonster()[num] != null) gp.getMonster()[num].setAttacked(true);
+                if (gp.getMonster()[num] != null) gp.getMonster()[num].setHp(gp.getMonster()[num].getHp() - getAtk());
+                double magnitude = Math.sqrt(dx * dx + dy * dy);
+                dx /= magnitude;
+                dy /= magnitude;
+                int knockBackDistance = 40;
+                if (gp.getMonster()[num] != null) gp.getMonster()[num].setWorldX(gp.getMonster()[num].getWorldX() + (int) (dx * knockBackDistance));
+                if (gp.getMonster()[num] != null) gp.getMonster()[num].setWorldY(gp.getMonster()[num].getWorldY() + (int) (dy * knockBackDistance));
+                playSFX(6);
+                if (gp.getMonster()[num] != null) {
                     if (gp.getMonster()[num].getHp() <= 0) {
                         gp.setScore(gp.getScore() + gp.getMonster()[num].getPoints());
                         Entity[] monsters = gp.getMonster();
@@ -93,13 +80,14 @@ public class Shuriken extends Weapon {
                         }
                         gp.setMonster(monsters);
                     }
-                    targetMonster();
-                    setAvailable(!isAvailable());
-                    countBulletFrame = 0;
                 }
+                targetMonster();
+                setAvailable(!isAvailable());
+                countBulletFrame = 0;
             }
-        }, 0, 200);
-    }
+        }
+    }, 0, interval);
+}
     int num;
     public void targetMonster() {
         getNearestMonster();
@@ -133,5 +121,20 @@ public class Shuriken extends Weapon {
                 num = i;
             }
         }
+    }
+    @Override
+    public void updateInterval() {
+        if (getTimer() != null) {
+            getTimer().cancel();
+            setTimer(null);
+        }
+        startTimer();
+    }
+    public Image getCurrentFrame() {
+        int index = (int) ((System.currentTimeMillis() - getStartTime()) / 50) % getNUM_FRAMES();
+        return frames[index];
+    }
+    public Image[] getFrames() {
+        return frames;
     }
 }

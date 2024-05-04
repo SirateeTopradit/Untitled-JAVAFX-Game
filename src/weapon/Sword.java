@@ -37,20 +37,20 @@ public class Sword extends Weapon{
     }
     @Override
     public void update() {
+        setAtk(100*getLevel());
         setWorldX(gp.getPlayer().getWorldX());
         setWorldY(gp.getPlayer().getWorldY());
         if (isAvailable()) {
-            setHitBox(new Rectangle(0, 0, 400, 400));
-        }else {
+            setHitBox(new Rectangle(0, 0, 200 + (getLevel()-1)*100, 200 + (getLevel()-1)*100));
+        } else {
             setHitBox(new Rectangle(0, 0, 0, 0));
         }
     }
     @Override
     public void draw(GraphicsContext gc) {
         if (isAvailable()) {
-            gc.drawImage(getCurrentFrame(), getScreenX()-100, getScreenY()-100,400,400);
-//            gc.setFill(javafx.scene.paint.Color.BLUE);
-//            gc.fillRect(screenX + getHitBox().getX(), screenY + getHitBox().getY(), getHitBox().getWidth(), getHitBox().getHeight());
+            int size = 200 + (getLevel()-1)*100;
+            gc.drawImage(getCurrentFrame(), getScreenX()-(getLevel()-1)*50, getScreenY()-(getLevel()-1)*50,size, size);
         }
     }
     public void startTimer() {
@@ -58,11 +58,9 @@ public class Sword extends Weapon{
         getTimer().schedule(new TimerTask() {
             @Override
             public void run() {
-                System.out.println("Timer task started");
+                playSFX(7);
                 setAvailable(!isAvailable());
             }
-        }, 0, 2000);
+        }, 0, 3000);
     }
-
-
 }

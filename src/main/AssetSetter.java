@@ -1,7 +1,7 @@
 package main;
 
 import entity.*;
-import weapon.Laser;
+import weapon.Shuriken;
 import weapon.Lightning;
 import weapon.Sword;
 import weapon.Weapon;
@@ -16,55 +16,13 @@ public class AssetSetter {
     }
     public void setMonster() {
         Entity[] monster = gp.getMonster();
-
-        monster[0] = getNewMonster(gp.randomMonsterType(), 0);
-        int randomX = (int) (Math.random() * gp.worldScreenWidth);
-        int randomY = (int) (Math.random() * gp.worldScreenHeight);
-        monster[0].setWorldX(randomX);
-        monster[0].setWorldY(randomY);
-        monster[1] = getNewMonster(gp.randomMonsterType(), 0);
-
-        randomX = (int) (Math.random() * gp.worldScreenWidth);
-        randomY = (int) (Math.random() * gp.worldScreenHeight);
-        monster[1].setWorldX(randomX);
-        monster[1].setWorldY(randomY);
-
-        monster[2] = getNewMonster(gp.randomMonsterType(), 0);
-        randomX = (int) (Math.random() * gp.worldScreenWidth);
-        randomY = (int) (Math.random() * gp.worldScreenHeight);
-        monster[2].setWorldX(randomX);
-        monster[2].setWorldY(randomY);
-
-        monster[3] = getNewMonster(gp.randomMonsterType(), 0);
-        randomX = (int) (Math.random() * gp.worldScreenWidth);
-        randomY = (int) (Math.random() * gp.worldScreenHeight);
-        monster[3].setWorldX(randomX);
-        monster[3].setWorldY(randomY);
-
-        monster[4] = getNewMonster(gp.randomMonsterType(), 0);
-        randomX = (int) (Math.random() * gp.worldScreenWidth);
-        randomY = (int) (Math.random() * gp.worldScreenHeight);
-        monster[4].setWorldX(randomX);
-        monster[4].setWorldY(randomY);
-
-        monster[5] = getNewMonster(gp.randomMonsterType(), 0);
-        randomX = (int) (Math.random() * gp.worldScreenWidth);
-        randomY = (int) (Math.random() * gp.worldScreenHeight);
-        monster[5].setWorldX(randomX);
-        monster[5].setWorldY(randomY);
-
-        monster[6] = getNewMonster(gp.randomMonsterType(), 0);
-        randomX = (int) (Math.random() * gp.worldScreenWidth);
-        randomY = (int) (Math.random() * gp.worldScreenHeight);
-        monster[6].setWorldX(randomX);
-        monster[6].setWorldY(randomY);
-
-        monster[7] = getNewMonster(gp.randomMonsterType(), 0);
-        randomX = (int) (Math.random() * gp.worldScreenWidth);
-        randomY = (int) (Math.random() * gp.worldScreenHeight);
-        monster[7].setWorldX(randomX);
-        monster[7].setWorldY(randomY);
-//        }
+        for (int i = 0; i < monster.length; i++) {
+            monster[i] = getNewMonster(gp.randomMonsterType(), 0);
+            int randomX = (int) (Math.random() * gp.worldScreenWidth);
+            int randomY = (int) (Math.random() * gp.worldScreenHeight);
+            monster[i].setWorldX(randomX);
+            monster[i].setWorldY(randomY);
+        }
         gp.setMonster(monster);
     }
     public void addMonster(int i) {
@@ -97,8 +55,8 @@ public class AssetSetter {
     public void setWeapon() {
         Weapon[] weapons = gp.getWeapons();
         weapons[0] = new Sword(gp);
-        weapons[1] = new Laser(gp);
-        weapons[2] = new Lightning(gp);
+        weapons[1] = new Lightning(gp);
+        weapons[2] = new Shuriken(gp);
         gp.setWeapons(weapons);
     }
 

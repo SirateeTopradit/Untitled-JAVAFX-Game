@@ -8,6 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 import entity.Player;
 import javafx.scene.paint.Color;
 import map.MapManager;
+import utils.Goto;
 import weapon.Weapon;
 
 public class GamePanel extends Canvas implements Runnable {
@@ -35,7 +36,6 @@ public class GamePanel extends Canvas implements Runnable {
     final long ONE_SECOND = 1000000000L;
     CollisionChecker collisionChecker = new CollisionChecker(this);
     AssetSetter assetSetter = new AssetSetter(this);
-    Weapon weapon = new Weapon(this);
     private long  score = 0;
     int nowStatus = 0;
     final int monster_type = 6;
@@ -43,13 +43,16 @@ public class GamePanel extends Canvas implements Runnable {
     private Entity[] monster = new Entity[8];
     private Entity[] entity;
     private Weapon[] weapons = new Weapon[3];
+    private int killCount = 0;
+    private int stage = 1;
+    private Boolean isNewStage = true;
+    BackgroundSound backgroundMusic = new BackgroundSound();
+    BackgroundSound soundEffect = new BackgroundSound();
     public void combineArrays() {
         entity = new Entity[monster.length + 1];
         System.arraycopy(monster, 0, entity, 0, monster.length);
         entity[entity.length - 1] = player;
     }
-
-
 
     public static GamePanel getInstance() {
         if (instance == null) {
@@ -62,17 +65,7 @@ public class GamePanel extends Canvas implements Runnable {
         return collisionChecker;
     }
 
-    public void drawGrid(GraphicsContext gc) {
-        gc.setStroke(Color.BLACK);
-        for (int i = 0; i < screenWidth; i += tileSize) {
-            for (int j = 0; j < screenHeight; j += tileSize) {
-                gc.strokeRect(i, j, tileSize, tileSize);
-            }
-        }
-    }
-
     public GamePanel() {
-        System.out.println("GamePanel created");
         this.setWidth(screenWidth);
         this.setHeight(screenHeight);
         this.setFocusTraversable(true);
@@ -90,6 +83,10 @@ public class GamePanel extends Canvas implements Runnable {
         gameThread = new Thread(this);
         gameThread.start();
     }
+    public void stopGameThread() {
+        gameThread.interrupt();
+        gameThread = null;
+    }
 
     @Override
     public void run() {
@@ -101,7 +98,7 @@ public class GamePanel extends Canvas implements Runnable {
         int drawCountForDisplay = 0;
         boolean wasCtrlOPressed = false;
 
-        while(true){
+        while(!Thread.currentThread().isInterrupted()){
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / DRAW_INTERVAL;
             timer += currentTime - lastTime;
@@ -111,10 +108,14 @@ public class GamePanel extends Canvas implements Runnable {
                 javafx.application.Platform.runLater(() -> {
                     GraphicsContext gc = this.getGraphicsContext2D();
                     if(player.getHp() <= 0) {
-                        gc.setFill(Color.BLACK);
-                        gc.fillRect(0, 0, getWidth(), getHeight());
-                        gc.setFill(Color.WHITE);
-                        gc.fillText("Game Over", getWidth() / 2, getHeight() / 2);
+                        soundEffect.stop();
+                        backgroundMusic.stop();
+                        for (int i = 0; i < weapons.length; i++) {
+                            weapons[i].getTimer().cancel();
+                            weapons[i] = null;
+                        }
+                        Goto.gameOver(getScore(),getKillCount());
+                        stopGameThread();
                     }else{
                         player.update();
                         //Map
@@ -166,12 +167,37 @@ public class GamePanel extends Canvas implements Runnable {
                 debugMode = !debugMode; // Toggle debugMode
                 wasCtrlOPressed = false;
             }
+            if (Thread.currentThread().isInterrupted()) break;
         }
     }
+    public void clearGamePanel() {
+        if (gameThread != null) {
+            gameThread.interrupt();
+            gameThread = null;
+        }
+        for (int i = 0; i < entity.length; i++) {
+            entity[i] = null;
+        }
+        for (int i = 0; i < monster.length; i++) {
+            monster[i] = null;
+        }
+        for (int i = 0; i < weapons.length; i++) {
+            weapons[i] = null;
+        }
+        backgroundMusic.stop();
+        soundEffect.stop();
+        score = 0;
+        killCount = 0;
+        stage = 1;
+    }
     public void playMusic(int MusicIndex) {
-        backgroundSound.setFile(MusicIndex);
-        backgroundSound.play();
-        backgroundSound.loop();
+        backgroundMusic.setFile(MusicIndex);
+        backgroundMusic.play();
+        backgroundMusic.loop();
+    }
+    public void playSFX(int SFXIndex) {
+        soundEffect.setFile(SFXIndex);
+        soundEffect.play();
     }
     public void stopMusic() {
         backgroundSound.stop();
@@ -250,12 +276,50 @@ public class GamePanel extends Canvas implements Runnable {
     }
 
     public void plusNowStatus() {
+        setKillCount(getKillCount() + 1);
+        if (getKillCount() % 5 == 0) {
+            setStage(getStage() + 1);
+            setNewStage(true);
+            checkLevelUp();
+            playSFX(4);
+        }
         setNowStatus(getNowStatus() + 1);
     }
+    public void checkLevelUp() {
+        if (getStage() % 4 == 0) {
+            weapons[1].updateInterval();
+            weapons[2].updateInterval();
+        }
+    }
+
+    public int getKillCount() {
+        return killCount;
+    }
+
+    public void setKillCount(int killCount) {
+        this.killCount = killCount;
+    }
+
     public int getMonsterType() {
         return this.monster_type;
     }
     public int randomMonsterType() {
         return (int) (Math.random() * getMonsterType());
+    }
+
+    public int getStage() {
+        return stage;
+    }
+
+    public void setStage(int stage) {
+        this.stage = stage;
+    }
+
+    public Boolean getNewStage() {
+        return isNewStage;
+    }
+
+    public void setNewStage(Boolean newStage) {
+        isNewStage = newStage;
     }
 }

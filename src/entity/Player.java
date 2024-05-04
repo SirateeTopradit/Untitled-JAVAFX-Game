@@ -64,32 +64,46 @@ public class Player extends Entity{
         setWorldX((gp.getWorldScreenWidth() / 2)-60-40);
         setWorldY((gp.getWorldScreenHeight() / 2)-100-40);
         setSpeed(10);
-        setHp(1000);
+        setHp(2500);
         direction = 0; // start facing 'a' direction
     }
     @Override
     public void update() {
+        int dx = 0;
+        int dy = 0;
+
         if (keyH.isUpPressed()) {
-            setWorldY(getWorldY() - getSpeed());
+            dy -= getSpeed();
             direction = 3; // 'w' direction
             isStopped = false;
         }
         if (keyH.isDownPressed()) {
-            setWorldY(getWorldY() + getSpeed());
+            dy += getSpeed();
             direction = 2; // 's' direction
             isStopped = false;
         }
         if (keyH.isLeftPressed()) {
-            setWorldX(getWorldX() - getSpeed());
+            dx -= getSpeed();
             direction = 0; // 'a' direction
             isStopped = false;
         }
         if (keyH.isRightPressed()) {
-            setWorldX(getWorldX() + getSpeed());
+            dx += getSpeed();
             direction = 1; // 'd' direction
             isStopped = false;
         }
-        if (!keyH.isDownPressed()&&!keyH.isUpPressed()&&!keyH.isLeftPressed()&&!keyH.isRightPressed()) {
+
+        // Normalize diagonal speed
+        if (dx != 0 && dy != 0) {
+            double factor = Math.sqrt(2) / 2;
+            dx *= factor;
+            dy *= factor;
+        }
+
+        setWorldX(getWorldX() + dx);
+        setWorldY(getWorldY() + dy);
+
+        if (!keyH.isDownPressed() && !keyH.isUpPressed() && !keyH.isLeftPressed() && !keyH.isRightPressed()) {
             isStopped = true;
         }
         gp.getCollisionChecker().checkCollision();
@@ -97,14 +111,6 @@ public class Player extends Entity{
     @Override
     public void draw(GraphicsContext gc) {
         int playerSize = (gp.getTileSize() * gp.getTileSize())/2;
-        if(gp.getDebugMode()) {
-
-            gc.setFill(Color.BLUE);
-            gc.fillRect(getScreenX() + getHitBoxWalk().getX(), getScreenY() + getHitBoxWalk().getY(), getHitBoxWalk().getWidth(), getHitBoxWalk().getHeight());
-
-            gc.setFill(Color.RED);
-            gc.fillRect(getScreenX() + getHitBox().getX(), getScreenY() + getHitBox().getY(), getHitBox().getWidth(), getHitBox().getHeight());
-        }
         if(isAttacked()) {
             setCounterIsAttacked(getCounterIsAttacked() + 1);
             if(getCounterIsAttacked() >= 10) {
@@ -116,7 +122,7 @@ public class Player extends Entity{
         double healthBarHeight = 10.0;
         double healthBarX = getScreenX() + 50;
         double healthBarY = getScreenY() + 60;
-        double currentHealthBarWidth = (getHp() / 1000.0) * healthBarWidth;
+        double currentHealthBarWidth = (getHp() / 2500.0) * healthBarWidth;
         gc.setFill(Color.GRAY);
         gc.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
         gc.setFill(Color.DARKGREEN);

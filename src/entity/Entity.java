@@ -24,7 +24,6 @@ public class Entity {
     private int directionY;
     private boolean isAttacked;
     private int counterIsAttacked = 0;
-
     private int atk;
 
     public Entity(GamePanel gp) {
@@ -90,26 +89,12 @@ public class Entity {
                 worldY - gp.getTileSize() - chunkSize < gp.getPlayer().getWorldY() + gp.getPlayer().getScreenY() ){
 
             int EntitySize = (gp.getTileSize() * gp.getTileSize())/2;
-            if(gp.getDebugMode()) {
-                gc.setFill(javafx.scene.paint.Color.BLUE);
-                gc.fillRect(screenX + getHitBoxWalk().getX(), screenY + getHitBoxWalk().getY(), getHitBoxWalk().getWidth(), getHitBoxWalk().getHeight());
-
-                gc.setFill(javafx.scene.paint.Color.RED);
-                gc.fillRect(screenX + getHitBox().getX(), screenY + getHitBox().getY(), getHitBox().getWidth(), getHitBox().getHeight());
-            }
             Image fxImage = getCurrentFrame(0);
-            if(isAttacked()) {
-                setCounterIsAttacked(getCounterIsAttacked() + 1);
-                if(getCounterIsAttacked() >= 10) {
-                    setAttacked(false);
-                    setCounterIsAttacked(0);
-                }
-            }
             if (direction == 0) {
-                gc.save(); // save the current state of the GraphicsContext
-                gc.scale(-1, 1); // flip the image
+                gc.save();
+                gc.scale(-1, 1);
                 gc.drawImage(fxImage, -screenX - EntitySize, screenY, EntitySize, EntitySize);
-                gc.restore(); // restore the original state of the GraphicsContext
+                gc.restore();
             } else {
                 gc.drawImage(fxImage, screenX, screenY, EntitySize, EntitySize);
             }
@@ -161,7 +146,7 @@ public class Entity {
             setWorldY(nextY);
         }
         else {
-            this.setHp(this.getHp() - 1000);
+            this.setHp(this.getHp() - gp.getWeapons()[0].getAtk());
             this.setAttacked(true);
             if (this.getHp() <= 0) {
                 Entity[] monsters = gp.getMonster();
