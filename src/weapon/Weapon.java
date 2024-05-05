@@ -8,6 +8,11 @@ import main.GamePanel;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Weapon class is an abstract class that implements the BaseWeapon interface.
+ * It provides the basic structure and functionalities for a weapon in the game.
+ * This includes the weapon's hitbox, position, availability, timer, sound effect, and attack power.
+ */
 public abstract class Weapon implements BaseWeapon{
     GamePanel gp;
     private Rectangle hitBox;
@@ -22,9 +27,21 @@ public abstract class Weapon implements BaseWeapon{
     private BackgroundSound soundEffect = new BackgroundSound();
     private int atk;
 
+    /**
+     * Constructor for the Weapon class.
+     * Initializes the Weapon with the given game panel.
+     *
+     * @param gp  the game panel instance
+     */
     public Weapon(GamePanel gp) {
         this.gp = gp;
     }
+
+    /**
+     * Returns the level of the weapon based on the current stage of the game.
+     *
+     * @return the level of the weapon
+     */
     public int getLevel(){
         if(gp.getStage() < 10){
             return 1;
@@ -34,6 +51,12 @@ public abstract class Weapon implements BaseWeapon{
             return 3;
         }
     }
+
+    /**
+     * Plays the sound effect for the weapon.
+     *
+     * @param SFXIndex  the index of the sound effect to play
+     */
     public void playSFX(int SFXIndex) {
         soundEffect.setFile(SFXIndex);
         soundEffect.play();
@@ -119,7 +142,6 @@ public abstract class Weapon implements BaseWeapon{
     public void setAtk(int atk) {
         this.atk = atk;
     }
-    public void startTimer(int interval){};
 
     public void updateInterval() {
     }

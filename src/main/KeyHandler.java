@@ -4,22 +4,21 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
-
+/**
+ * KeyHandler class is responsible for handling the key inputs in the game.
+ * This includes setting up the key codes, handling key press and key release events.
+ */
 public class KeyHandler {
     private boolean upPressed;
     private boolean downPressed;
     private boolean leftPressed;
     private boolean rightPressed;
-    private boolean enterPressed;
     private boolean ctrlOPressed;
-    public boolean isEnterPressed() {
-        return enterPressed;
-    }
-
-    public void setEnterPressed(boolean enterPressed) {
-        this.enterPressed = enterPressed;
-    }
-
+    /**
+     * Handles the key press events.
+     *
+     * @param e  the key event
+     */
     public void keyPressed(KeyEvent e) {
         KeyCode code = e.getCode();
         if (code == KeyCode.W || code == KeyCode.UP) {
@@ -34,15 +33,16 @@ public class KeyHandler {
         if (code == KeyCode.D || code == KeyCode.RIGHT) {
             setRightPressed(true);
         }
-        if (code == KeyCode.ENTER) {
-            setEnterPressed(true);
-        }
         KeyCombination ctrlO = new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN);
         if (ctrlO.match(e)) {
             setCtrlOPressed(true);
         }
     }
-
+    /**
+     * Handles the key release events.
+     *
+     * @param e  the key event
+     */
     public void keyReleased(KeyEvent e) {
         KeyCode code = e.getCode();
         if (code == KeyCode.W || code == KeyCode.UP) {
@@ -57,19 +57,11 @@ public class KeyHandler {
         if (code == KeyCode.D || code == KeyCode.RIGHT) {
             setRightPressed(false);
         }
-        if (code == KeyCode.ENTER) {
-            setEnterPressed(false);
-        }
         KeyCombination ctrlO = new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN);
         if (ctrlO.match(e)) {
             setCtrlOPressed(false);
         }
     }
-
-    public boolean isKeyPressed() {
-        return (isUpPressed() || isDownPressed() || isLeftPressed() || isRightPressed());
-    }
-
     public boolean isUpPressed() {
         return upPressed;
     }

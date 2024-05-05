@@ -8,12 +8,24 @@ import weapon.Weapon;
 
 import static java.lang.Math.pow;
 import static java.lang.Math.round;
-
+/**
+ * AssetSetter class is responsible for setting up the game assets.
+ * This includes setting up the monsters and weapons in the game.
+ */
 public class AssetSetter {
     GamePanel gp;
+    /**
+     * Constructor for the AssetSetter class.
+     * Initializes the AssetSetter with the given game panel.
+     *
+     * @param gp  the game panel instance
+     */
     public AssetSetter(GamePanel gp) {
         this.gp = gp;
     }
+    /**
+     * Sets up the monsters in the game.
+     */
     public void setMonster() {
         Entity[] monster = gp.getMonster();
         for (int i = 0; i < monster.length; i++) {
@@ -25,15 +37,13 @@ public class AssetSetter {
         }
         gp.setMonster(monster);
     }
-    public void addMonster(int i, int status) {
-        Entity[] monster = gp.getMonster();
-        monster[i] = new Zomby(gp, getHpStatus(status), getSpdStatus(status), getAtkStatus(status));
-        int randomX = (int) (Math.random() * gp.worldScreenWidth);
-        int randomY = (int) (Math.random() * gp.worldScreenHeight);
-        monster[i].setWorldX(randomX);
-        monster[i].setWorldY(randomY);
-        gp.setMonster(monster);
-    }
+    /**
+     * Adds a new monster to the game.
+     *
+     * @param i  the index of the monster to add
+     * @param j  the type of the monster to add
+     * @param status  the status of the monster to add
+     */
     public void addMonster(int i, int j, int status) {
         Entity[] monster = gp.getMonster();
         monster[i] = getNewMonster(j, status);
@@ -43,6 +53,9 @@ public class AssetSetter {
         monster[i].setWorldY(randomY);
         gp.setMonster(monster);
     }
+    /**
+     * Sets up the weapons in the game.
+     */
     public void setWeapon() {
         Weapon[] weapons = gp.getWeapons();
         weapons[0] = new Sword(gp);
