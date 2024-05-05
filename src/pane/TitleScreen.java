@@ -23,7 +23,7 @@ import javafx.scene.image.ImageView;
  * It includes methods for setting up the title screen, playing music, and transitioning to the game panel.
  */
 public class TitleScreen extends StackPane {
-    BackgroundSound backgroundSound = new BackgroundSound();
+    private BackgroundSound backgroundSound = new BackgroundSound();
     private Slider volumeSlider;
     private ImageView backgroundImageView;
 

@@ -11,9 +11,9 @@ import javafx.scene.text.Text;
  * This includes drawing the score, player health, and stage information on the game panel.
  */
 public class UI {
-    GamePanel gp;
-    Font Courier_New_40 = Font.font("Courier New", FontWeight.BOLD, 40);
-    Font Courier_New_80 = Font.font("Courier New", FontWeight.BOLD, 80);
+    private GamePanel gp;
+    private Font Courier_New_40 = Font.font("Courier New", FontWeight.BOLD, 40);
+    private Font Courier_New_80 = Font.font("Courier New", FontWeight.BOLD, 80);
     private int frameCounter = 0;
 
     /**
@@ -77,7 +77,7 @@ public class UI {
     public void drawDebugMode(GraphicsContext gc, int fps) {
         gc.setFill(Color.WHITE);
         gc.fillText("FPS: " + fps, 10, 80);
-        gc.fillText("WorldX: " + gp.player.getWorldX(), 10, 120);
-        gc.fillText("WorldY: " + gp.player.getWorldY(), 10, 160);
+        gc.fillText("WorldX: " + gp.getPlayer().getWorldX(), 10, 120);
+        gc.fillText("WorldY: " + gp.getPlayer().getWorldY(), 10, 160);
     }
 }

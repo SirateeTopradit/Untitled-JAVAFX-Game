@@ -13,7 +13,7 @@ import static java.lang.Math.round;
  * This includes setting up the monsters and weapons in the game.
  */
 public class AssetSetter {
-    GamePanel gp;
+    private GamePanel gp;
     /**
      * Constructor for the AssetSetter class.
      * Initializes the AssetSetter with the given game panel.
@@ -30,8 +30,8 @@ public class AssetSetter {
         Entity[] monster = gp.getMonster();
         for (int i = 0; i < monster.length; i++) {
             monster[i] = getNewMonster(gp.randomMonsterType(), 0);
-            int randomX = (int) (Math.random() * gp.worldScreenWidth);
-            int randomY = (int) (Math.random() * gp.worldScreenHeight);
+            int randomX = (int) (Math.random() * gp.getWorldScreenWidth());
+            int randomY = (int) (Math.random() * gp.getWorldScreenHeight());
             monster[i].setWorldX(randomX);
             monster[i].setWorldY(randomY);
         }
@@ -47,8 +47,8 @@ public class AssetSetter {
     public void addMonster(int i, int j, int status) {
         Entity[] monster = gp.getMonster();
         monster[i] = getNewMonster(j, status);
-        int randomX = (int) (Math.random() * gp.worldScreenWidth);
-        int randomY = (int) (Math.random() * gp.worldScreenHeight);
+        int randomX = (int) (Math.random() * gp.getWorldScreenWidth());
+        int randomY = (int) (Math.random() * gp.getWorldScreenHeight());
         monster[i].setWorldX(randomX);
         monster[i].setWorldY(randomY);
         gp.setMonster(monster);

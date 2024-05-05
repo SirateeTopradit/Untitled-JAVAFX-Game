@@ -1,0 +1,420 @@
+@startuml
+class pane.GameOver {
+- Font Courier_New_48
+- BackgroundSound soundEffect
+- ImageView backgroundImageView
++ void setBackground()
++ void playSFX(int)
+}
+
+
+class entity.Theft {
++ void loadFrames()
+}
+
+class entity.Zomby {
++ void loadFrames()
+}
+
+class weapon.Sword {
+- Image[] frames
++ Image getCurrentFrame()
++ void update()
++ void draw(GraphicsContext)
++ void startTimer()
+}
+
+
+class main.CollisionChecker {
+~ GamePanel gp
+- BackgroundSound soundEffect
++ void checkCollision()
++ void checkEntity(Entity,Entity[])
++ void gotHit(Entity,Entity,Rectangle)
++ void knockBack(Entity,Entity)
++ void playSFX(int)
+}
+
+
+abstract class entity.Entity {
+- int worldX
+- GamePanel gp
+- int direction
+- int speed
+- Rectangle hitBoxWalk
+- int NUM_FRAMES
+- int NUM_DIRECTIONS
+- Image[][] frames
+- long startTime
+- boolean isAttacked
+- int counterIsAttacked
+- int atk
+- Boolean isColliding
+- int hp
+- int points
++ {abstract}void loadFrames()
++ void draw(GraphicsContext)
++ void calDirection(int,int)
++ void move(int,int)
++ void damage()
++ void update()
++ char getDirectionFromIndex(int)
++ Image getCurrentFrame(int)
++ int getNUM_FRAMES()
++ Image[][] getFrames()
++ void setColliding(Boolean)
++ int getDirection()
++ void setDirection(int)
++ int getHp()
++ void setHp(int)
++ boolean isAttacked()
++ void setAttacked(boolean)
++ int getCounterIsAttacked()
++ void setCounterIsAttacked(int)
++ int getPoints()
++ void setPoints(int)
++ int getAtk()
++ void setAtk(int)
++ Rectangle getHitBoxWalk()
++ void setHitBoxWalk(Rectangle)
++ void setWorldX(int)
++ void setWorldY(int)
++ int getWorldX()
++ int getWorldY()
++ int getSpeed()
++ void setSpeed(int)
++ GamePanel getGp()
+}
+
+
+class map.MapManager {
+- GamePanel gp
+- Image image
+- Player player
++ void getImage()
++ void drawMap(GraphicsContext)
+}
+
+
+class main.GamePanel {
+- {static} GamePanel instance
+~ int tileSize
+~ int aspectRatioWidth
+~ int aspectRatioHeight
+~ int scale
+~ int screenWidth
+~ int screenHeight
+~ int worldScale
+~ int worldScreenWidth
+~ int worldScreenHeight
+- Boolean debugMode
+- KeyHandler keyH
+- Thread gameThread
+~ Player player
+- MapManager mapManager
+- UI ui
+- double DRAW_INTERVAL
+- long ONE_SECOND
+- CollisionChecker collisionChecker
+- AssetSetter assetSetter
+- long score
+- int nowStatus
+- int monster_type
+- Entity[] monster
+- Entity[] entity
+- Weapon[] weapons
+- int killCount
+- int stage
+- Boolean isNewStage
+- double delta
+- long lastTime
+- long currentTime
+- long timer
+- int drawCount
+- int drawCountForDisplay
+- BackgroundSound backgroundMusic
+- BackgroundSound soundEffect
++ {static} GamePanel getInstance()
++ void combineArrays()
++ void setUpGame()
++ void startGameThread()
++ void stopGameThread()
++ void run()
++ void updateAndDrawGame(int)
++ void handleGameOver()
++ void cancelAndClearWeapons()
++ void updateAndDrawEntities(GraphicsContext,int)
++ void drawMap(GraphicsContext)
++ void updateAndDrawWeapons(GraphicsContext)
++ void updateAndDrawMonsters(GraphicsContext)
++ void playMusic(int)
++ void playSFX(int)
++ int getScreenWidth()
++ int getScreenHeight()
++ int getTileSize()
++ int getWorldScreenWidth()
++ int getWorldScreenHeight()
++ Entity[] getMonster()
++ void setMonster(Entity[])
++ Player getPlayer()
++ Entity[] getEntity()
++ long getScore()
++ void setScore(long)
++ Weapon[] getWeapons()
++ void setWeapons(Weapon[])
++ int getNowStatus()
++ void setNowStatus(int)
++ void plusNowStatus()
++ void checkLevelUp()
++ int getKillCount()
++ void setKillCount(int)
++ int getMonsterType()
++ int randomMonsterType()
++ int getStage()
++ void setStage(int)
++ Boolean getNewStage()
++ void setNewStage(Boolean)
++ CollisionChecker getCollisionChecker()
+}
+
+
+interface weapon.BaseWeapon {
++ void draw(GraphicsContext)
++ void update()
++ void startTimer()
+}
+
+class entity.Player {
+- KeyHandler keyH
+- boolean isStopped
+- int speed
+- int NUM_FRAMES
+- int NUM_DIRECTIONS
+- Image[][] frames
+- long startTime
+- int screenX
+- int screenY
++ void loadFrames()
++ void loadStandFrame()
++ void setDefaultValues()
++ void keyHan(double,double)
++ void update()
++ void draw(GraphicsContext)
++ void healthBar(GraphicsContext)
++ Image getCurrentFrame(int)
++ int getSpeed()
++ void setSpeed(int)
++ int getScreenX()
++ int getScreenY()
++ Image[][] getFrames()
+}
+
+
+class utils.Goto {
+- {static} RootPane rootPane
++ {static} void setPane(RootPane)
++ {static} void titleScreen()
++ {static} void gamePanel()
++ {static} void gameOver(long,int)
++ {static} void clear()
+}
+
+
+class entity.Stone {
++ void loadFrames()
+}
+
+class pane.RootPane {
+- {static} RootPane instance
++ {static} RootPane getRootPane()
+}
+
+
+class pane.TitleScreen {
+- BackgroundSound backgroundSound
+- Slider volumeSlider
+- ImageView backgroundImageView
++ void howToPlay()
++ void setBackground()
++ void playMusic(int)
++ void stopMusic()
++ void volumeBar()
++ void volumeSFXBar()
+}
+
+
+class entity.DarkKnight {
++ void loadFrames()
+}
+
+class weapon.Shuriken {
+- Image[] frames
+- int num
+- double dx
+- double dy
+- int countBulletFrame
++ void update()
++ void draw(GraphicsContext)
++ void knockBack(int,int)
++ void checkMonster(int)
++ void startTimer()
++ void targetMonster()
++ void getDistanceToMonsters(Entity)
++ double getDistanceToMonster(Entity)
++ void getNearestMonster()
++ void updateInterval()
++ Image getCurrentFrame()
++ Image[] getFrames()
+}
+
+
+class weapon.Lightning {
+- int countFrame
+- int num
+- double dx
+- double dy
++ void update()
++ void draw(GraphicsContext)
++ void checkMonster(int)
++ void startTimer()
++ void targetMonster()
++ void getDistanceToMonsters(Entity)
++ double getDistanceToMonster(Entity)
++ void getNearestMonster()
++ void updateInterval()
+}
+
+
+class entity.Bone {
++ void loadFrames()
+}
+
+class main.UI {
+- GamePanel gp
+- Font Courier_New_40
+- Font Courier_New_80
+- int frameCounter
++ void draw(GraphicsContext)
++ void showStage(GraphicsContext,int)
++ void drawDebugMode(GraphicsContext,int)
+}
+
+
+class main.Main {
++ void start(Stage)
++ {static} void main(String[])
+}
+
+class entity.NoobGhost {
++ void loadFrames()
+}
+
+class main.BackgroundSound {
+- MediaPlayer mediaPlayer
+- URL[] soundURL
+- double volume
+- double sfxVolume
++ void setFile(int)
++ void play()
++ void stop()
++ void loop()
++ void setToVolume(double)
++ void setToSFXVolume(double)
++ void setVolume(double)
++ void setSfxVolume(double)
+}
+
+
+abstract class weapon.Weapon {
+- GamePanel gp
+- Rectangle hitBox
+- int screenX
+- int screenY
+- int worldX
+- int worldY
+- boolean isAvailable
+- Timer timer
+- int NUM_FRAMES
+- long startTime
+- BackgroundSound soundEffect
+- int atk
++ int getLevel()
++ void playSFX(int)
++ GamePanel getGp()
++ void setGp(GamePanel)
++ Rectangle getHitBox()
++ void setHitBox(Rectangle)
++ int getScreenX()
++ void setScreenX(int)
++ int getScreenY()
++ void setScreenY(int)
++ int getWorldX()
++ void setWorldX(int)
++ int getWorldY()
++ void setWorldY(int)
++ boolean isAvailable()
++ void setAvailable(boolean)
++ Timer getTimer()
++ void setTimer(Timer)
++ int getNUM_FRAMES()
++ long getStartTime()
++ void setStartTime(long)
++ int getAtk()
++ void setAtk(int)
++ void updateInterval()
+}
+
+
+class main.KeyHandler {
+- boolean upPressed
+- boolean downPressed
+- boolean leftPressed
+- boolean rightPressed
+- boolean ctrlOPressed
++ void keyPressed(KeyEvent)
++ void keyReleased(KeyEvent)
++ boolean isUpPressed()
++ void setUpPressed(boolean)
++ boolean isDownPressed()
++ void setDownPressed(boolean)
++ boolean isLeftPressed()
++ void setLeftPressed(boolean)
++ boolean isRightPressed()
++ void setRightPressed(boolean)
++ boolean isCtrlOPressed()
++ void setCtrlOPressed(boolean)
+}
+
+
+class main.AssetSetter {
+- GamePanel gp
++ void setMonster()
++ void addMonster(int,int,int)
++ void setWeapon()
++ float getHpStatus(int)
++ float getAtkStatus(int)
++ float getSpdStatus(int)
++ Entity getNewMonster(int,int)
+}
+
+
+
+
+javafx.scene.layout.StackPane <|-- pane.GameOver
+entity.Entity <|-- entity.Theft
+entity.Entity <|-- entity.Zomby
+weapon.Weapon <|-- weapon.Sword
+java.lang.Runnable <|.. main.GamePanel
+javafx.scene.canvas.Canvas <|-- main.GamePanel
+entity.Entity <|-- entity.Player
+entity.Entity <|-- entity.Stone
+javafx.scene.layout.StackPane <|-- pane.RootPane
+javafx.scene.layout.StackPane <|-- pane.TitleScreen
+entity.Entity <|-- entity.DarkKnight
+weapon.Weapon <|-- weapon.Shuriken
+weapon.Weapon <|-- weapon.Lightning
+entity.Entity <|-- entity.Bone
+javafx.application.Application <|-- main.Main
+entity.Entity <|-- entity.NoobGhost
+weapon.BaseWeapon <|.. weapon.Weapon
+@enduml

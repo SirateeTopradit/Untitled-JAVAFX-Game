@@ -60,8 +60,8 @@ public class Sword extends Weapon{
     @Override
     public void update() {
         setAtk(100*getLevel());
-        setWorldX(gp.getPlayer().getWorldX());
-        setWorldY(gp.getPlayer().getWorldY());
+        setWorldX(getGp().getPlayer().getWorldX());
+        setWorldY(getGp().getPlayer().getWorldY());
         if (isAvailable()) {
             setHitBox(new Rectangle(0, 0, 200 + (getLevel()-1)*100, 200 + (getLevel()-1)*100));
         } else {

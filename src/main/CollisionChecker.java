@@ -10,7 +10,7 @@ import weapon.Weapon;
  * It includes methods for checking collision of an entity with the game boundaries and other entities.
  */
 public class CollisionChecker {
-    GamePanel gp;
+    private GamePanel gp;
     private BackgroundSound soundEffect = new BackgroundSound();
     /**
      * Constructor for the CollisionChecker class.
@@ -26,21 +26,21 @@ public class CollisionChecker {
      * If the player is colliding with the game boundaries, it adjusts the player's position to stay within the game boundaries.
      */
     public void checkCollision() {
-        int playerX = gp.player.getWorldX();
-        int playerY = gp.player.getWorldY();
-        double playerWidth = gp.player.getHitBoxWalk().getWidth();
-        double playerHeight = gp.player.getHitBoxWalk().getHeight();
+        int playerX = gp.getPlayer().getWorldX();
+        int playerY = gp.getPlayer().getWorldY();
+        double playerWidth = gp.getPlayer().getHitBoxWalk().getWidth();
+        double playerHeight = gp.getPlayer().getHitBoxWalk().getHeight();
         if(playerX < 0) {
-            gp.player.setWorldX(0);
+            gp.getPlayer().setWorldX(0);
         }
-        if(playerX + playerWidth > gp.worldScreenWidth) {
-            gp.player.setWorldX((int) (gp.worldScreenWidth - playerWidth));
+        if(playerX + playerWidth > gp.getWorldScreenWidth()) {
+            gp.getPlayer().setWorldX((int) (gp.getWorldScreenWidth() - playerWidth));
         }
         if(playerY < 0) {
-            gp.player.setWorldY(0);
+            gp.getPlayer().setWorldY(0);
         }
-        if(playerY + playerHeight > gp.worldScreenHeight) {
-            gp.player.setWorldY((int) (gp.worldScreenHeight - playerHeight));
+        if(playerY + playerHeight > gp.getWorldScreenHeight()) {
+            gp.getPlayer().setWorldY((int) (gp.getWorldScreenHeight() - playerHeight));
         }
     }
     /**

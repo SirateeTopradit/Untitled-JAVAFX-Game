@@ -12,8 +12,8 @@ import java.io.InputStream;
  * This class extends the Entity class and adds player-specific functionality.
  */
 public class Player extends Entity{
-    KeyHandler keyH;
-    boolean isStopped = true;
+    private KeyHandler keyH;
+    private boolean isStopped = true;
     private int speed;
     private final int NUM_FRAMES = 15;
     private final int NUM_DIRECTIONS = 4;
@@ -84,8 +84,8 @@ public class Player extends Entity{
      * Sets the default values for the player.
      */
     public void setDefaultValues() {
-        setWorldX((gp.getWorldScreenWidth() / 2)-60-40);
-        setWorldY((gp.getWorldScreenHeight() / 2)-100-40);
+        setWorldX((getGp().getWorldScreenWidth() / 2)-60-40);
+        setWorldY((getGp().getWorldScreenHeight() / 2)-100-40);
         setSpeed(10);
         setHp(2500);
         setDirection(0); // start facing 'a' direction
@@ -133,7 +133,7 @@ public class Player extends Entity{
         if (!keyH.isDownPressed() && !keyH.isUpPressed() && !keyH.isLeftPressed() && !keyH.isRightPressed()) {
             isStopped = true;
         }
-        gp.getCollisionChecker().checkCollision();
+        getGp().getCollisionChecker().checkCollision();
     }
     /**
      * Draws the player on the game panel.
@@ -157,7 +157,7 @@ public class Player extends Entity{
      * @param gc  the graphics context to draw on
      */
     public void healthBar(GraphicsContext gc){
-        int playerSize = (gp.getTileSize() * gp.getTileSize())/2;
+        int playerSize = (getGp().getTileSize() * getGp().getTileSize())/2;
         double healthBarWidth = 100.0;
         double healthBarHeight = 10.0;
         double healthBarX = getScreenX() + 50;

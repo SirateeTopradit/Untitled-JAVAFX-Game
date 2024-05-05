@@ -12,9 +12,9 @@ import java.io.InputStream;
  * This includes loading the map image and drawing the map on the game panel.
  */
 public class MapManager {
-    GamePanel gp;
-    Image image;
-    Player player;
+    private GamePanel gp;
+    private Image image;
+    private Player player;
 
     /**
      * Constructor for the MapManager class.
@@ -33,7 +33,7 @@ public class MapManager {
     /**
      * Loads the map image from the resources.
      */
-    private void getImage() {
+    public void getImage() {
         InputStream resource = getClass().getClassLoader().getResourceAsStream("Map/bg.png");
         if (resource != null) {
             image = new Image(resource);

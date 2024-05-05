@@ -1,26 +1,26 @@
 package pane;
 
 import javafx.application.Platform;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
 import javafx.scene.control.Label;
-import javafx.scene.text.Font;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import main.BackgroundSound;
 import main.GamePanel;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * GameOver class extends the VBox class and represents the game over screen of the game.
  * It includes methods for playing sound effects and initializing the game over screen.
  */
 public class GameOver extends StackPane {
-    Font Courier_New_48 = Font.font("Courier New", FontWeight.BOLD, 48);
-    BackgroundSound soundEffect = new BackgroundSound();
+    private Font Courier_New_48 = Font.font("Courier New", FontWeight.BOLD, 48);
+    private BackgroundSound soundEffect = new BackgroundSound();
     private ImageView backgroundImageView;
 
     /**
@@ -35,7 +35,6 @@ public class GameOver extends StackPane {
         playSFX(3);
         this.setPrefWidth(GamePanel.getInstance().getScreenWidth());
         this.setPrefHeight(GamePanel.getInstance().getScreenHeight());
-        this.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         setBackground();
         Label scoreLabel = new Label("Score: " + score);
         scoreLabel.setFont(Courier_New_48);

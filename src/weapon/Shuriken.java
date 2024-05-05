@@ -18,6 +18,7 @@ public class Shuriken extends Weapon {
     private int num;
     private double dx;
     private double dy;
+    private int countBulletFrame = 0;
 
     /**
      * Constructor for the Shuriken class.
@@ -27,8 +28,8 @@ public class Shuriken extends Weapon {
      */
     public Shuriken(GamePanel gp) {
         super(gp);
-        setScreenX((gp.getScreenWidth() / 2) - 60 - 40);
-        setScreenY((gp.getScreenHeight() / 2) - 110);
+        setScreenX((getGp().getScreenWidth() / 2) - 60 - 40);
+        setScreenY((getGp().getScreenHeight() / 2) - 110);
         setAvailable(false);
         startTimer();
         setStartTime(System.currentTimeMillis());
@@ -52,11 +53,10 @@ public class Shuriken extends Weapon {
      */
     @Override
     public void update() {
-        setAtk(40*gp.getStage());
-        setWorldX(gp.getPlayer().getWorldX());
-        setWorldY(gp.getPlayer().getWorldY());
+        setAtk(40*getGp().getStage());
+        setWorldX(getGp().getPlayer().getWorldX());
+        setWorldY(getGp().getPlayer().getWorldY());
     }
-    int countBulletFrame;
     /**
      * Draws the shuriken on the game panel.
      *
@@ -66,7 +66,7 @@ public class Shuriken extends Weapon {
     public void draw(GraphicsContext gc) {
         if (isAvailable()) {
             Image fxImage = getCurrentFrame();
-            gc.drawImage(fxImage, gp.getPlayer().getScreenX()+80 + (dx/12) * countBulletFrame, gp.getPlayer().getScreenY()+100 + (dy/12) * countBulletFrame, 80, 80);
+            gc.drawImage(fxImage, getGp().getPlayer().getScreenX()+80 + (dx/12) * countBulletFrame, getGp().getPlayer().getScreenY()+100 + (dy/12) * countBulletFrame, 80, 80);
             countBulletFrame++;
         }
     }
@@ -80,8 +80,8 @@ public class Shuriken extends Weapon {
         double magnitude = Math.sqrt(dx * dx + dy * dy);
         dx /= magnitude;
         dy /= magnitude;
-        if (gp.getMonster()[num] != null) gp.getMonster()[num].setWorldX(gp.getMonster()[num].getWorldX() + (int) (dx * knockBackDistance));
-        if (gp.getMonster()[num] != null) gp.getMonster()[num].setWorldY(gp.getMonster()[num].getWorldY() + (int) (dy * knockBackDistance));
+        if (getGp().getMonster()[num] != null) getGp().getMonster()[num].setWorldX(getGp().getMonster()[num].getWorldX() + (int) (dx * knockBackDistance));
+        if (getGp().getMonster()[num] != null) getGp().getMonster()[num].setWorldY(getGp().getMonster()[num].getWorldY() + (int) (dy * knockBackDistance));
     }
     /**
      * Checks the monster's health.
@@ -89,17 +89,17 @@ public class Shuriken extends Weapon {
      * @param num  the index of the monster
      */
     public void checkMonster(int num){
-        if (gp.getMonster()[num] != null) {
-            if (gp.getMonster()[num].getHp() <= 0) {
-                gp.setScore(gp.getScore() + gp.getMonster()[num].getPoints());
-                Entity[] monsters = gp.getMonster();
+        if (getGp().getMonster()[num] != null) {
+            if (getGp().getMonster()[num].getHp() <= 0) {
+                getGp().setScore(getGp().getScore() + getGp().getMonster()[num].getPoints());
+                Entity[] monsters = getGp().getMonster();
                 for (int i = 0; i < monsters.length; i++) {
-                    if (monsters[i] == gp.getMonster()[num]) {
+                    if (monsters[i] == getGp().getMonster()[num]) {
                         monsters[i] = null;
                         break;
                     }
                 }
-                gp.setMonster(monsters);
+                getGp().setMonster(monsters);
             }
         }
     }
@@ -114,9 +114,9 @@ public class Shuriken extends Weapon {
         getTimer().schedule(new TimerTask() {
             @Override
             public void run() {
-                if (gp.getMonster()[num] != null) {
-                    if (gp.getMonster()[num] != null) gp.getMonster()[num].setAttacked(true);
-                    if (gp.getMonster()[num] != null) gp.getMonster()[num].setHp(gp.getMonster()[num].getHp() - getAtk());
+                if (getGp().getMonster()[num] != null) {
+                    if (getGp().getMonster()[num] != null) getGp().getMonster()[num].setAttacked(true);
+                    if (getGp().getMonster()[num] != null) getGp().getMonster()[num].setHp(getGp().getMonster()[num].getHp() - getAtk());
                     knockBack(num,40);
                     playSFX(6);
                     checkMonster(num);
@@ -133,7 +133,7 @@ public class Shuriken extends Weapon {
      */
     public void targetMonster() {
         getNearestMonster();
-        Entity monster = gp.getMonster()[num];
+        Entity monster = getGp().getMonster()[num];
         if (monster == null) {
             return ;
         }
@@ -165,11 +165,11 @@ public class Shuriken extends Weapon {
      */
     public void getNearestMonster() {
         double minDistance = Double.MAX_VALUE;
-        for (int i = 0; i < gp.getMonster().length; i++) {
-            if (gp.getMonster()[i] == null) {
+        for (int i = 0; i < getGp().getMonster().length; i++) {
+            if (getGp().getMonster()[i] == null) {
                 continue;
             }
-            double distance = getDistanceToMonster(gp.getMonster()[i]);
+            double distance = getDistanceToMonster(getGp().getMonster()[i]);
             if (distance < minDistance) {
                 minDistance = distance;
                 num = i;

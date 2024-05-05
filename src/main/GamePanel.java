@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import map.MapManager;
 import utils.Goto;
 import weapon.Weapon;
+import java.lang.Runnable;
 /**
  * GamePanel class is the main class for the game. It extends Canvas and implements Runnable.
  * It handles the game loop, updates and draws the game entities, and manages the game state.
@@ -16,31 +17,31 @@ import weapon.Weapon;
 public class GamePanel extends Canvas implements Runnable {
     //Screen settings
     private static GamePanel instance;
-    final int tileSize = 20;
-    final int aspectRatioWidth = 16;
-    final int aspectRatioHeight = 9;
-    final int scale = 4;//6
-    final int screenWidth = tileSize * aspectRatioWidth * scale;
-    final int screenHeight = tileSize * aspectRatioHeight * scale;
+    private final int tileSize = 20;
+    private final int aspectRatioWidth = 16;
+    private final int aspectRatioHeight = 9;
+    private final int scale = 4;//6
+    private final int screenWidth = tileSize * aspectRatioWidth * scale;
+    private final int screenHeight = tileSize * aspectRatioHeight * scale;
 
     //World settings
-    final int worldScale = 6*2;//6
-    final int worldScreenWidth = tileSize * aspectRatioWidth * worldScale;
-    final int worldScreenHeight = tileSize * aspectRatioHeight * worldScale;
-    private Boolean debugMode = false;
-    KeyHandler keyH = new KeyHandler();
-    Thread gameThread;
-    Player player = new Player(this, keyH);
-    MapManager mapManager = new MapManager(this, player);
-    UI ui = new UI(this);
-    final double DRAW_INTERVAL = 1000000000.0 / 60.0;
-    final long ONE_SECOND = 1000000000L;
-    CollisionChecker collisionChecker = new CollisionChecker(this);
-    AssetSetter assetSetter = new AssetSetter(this);
-    private long  score = 0;
-    int nowStatus = 0;
-    final int monster_type = 6;
+    private final int worldScale = 6*2;//6
+    private final int worldScreenWidth = tileSize * aspectRatioWidth * worldScale;
+    private final int worldScreenHeight = tileSize * aspectRatioHeight * worldScale;
 
+    private Boolean debugMode = false;
+    private KeyHandler keyH = new KeyHandler();
+    private Thread gameThread;
+    private Player player = new Player(this, keyH);
+    private MapManager mapManager = new MapManager(this, player);
+    private UI ui = new UI(this);
+    private final double DRAW_INTERVAL = 1000000000.0 / 60.0;
+    private final long ONE_SECOND = 1000000000L;
+    private CollisionChecker collisionChecker = new CollisionChecker(this);
+    private AssetSetter assetSetter = new AssetSetter(this);
+    private long  score = 0;
+    private int nowStatus = 0;
+    private final int monster_type = 6;
     private Entity[] monster = new Entity[8];
     private Entity[] entity;
     private Weapon[] weapons = new Weapon[3];
@@ -53,8 +54,8 @@ public class GamePanel extends Canvas implements Runnable {
     private long timer = 0;
     private int drawCount = 0;
     private int drawCountForDisplay = 0;
-    BackgroundSound backgroundMusic = new BackgroundSound();
-    BackgroundSound soundEffect = new BackgroundSound();
+    private BackgroundSound backgroundMusic = new BackgroundSound();
+    private BackgroundSound soundEffect = new BackgroundSound();
     /**
      * Singleton pattern is used to ensure only one instance of GamePanel is created.
      *
@@ -141,7 +142,7 @@ public class GamePanel extends Canvas implements Runnable {
      *
      * @param finalDrawCountForDisplay the final draw count for display
      */
-    private void updateAndDrawGame(int finalDrawCountForDisplay) {
+    public void updateAndDrawGame(int finalDrawCountForDisplay) {
         GraphicsContext gc = this.getGraphicsContext2D();
         if(player.getHp() <= 0) {
             handleGameOver();
@@ -152,17 +153,19 @@ public class GamePanel extends Canvas implements Runnable {
     /**
      * Handles the game over state.
      */
-    private void handleGameOver() {
+    public void handleGameOver() {
         soundEffect.stop();
         backgroundMusic.stop();
         cancelAndClearWeapons();
-        Goto.gameOver(getScore(),getKillCount());
+        if (gameThread != null) {
+            Goto.gameOver(getScore(),getKillCount());
+        }
         stopGameThread();
     }
     /**
      * Cancels and clears the weapons.
      */
-    private void cancelAndClearWeapons() {
+    public void cancelAndClearWeapons() {
         for (int i = 0; i < weapons.length; i++) {
             if (weapons[i] != null){
                 weapons[i].getTimer().cancel();
@@ -176,7 +179,7 @@ public class GamePanel extends Canvas implements Runnable {
      * @param gc the GraphicsContext to draw on
      * @param finalDrawCountForDisplay the final draw count for display
      */
-    private void updateAndDrawEntities(GraphicsContext gc, int finalDrawCountForDisplay) {
+    public void updateAndDrawEntities(GraphicsContext gc, int finalDrawCountForDisplay) {
         player.update();
         drawMap(gc);
         updateAndDrawWeapons(gc);
@@ -192,7 +195,7 @@ public class GamePanel extends Canvas implements Runnable {
      *
      * @param gc the GraphicsContext to draw on
      */
-    private void drawMap(GraphicsContext gc) {
+    public void drawMap(GraphicsContext gc) {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, getWidth(), getHeight());
         mapManager.drawMap(gc);
@@ -202,7 +205,7 @@ public class GamePanel extends Canvas implements Runnable {
      *
      * @param gc the GraphicsContext to draw on
      */
-    private void updateAndDrawWeapons(GraphicsContext gc) {
+    public void updateAndDrawWeapons(GraphicsContext gc) {
         for (Weapon value : weapons) {
             if (value != null) {
                 value.update();
@@ -215,7 +218,7 @@ public class GamePanel extends Canvas implements Runnable {
      *
      * @param gc the GraphicsContext to draw on
      */
-    private void updateAndDrawMonsters(GraphicsContext gc) {
+    public void updateAndDrawMonsters(GraphicsContext gc) {
         for (int i = 0; i < monster.length; i++) {
             Entity value = monster[i];
             if (value != null) {

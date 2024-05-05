@@ -40,8 +40,8 @@ public class Lightning extends Weapon{
     @Override
     public void update() {
         setAtk((100*getLevel()));
-        setWorldX(gp.getPlayer().getWorldX());
-        setWorldY(gp.getPlayer().getWorldY());
+        setWorldX(getGp().getPlayer().getWorldX());
+        setWorldY(getGp().getPlayer().getWorldY());
     }
 
     /**
@@ -53,7 +53,7 @@ public class Lightning extends Weapon{
     public void draw(GraphicsContext gc) {
         if (isAvailable()&&countFrame<4) {
             gc.setFill(Color.LIGHTBLUE);
-            gc.fillRect(gp.getPlayer().getScreenX()+80+dx ,0, 20, gp.getPlayer().getScreenY()+100+dy);
+            gc.fillRect(getGp().getPlayer().getScreenX()+80+dx ,0, 20, getGp().getPlayer().getScreenY()+100+dy);
         }
         countFrame++;
     }
@@ -65,18 +65,18 @@ public class Lightning extends Weapon{
      * @param num  the index of the monster
      */
     public void checkMonster(int num) {
-        if (gp.getMonster()[num] != null) {
-            if (gp.getMonster()[num].getHp() <= 0) {
-                if (gp.getMonster()[num] != null)
-                    gp.setScore(gp.getScore() + gp.getMonster()[num].getPoints());
-                Entity[] monsters = gp.getMonster();
+        if (getGp().getMonster()[num] != null) {
+            if (getGp().getMonster()[num].getHp() <= 0) {
+                if (getGp().getMonster()[num] != null)
+                    getGp().setScore(getGp().getScore() + getGp().getMonster()[num].getPoints());
+                Entity[] monsters = getGp().getMonster();
                 for (int i = 0; i < monsters.length; i++) {
-                    if (monsters[i] == gp.getMonster()[num]) {
+                    if (monsters[i] == getGp().getMonster()[num]) {
                         monsters[i] = null;
                         break;
                     }
                 }
-                gp.setMonster(monsters);
+                getGp().setMonster(monsters);
             }
         }
     }
@@ -91,10 +91,10 @@ public class Lightning extends Weapon{
         getTimer().schedule(new TimerTask() {
             @Override
             public void run() {
-                if (gp.getMonster()[num] != null) {
+                if (getGp().getMonster()[num] != null) {
                     playSFX(2);
-                    if (gp.getMonster()[num] != null) gp.getMonster()[num].setHp(gp.getMonster()[num].getHp() - getAtk());
-                    if (gp.getMonster()[num] != null) gp.getMonster()[num].setAttacked(true);
+                    if (getGp().getMonster()[num] != null) getGp().getMonster()[num].setHp(getGp().getMonster()[num].getHp() - getAtk());
+                    if (getGp().getMonster()[num] != null) getGp().getMonster()[num].setAttacked(true);
                     checkMonster(num);
                     targetMonster();
                     setAvailable(!isAvailable());
@@ -109,7 +109,7 @@ public class Lightning extends Weapon{
      */
     public void targetMonster() {
         getNearestMonster();
-        Entity monster = gp.getMonster()[num];
+        Entity monster = getGp().getMonster()[num];
         if (monster == null) {
             return ;
         }
@@ -143,11 +143,11 @@ public class Lightning extends Weapon{
      */
     public void getNearestMonster() {
         double minDistance = Double.MAX_VALUE;
-        for (int i = 0; i < gp.getMonster().length; i++) {
-            if (gp.getMonster()[i] == null) {
+        for (int i = 0; i < getGp().getMonster().length; i++) {
+            if (getGp().getMonster()[i] == null) {
                 continue;
             }
-            double distance = getDistanceToMonster(gp.getMonster()[i]);
+            double distance = getDistanceToMonster(getGp().getMonster()[i]);
             if (distance < minDistance) {
                 minDistance = distance;
                 num = i;

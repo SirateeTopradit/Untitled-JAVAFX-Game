@@ -14,7 +14,7 @@ import java.util.TimerTask;
  * This includes the weapon's hitbox, position, availability, timer, sound effect, and attack power.
  */
 public abstract class Weapon implements BaseWeapon{
-    GamePanel gp;
+    private GamePanel gp;
     private Rectangle hitBox;
     private int screenX;
     private int screenY;
@@ -145,5 +145,6 @@ public abstract class Weapon implements BaseWeapon{
 
     public void updateInterval() {
     }
+
 }
 

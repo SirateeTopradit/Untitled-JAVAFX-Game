@@ -10,10 +10,10 @@ import java.net.URL;
  */
 public class BackgroundSound {
 
-    MediaPlayer mediaPlayer;
-    URL[] soundURL = new URL[8];
-    double volume = 0.25;
-    double sfxVolume = 0.1;
+    private MediaPlayer mediaPlayer;
+    private URL[] soundURL = new URL[8];
+    private double volume = 0.25;
+    private double sfxVolume = 0.1;
     /**
      * Constructor for the BackgroundSound class.
      * Initializes the sound URLs for the background sound and sound effects.

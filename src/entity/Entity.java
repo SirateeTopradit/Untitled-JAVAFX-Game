@@ -10,7 +10,7 @@ import main.GamePanel;
  */
 public abstract class Entity {
     private int worldX, worldY;
-    GamePanel gp;
+    private GamePanel gp;
     private int direction;
     private int speed;
     private Rectangle hitBoxWalk;
@@ -238,5 +238,9 @@ public abstract class Entity {
 
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+
+    public GamePanel getGp() {
+        return gp;
     }
 }
