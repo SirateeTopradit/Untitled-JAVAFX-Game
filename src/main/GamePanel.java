@@ -17,7 +17,7 @@ public class GamePanel extends Canvas implements Runnable {
     final int tileSize = 20;
     final int aspectRatioWidth = 16;
     final int aspectRatioHeight = 9;
-    final int scale = 5;//6
+    final int scale = 4;//6
     final int screenWidth = tileSize * aspectRatioWidth * scale;
     final int screenHeight = tileSize * aspectRatioHeight * scale;
 
@@ -111,8 +111,10 @@ public class GamePanel extends Canvas implements Runnable {
                         soundEffect.stop();
                         backgroundMusic.stop();
                         for (int i = 0; i < weapons.length; i++) {
-                            weapons[i].getTimer().cancel();
-                            weapons[i] = null;
+                            if (weapons[i] != null){
+                                weapons[i].getTimer().cancel();
+                                weapons[i] = null;
+                            }
                         }
                         Goto.gameOver(getScore(),getKillCount());
                         stopGameThread();

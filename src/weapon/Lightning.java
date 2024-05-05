@@ -41,18 +41,21 @@ public class Lightning extends Weapon{
             public void run() {
                 if (gp.getMonster()[num] != null) {
                     playSFX(2);
-                    gp.getMonster()[num].setHp(gp.getMonster()[num].getHp() - getAtk());
-                    gp.getMonster()[num].setAttacked(true);
-                    if (gp.getMonster()[num].getHp() <= 0) {
-                        gp.setScore(gp.getScore() + gp.getMonster()[num].getPoints());
-                        Entity[] monsters = gp.getMonster();
-                        for (int i = 0; i < monsters.length; i++) {
-                            if (monsters[i] == gp.getMonster()[num]) {
-                                monsters[i] = null;
-                                break;
+                    if (gp.getMonster()[num] != null) gp.getMonster()[num].setHp(gp.getMonster()[num].getHp() - getAtk());
+                    if (gp.getMonster()[num] != null) gp.getMonster()[num].setAttacked(true);
+                    if (gp.getMonster()[num] != null) {
+                        if (gp.getMonster()[num].getHp() <= 0) {
+                            if (gp.getMonster()[num] != null)
+                                gp.setScore(gp.getScore() + gp.getMonster()[num].getPoints());
+                            Entity[] monsters = gp.getMonster();
+                            for (int i = 0; i < monsters.length; i++) {
+                                if (monsters[i] == gp.getMonster()[num]) {
+                                    monsters[i] = null;
+                                    break;
+                                }
                             }
+                            gp.setMonster(monsters);
                         }
-                        gp.setMonster(monsters);
                     }
                     targetMonster();
                     setAvailable(!isAvailable());

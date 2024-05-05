@@ -11,76 +11,64 @@ import pane.RootPane;
 import java.util.Optional;
 
 /**
- * Main class for the game application.
- * This class extends the Application class from JavaFX.
+ * Main class for the application.
+ * This class extends the JavaFX Application class and overrides the start method.
  */
 public class Main extends Application {
 
     /**
-     * The start method is the main entry point for all JavaFX applications.
-     * It is called after the init() method has returned, and after the system is ready for the application to begin running.
+     * The main entry point for all JavaFX applications.
+     * The start method is called after the init method has returned,
+     * and after the system is ready for the application to begin running.
      *
-     * @param primaryStage the primary stage for this application, onto which the application scene can be set.
-     * @throws Exception if any error occurs during the execution of the application.
+     * @param primaryStage the primary stage for this application, onto which
+     * the application scene can be set. The primary stage will be embedded in
+     * the browser if the application was launched from a web page.
+     * @throws Exception if something goes wrong
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Set the title of the window
         primaryStage.setTitle("Untitled-JAVAFX-Game");
 
-        // Override the default close request action
+        // Add a confirmation dialog when the user tries to close the window
         primaryStage.setOnCloseRequest(event -> {
-            // Consume the event to prevent the window from closing
             event.consume();
-            // Create a confirmation dialog
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation Dialog");
             alert.setHeaderText("Are you sure you want to exit?");
-
-            // Show the dialog and wait for the user's response
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK){
-                // If the user confirms, close the application
                 primaryStage.close();
             }
         });
 
-        // Create a new game panel
-//        GamePanel gamePanel = new GamePanel();
-//        gamePanel.setUpGame();
-
-        // Create a new root pane and add the game panel to it
+        // Create the root pane
         Pane root = new RootPane();
-//        root.getChildren().add(gamePanel);
 
-        // Create a new scene with the root pane and set it on the stage
-//        Scene scene = new Scene(root);
-//        primaryStage.setScene(scene);
-
-        // Prevent the window from being resized
+        // Set the window to be non-resizable
         primaryStage.setResizable(false);
 
         // Center the window on the screen
         primaryStage.centerOnScreen();
 
-        // Show the window
-//        primaryStage.show();
-
-        // Start the game thread
-//        gamePanel.startGameThread();
-
+        // Create the scene with the root pane and the dimensions from the game panel
         Scene scene = new Scene(root,GamePanel.getInstance().getScreenWidth(),GamePanel.getInstance().getScreenHeight());
+
+        // Set the scene on the stage and show the stage
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
     /**
-     * The main method is the entry point for all Java applications.
+     * The main method for the application.
+     * This method is not required for JavaFX applications when the JAR file for the
+     * application is created with the JavaFX Packager tool, which embeds the JavaFX Launcher in the JAR file.
+     * However, it is useful for platforms like IDEs that do not provide full support for JavaFX.
      *
-     * @param args the command-line arguments passed to the application.
+     * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // Launch the JavaFX application
         launch(args);
     }
 }

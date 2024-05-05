@@ -1,11 +1,9 @@
 package utils;
 
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import main.GamePanel;
-import Pane.TitleScreen;
+import pane.TitleScreen;
 import pane.RootPane;
-import Pane.GameOver;
+import pane.GameOver;
 
 public class Goto {
     private static RootPane rootPane;

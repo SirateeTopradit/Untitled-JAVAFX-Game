@@ -4,93 +4,55 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import main.GamePanel;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
-public class Entity {
+/**
+ * Entity class represents a game entity.
+ * This class is a base class for all game entities.
+ */
+public abstract class Entity {
     private int worldX, worldY;
     GamePanel gp;
-    int direction;
+    private int direction;
     private int speed;
-    private Rectangle hitBox;
     private Rectangle hitBoxWalk;
     private final int NUM_FRAMES = 5;
     private final int NUM_DIRECTIONS = 4; // number of directions
     private Image[][] frames;
     private final long startTime;
-    private int directionY;
     private boolean isAttacked;
     private int counterIsAttacked = 0;
     private int atk;
-
+    private Boolean isColliding = false;
+    private int hp;
+    private int points;
+    /**
+     * Constructor for the Entity class.
+     * Initializes the Entity with the given game panel.
+     *
+     * @param gp  the game panel instance
+     */
     public Entity(GamePanel gp) {
         this.gp = gp;
         frames = new Image[NUM_DIRECTIONS][NUM_FRAMES*2];
         startTime = System.currentTimeMillis();
-        setHitBox(new Rectangle(3*20, 4*20, 2*40, 4*30));
         setHitBoxWalk(new Rectangle(2*20, 4*20, 4*40, 4*30));
     }
-
-    public Rectangle getHitBox() {
-        return hitBox;
-    }
-
-    public void setHitBox(Rectangle hitBox) {
-        this.hitBox = hitBox;
-    }
-
-    public Rectangle getHitBoxWalk() {
-        return hitBoxWalk;
-    }
-
-    public void setHitBoxWalk(Rectangle hitBoxWalk) {
-        this.hitBoxWalk = hitBoxWalk;
-    }
-
-    public void setWorldX(int x) {
-        this.worldX = x;
-    }
-
-    public void setWorldY(int y) {
-        this.worldY = y;
-    }
-
-    public int getWorldX() {
-        return worldX;
-    }
-
-    public int getWorldY() {
-        return worldY;
-    }
-
-    public int getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-    private Boolean isColliding = false;
-    private int hp;
-    private int points;
-
+    public abstract void loadFrames();
+    /**
+     * Draws the entity on the game panel.
+     *
+     * @param gc  the graphics context to draw on
+     */
     public void draw(GraphicsContext gc) {
         int chunkSize = 400;
         int screenX = worldX - gp.getPlayer().getWorldX() + gp.getPlayer().getScreenX();
         int screenY = worldY - gp.getPlayer().getWorldY() + gp.getPlayer().getScreenY();
-
-
         if(     worldX + gp.getTileSize() + chunkSize > gp.getPlayer().getWorldX() - gp.getPlayer().getScreenX() &&
                 worldX - gp.getTileSize() - chunkSize < gp.getPlayer().getWorldX() + gp.getPlayer().getScreenX() &&
                 worldY + gp.getTileSize() + chunkSize > gp.getPlayer().getWorldY() - gp.getPlayer().getScreenY() &&
                 worldY - gp.getTileSize() - chunkSize < gp.getPlayer().getWorldY() + gp.getPlayer().getScreenY() ){
-
             int EntitySize = (gp.getTileSize() * gp.getTileSize())/2;
             Image fxImage = getCurrentFrame(0);
-            if (direction == 0) {
+            if (getDirection() == 0) {
                 gc.save();
                 gc.scale(-1, 1);
                 gc.drawImage(fxImage, -screenX - EntitySize, screenY, EntitySize, EntitySize);
@@ -100,68 +62,75 @@ public class Entity {
             }
         }
     }
+    /**
+     * Calculates the direction of the entity based on the given deltas.
+     *
+     * @param dx  the delta x
+     * @param dy  the delta y
+     */
+    public void calDirection(int dx, int dy) {
+        if (dx >= 5) setDirection(0);
+        else setDirection(2);
+    }
+    /**
+     * Moves the entity based on the given deltas.
+     *
+     * @param dx  the delta x
+     * @param dy  the delta y
+     */
+    public void move(int dx, int dy){
+        int nextX = getWorldX();
+        int nextY = getWorldY();
+        if (Math.abs(dx) >= Math.abs(dy)) {
+            if (dx >= 0) nextX += getSpeed();
+            else nextX -= getSpeed();
+            if (dy >= 0) nextY += getSpeed() / 2;
+            else nextY -= getSpeed() / 2;
+        } else {
+            if (dy >= 0) nextY += getSpeed();
+            else nextY -= getSpeed();
+            if (dx >= 0) nextX += getSpeed() / 2;
+            else nextX -= getSpeed() / 2;
+        }
+        setWorldX(nextX);
+        setWorldY(nextY);
+    }
+    /**
+     * Damages the entity.
+     */
+    public void damage() {
+        this.setHp(this.getHp() - gp.getWeapons()[0].getAtk());
+        this.setAttacked(true);
+        if (this.getHp() <= 0) {
+            Entity[] monsters = gp.getMonster();
+            for (int i = 0; i < monsters.length; i++) {
+                if (monsters[i] == this) {
+                    monsters[i] = null;
+                    break;
+                }
+            }
+            gp.setMonster(monsters);
+            gp.setScore(gp.getScore() + this.getPoints());
+        }
+    }
+    /**
+     * Updates the entity's state.
+     */
     public void update() {
         int dx = gp.getPlayer().getWorldX() - getWorldX();
         int dy = gp.getPlayer().getWorldY() - getWorldY();
-        int nextX = getWorldX();
-        int nextY = getWorldY();
-        if (dx >= 5){
-            direction = 0;
-        }
-        else {
-            direction = 2;
-        }
-        if (dy >= 5){
-            directionY = 1;
-        }
-        else {
-            directionY = 3;
-        }
+        calDirection(dx, dy);
         gp.getCollisionChecker().checkEntity(this, gp.getEntity());
-        if (!isColliding) {
-            if (Math.abs(dx) >= Math.abs(dy)) {
-                if (dx >= 0) {
-                    nextX += getSpeed();
-                } else {
-                    nextX -= getSpeed();
-                }
-                if (dy >= 0) {
-                    nextY += getSpeed() / 2;
-                } else {
-                    nextY -= getSpeed() / 2;
-                }
-            } else {
-                if (dy >= 0) {
-                    nextY += getSpeed();
-                } else {
-                    nextY -= getSpeed();
-                }
-                if (dx >= 0) {
-                    nextX += getSpeed() / 2;
-                } else {
-                    nextX -= getSpeed() / 2;
-                }
-            }
-            setWorldX(nextX);
-            setWorldY(nextY);
-        }
-        else {
-            this.setHp(this.getHp() - gp.getWeapons()[0].getAtk());
-            this.setAttacked(true);
-            if (this.getHp() <= 0) {
-                Entity[] monsters = gp.getMonster();
-                for (int i = 0; i < monsters.length; i++) {
-                    if (monsters[i] == this) {
-                        monsters[i] = null;
-                        break;
-                    }
-                }
-                gp.setMonster(monsters);
-                gp.setScore(gp.getScore() + this.getPoints());
-            }
-        }
+        if (!isColliding) move(dx, dy);
+        else damage();
         isColliding = false;
     }
+    /**
+     * Returns the direction character from the given index.
+     *
+     * @param index  the index
+     * @return the direction character
+     */
     public char getDirectionFromIndex(int index) {
         return switch (index) {
             case 0 -> 'a';
@@ -170,7 +139,12 @@ public class Entity {
             default -> 'w';
         };
     }
-
+    /**
+     * Returns the current frame of the entity.
+     *
+     * @param direction  the direction of the entity
+     * @return the current frame
+     */
     public Image getCurrentFrame(int direction) {
         int index = (int) ((System.currentTimeMillis() - startTime) / 50) % NUM_FRAMES;
         return frames[direction][index];
@@ -180,24 +154,8 @@ public class Entity {
         return NUM_FRAMES;
     }
 
-    public int getNUM_DIRECTIONS() {
-        return NUM_DIRECTIONS;
-    }
-
     public Image[][] getFrames() {
         return frames;
-    }
-
-    public long getStartTime() {
-        return startTime;
-    }
-
-    public void setFrames(Image[][] frames) {
-        this.frames = frames;
-    }
-
-    public Boolean getColliding() {
-        return isColliding;
     }
 
     public void setColliding(Boolean colliding) {
@@ -211,15 +169,6 @@ public class Entity {
     public void setDirection(int direction) {
         this.direction = direction;
     }
-
-    public int getDirectionY() {
-        return directionY;
-    }
-
-    public void setDirectionY(int directionY) {
-        this.directionY = directionY;
-    }
-
     public int getHp() {
         return hp;
     }
@@ -258,5 +207,36 @@ public class Entity {
 
     public void setAtk(int atk) {
         this.atk = atk;
+    }
+    public Rectangle getHitBoxWalk() {
+        return hitBoxWalk;
+    }
+
+    public void setHitBoxWalk(Rectangle hitBoxWalk) {
+        this.hitBoxWalk = hitBoxWalk;
+    }
+
+    public void setWorldX(int x) {
+        this.worldX = x;
+    }
+
+    public void setWorldY(int y) {
+        this.worldY = y;
+    }
+
+    public int getWorldX() {
+        return worldX;
+    }
+
+    public int getWorldY() {
+        return worldY;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 }

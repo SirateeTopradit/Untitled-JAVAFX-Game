@@ -1,14 +1,16 @@
 package entity;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import main.GamePanel;
 import main.KeyHandler;
 import javafx.scene.shape.Rectangle;
 import java.io.InputStream;
-
+/**
+ * Player class represents a player entity in the game.
+ * This class extends the Entity class and adds player-specific functionality.
+ */
 public class Player extends Entity{
     KeyHandler keyH;
     boolean isStopped = true;
@@ -19,7 +21,13 @@ public class Player extends Entity{
     private final long startTime;
     private final int screenX;
     private final int screenY;
-
+    /**
+     * Constructor for the Player class.
+     * Initializes the Player with the given game panel and key handler.
+     *
+     * @param gp  the game panel instance
+     * @param keyH  the key handler instance
+     */
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
         this.keyH = keyH;
@@ -28,10 +36,14 @@ public class Player extends Entity{
         this.screenY = ((gp.getScreenHeight()/2)-110-40);
         frames = new Image[NUM_DIRECTIONS][NUM_FRAMES*2];
         startTime = System.currentTimeMillis();
-
-        setHitBox(new Rectangle(4*20, 5*20, 2*20, 4*20));
         setHitBoxWalk(new Rectangle(3*20, 5*20, 4*20, 4*20));
-
+        loadFrames();
+        loadStandFrame();
+    }
+    /**
+     * Loads the frames for the player's movement.
+     */
+    public void loadFrames() {
         try {
             for (int j = 0; j < NUM_DIRECTIONS; j++) {
                 char direction = getDirectionFromIndex(j);
@@ -44,6 +56,15 @@ public class Player extends Entity{
                     }
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * Loads the frames for the player's standing position.
+     */
+    public void loadStandFrame(){
+        try {
             for (int j = 0; j < NUM_DIRECTIONS; j++) {
                 char direction = getDirectionFromIndex(j);
                 for (int i = 0; i < NUM_FRAMES; i++) {
@@ -59,58 +80,68 @@ public class Player extends Entity{
             e.printStackTrace();
         }
     }
-
+    /**
+     * Sets the default values for the player.
+     */
     public void setDefaultValues() {
         setWorldX((gp.getWorldScreenWidth() / 2)-60-40);
         setWorldY((gp.getWorldScreenHeight() / 2)-100-40);
         setSpeed(10);
         setHp(2500);
-        direction = 0; // start facing 'a' direction
+        setDirection(0); // start facing 'a' direction
     }
-    @Override
-    public void update() {
-        int dx = 0;
-        int dy = 0;
-
+    /**
+     * Handles the key inputs for the player's movement.
+     *
+     * @param dx  the delta x
+     * @param dy  the delta y
+     */
+    public void keyHan(double dx, double dy) {
         if (keyH.isUpPressed()) {
             dy -= getSpeed();
-            direction = 3; // 'w' direction
-            isStopped = false;
+            setDirection(3);// 'w' direction
         }
         if (keyH.isDownPressed()) {
             dy += getSpeed();
-            direction = 2; // 's' direction
-            isStopped = false;
+            setDirection(2);// 's' direction
         }
         if (keyH.isLeftPressed()) {
             dx -= getSpeed();
-            direction = 0; // 'a' direction
-            isStopped = false;
+            setDirection(0);// 'a' direction
         }
         if (keyH.isRightPressed()) {
             dx += getSpeed();
-            direction = 1; // 'd' direction
-            isStopped = false;
+            setDirection(1);// 'd' direction
         }
-
-        // Normalize diagonal speed
         if (dx != 0 && dy != 0) {
             double factor = Math.sqrt(2) / 2;
             dx *= factor;
             dy *= factor;
         }
-
-        setWorldX(getWorldX() + dx);
-        setWorldY(getWorldY() + dy);
-
+        setWorldX((int) (getWorldX() + dx));
+        setWorldY((int) (getWorldY() + dy));
+        isStopped = false;
+    }
+    /**
+     * Updates the player's state.
+     */
+    @Override
+    public void update() {
+        double dx = 0;
+        double dy = 0;
+        keyHan(dx, dy);
         if (!keyH.isDownPressed() && !keyH.isUpPressed() && !keyH.isLeftPressed() && !keyH.isRightPressed()) {
             isStopped = true;
         }
         gp.getCollisionChecker().checkCollision();
     }
+    /**
+     * Draws the player on the game panel.
+     *
+     * @param gc  the graphics context to draw on
+     */
     @Override
     public void draw(GraphicsContext gc) {
-        int playerSize = (gp.getTileSize() * gp.getTileSize())/2;
         if(isAttacked()) {
             setCounterIsAttacked(getCounterIsAttacked() + 1);
             if(getCounterIsAttacked() >= 10) {
@@ -118,6 +149,15 @@ public class Player extends Entity{
                 setCounterIsAttacked(0);
             }
         }
+        healthBar(gc);
+    }
+    /**
+     * Draws the health bar for the player.
+     *
+     * @param gc  the graphics context to draw on
+     */
+    public void healthBar(GraphicsContext gc){
+        int playerSize = (gp.getTileSize() * gp.getTileSize())/2;
         double healthBarWidth = 100.0;
         double healthBarHeight = 10.0;
         double healthBarX = getScreenX() + 50;
@@ -127,10 +167,15 @@ public class Player extends Entity{
         gc.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
         gc.setFill(Color.DARKGREEN);
         gc.fillRect(healthBarX, healthBarY, currentHealthBarWidth, healthBarHeight);
-        Image fxImage = getCurrentFrame(direction);
+        Image fxImage = getCurrentFrame(getDirection());
         gc.drawImage(fxImage, getScreenX(), getScreenY(), playerSize,playerSize);
     }
-
+    /**
+     * Returns the current frame of the player.
+     *
+     * @param direction  the direction of the player
+     * @return the current frame
+     */
     public Image getCurrentFrame(int direction) {
         int index = (int) ((System.currentTimeMillis() - startTime) / 50) % NUM_FRAMES;
         return isStopped ? frames[direction][index+NUM_FRAMES-1]:frames[direction][index];
@@ -154,10 +199,6 @@ public class Player extends Entity{
 
     public Image[][] getFrames() {
         return frames;
-    }
-
-    public long getStartTime() {
-        return startTime;
     }
 
 }

@@ -1,4 +1,4 @@
-package Pane;
+package pane;
 
 import javafx.application.Platform;
 import javafx.geometry.Insets;
