@@ -6,7 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 
 import entity.Player;
 import javafx.scene.paint.Color;
-import map.MapManager;
+import main.MapManager;
 import utils.Goto;
 import weapon.Weapon;
 import java.lang.Runnable;
