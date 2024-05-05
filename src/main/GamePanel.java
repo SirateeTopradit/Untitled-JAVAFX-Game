@@ -26,22 +26,15 @@ public class GamePanel extends Canvas implements Runnable {
 
     //World settings
     private final int worldScale = 6*2;//6
-    private final int worldScreenWidth = tileSize * aspectRatioWidth * worldScale;
-    private final int worldScreenHeight = tileSize * aspectRatioHeight * worldScale;
-
-    private Boolean debugMode = false;
-    private KeyHandler keyH = new KeyHandler();
+    private final KeyHandler keyH = new KeyHandler();
     private Thread gameThread;
-    private Player player = new Player(this, keyH);
-    private MapManager mapManager = new MapManager(this, player);
-    private UI ui = new UI(this);
-    private final double DRAW_INTERVAL = 1000000000.0 / 60.0;
-    private final long ONE_SECOND = 1000000000L;
-    private CollisionChecker collisionChecker = new CollisionChecker(this);
-    private AssetSetter assetSetter = new AssetSetter(this);
+    private final Player player = new Player(this, keyH);
+    private final MapManager mapManager = new MapManager(this, player);
+    private final UI ui = new UI(this);
+    private final CollisionChecker collisionChecker = new CollisionChecker(this);
+    private final AssetSetter assetSetter = new AssetSetter(this);
     private long  score = 0;
     private int nowStatus = 0;
-    private final int monster_type = 6;
     private Entity[] monster = new Entity[8];
     private Entity[] entity;
     private Weapon[] weapons = new Weapon[3];
@@ -50,12 +43,9 @@ public class GamePanel extends Canvas implements Runnable {
     private Boolean isNewStage = true;
     private double delta = 0;
     private long lastTime = System.nanoTime();
-    private long currentTime;
     private long timer = 0;
-    private int drawCount = 0;
-    private int drawCountForDisplay = 0;
-    private BackgroundSound backgroundMusic = new BackgroundSound();
-    private BackgroundSound soundEffect = new BackgroundSound();
+    private final BackgroundSound backgroundMusic = new BackgroundSound();
+    private final BackgroundSound soundEffect = new BackgroundSound();
     /**
      * Singleton pattern is used to ensure only one instance of GamePanel is created.
      *
@@ -84,8 +74,8 @@ public class GamePanel extends Canvas implements Runnable {
         this.setWidth(screenWidth);
         this.setHeight(screenHeight);
         this.setFocusTraversable(true);
-        this.setOnKeyPressed(e -> keyH.keyPressed(e));
-        this.setOnKeyReleased(e -> keyH.keyReleased(e));
+        this.setOnKeyPressed(keyH::keyPressed);
+        this.setOnKeyReleased(keyH::keyReleased);
     }
     /**
      * Sets up the game by setting the monsters and weapons and playing the music.
@@ -94,7 +84,8 @@ public class GamePanel extends Canvas implements Runnable {
         assetSetter.setMonster();
         assetSetter.setWeapon();
         combineArrays();
-        playMusic(0);
+        int Death_by_Glamour = 0;
+        playMusic(Death_by_Glamour);
     }
     /**
      * Starts the game thread.
@@ -117,21 +108,17 @@ public class GamePanel extends Canvas implements Runnable {
     @Override
     public void run() {
         while(!Thread.currentThread().isInterrupted()){
-            currentTime = System.nanoTime();
+            long currentTime = System.nanoTime();
+            double DRAW_INTERVAL = 1000000000.0 / 60.0;
             delta += (currentTime - lastTime) / DRAW_INTERVAL;
             timer += currentTime - lastTime;
             lastTime = currentTime;
             if(delta >= 1) {
-                int finalDrawCountForDisplay = drawCountForDisplay;
-                javafx.application.Platform.runLater(() -> {
-                    updateAndDrawGame(finalDrawCountForDisplay);
-                });
+                javafx.application.Platform.runLater(this::updateAndDrawGame);
                 delta--;
-                drawCount++;
             }
+            long ONE_SECOND = 1000000000L;
             if(timer >= ONE_SECOND){
-                drawCountForDisplay = drawCount;
-                drawCount = 0;
                 timer = 0;
             }
             if (Thread.currentThread().isInterrupted()) break;
@@ -139,15 +126,13 @@ public class GamePanel extends Canvas implements Runnable {
     }
     /**
      * Updates and draws the game entities.
-     *
-     * @param finalDrawCountForDisplay the final draw count for display
      */
-    public void updateAndDrawGame(int finalDrawCountForDisplay) {
+    public void updateAndDrawGame() {
         GraphicsContext gc = this.getGraphicsContext2D();
         if(player.getHp() <= 0) {
             handleGameOver();
         } else {
-            updateAndDrawEntities(gc, finalDrawCountForDisplay);
+            updateAndDrawEntities(gc);
         }
     }
     /**
@@ -177,18 +162,14 @@ public class GamePanel extends Canvas implements Runnable {
      * Updates and draws the entities.
      *
      * @param gc the GraphicsContext to draw on
-     * @param finalDrawCountForDisplay the final draw count for display
      */
-    public void updateAndDrawEntities(GraphicsContext gc, int finalDrawCountForDisplay) {
+    public void updateAndDrawEntities(GraphicsContext gc) {
         player.update();
         drawMap(gc);
         updateAndDrawWeapons(gc);
         player.draw(gc);
         updateAndDrawMonsters(gc);
         ui.draw(gc);
-        if (debugMode) {
-            ui.drawDebugMode(gc, finalDrawCountForDisplay);
-        }
     }
     /**
      * Draws the map.
@@ -259,10 +240,10 @@ public class GamePanel extends Canvas implements Runnable {
         return tileSize;
     }
     public int getWorldScreenWidth() {
-        return worldScreenWidth;
+        return tileSize * aspectRatioWidth * worldScale;
     }
     public int getWorldScreenHeight() {
-        return worldScreenHeight;
+        return tileSize * aspectRatioHeight * worldScale;
     }
     public Entity[] getMonster() {
         return monster;
@@ -328,7 +309,7 @@ public class GamePanel extends Canvas implements Runnable {
     }
 
     public int getMonsterType() {
-        return this.monster_type;
+        return 6;
     }
     public int randomMonsterType() {
         return (int) (Math.random() * getMonsterType());
